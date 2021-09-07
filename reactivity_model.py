@@ -26,8 +26,15 @@ def get_jminus(typ = "wtd"): #wtd, refl or abs
     return jm_configA, jm_configB
 
 def integratePP(x, y, lbnd, ubnd):
-    """Integrate 2*pi periodic, peicewise function given x & y across the 
-    bounds"""
+    """
+    Integrate j- function given x & y across the 
+    bounds.
+    x and y must be ordered from lowest x to highest x.
+    ubnd - lbnd must be less than 2pi
+    """
+    #determine if x sufficently covers bounds
+    
+
 
 
 
