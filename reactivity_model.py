@@ -45,7 +45,7 @@ def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
 
     #integrate portions of functions where x-blocks are completely enclosed
     compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
-    full_blocks_integral = 0#np.trapz(y[compl_ind], x[compl_ind])
+    full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
 
     #integrate lower hanging partial block
     lidx = compl_ind.min()
@@ -59,9 +59,17 @@ def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
 
     return full_blocks_integral + lower_block_integral + upper_block_integral
 
-def int_bounds(theta, cangle):
-    """get bounds on j-^2 integrals given rotation angle """
-    
+def int_bounds(theta, alpha):
+    """get bounds on j-^2 integrals given rotation angle, theta and coating angle alpha
+    returns (thetaA&thetaA0'), (thetaA'&thetaA0)"""
+    assert (theta < np.pi + 1e-5) and (theta > -np.pi - 1e-5)
+
+    if 0 < theta and theta < alpha:
+        return ([alpha/2, theta + alpha/2], [-alpha/2, theta - alpha/2])
+    if -alpha < theta and theta < 0:
+        return ([theta - alpha/2, -alpha/2], [theta + alpha/2, alpha/2])
+    else:
+        return ([theta - alpha/2, theta + alpha/2], [-alpha/2, alpha/2])
 
 
 #def drum_reactivity(pert, nom = None)
@@ -72,8 +80,6 @@ def int_bounds(theta, cangle):
 if __name__ == "__main__":
     from scipy.interpolate import interp1d
     jmA, jmB = get_jminus("wtd")
-
-
 
 
 
