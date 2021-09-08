@@ -38,27 +38,30 @@ def get_jminus(typ = "wtd"): #wtd, refl or abs
 
     return jm_configA, jm_configB
 
-def integrate(x, y, lbnd, ubnd):
+def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
     """Integrate j- function given x & y across the bounds."""
     #make sure dealing with numpy arrays
     x, y = np.asarray(x), np.asarray(y)
 
     #integrate portions of functions where x-blocks are completely enclosed
     compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
-    full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
+    full_blocks_integral = 0#np.trapz(y[compl_ind], x[compl_ind])
 
     #integrate lower hanging partial block
     lidx = compl_ind.min()
-    y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx]
+    y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx-1]
     lower_block_integral = (x[lidx] - lbnd)*(y[lidx] + y_lbnd_approx)/2
 
     #integrate lower hanging partial block
     uidx = compl_ind.max()+1
-    y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx]
+    y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx-1]
     upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
 
     return full_blocks_integral + lower_block_integral + upper_block_integral
 
+def int_bounds(theta, cangle):
+    """get bounds on j-^2 integrals given rotation angle """
+    
 
 
 #def drum_reactivity(pert, nom = None)
@@ -67,22 +70,8 @@ def integrate(x, y, lbnd, ubnd):
 #        return drum_reactivity(pert) - drum_reactivity(nom)
 
 if __name__ == "__main__":
-    import scipy.interpolate as si
+    from scipy.interpolate import interp1d
     jmA, jmB = get_jminus("wtd")
-    #print(jmA)
-    lb, ub = [0, 2*np.pi]
-    aprox = integrate(jmA["centers"], jmA["hist"], 0, np.pi)
-    print(aprox)
-    #plt.plot(jmA["centers"], jmA["hist"])
-    #plt.plot(jmB["centers"], jmB["hist"])
-    #plt.show()
-
-
-
-
-
-
-
 
 
 
