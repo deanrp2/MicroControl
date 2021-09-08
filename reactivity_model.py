@@ -19,22 +19,45 @@ def get_jminus(typ = "wtd"): #wtd, refl or abs
     jm_configA["centers"][jm_configA["centers"] < -np.pi] += 2*np.pi
     jm_configB["centers"][jm_configB["centers"] < -np.pi] += 2*np.pi
 
+    #add buffer on each side for periodic integral evaluations
+    lowcopy = jm_configA.copy()
+    lowcopy["centers"] -= 2*np.pi
+    highcopy = jm_configA.copy()
+    highcopy["centers"] += 2*np.pi
+    jm_configA = pd.concat([jm_configA, lowcopy, highcopy])
+
+    lowcopy = jm_configB.copy()
+    lowcopy["centers"] -= 2*np.pi
+    highcopy = jm_configB.copy()
+    highcopy["centers"] += 2*np.pi
+    jm_configB = pd.concat([jm_configB, lowcopy, highcopy])
+
     #reorder from -pi to pi
     jm_configA = jm_configA.sort_values(by="centers")
     jm_configB = jm_configB.sort_values(by="centers")
 
     return jm_configA, jm_configB
 
-def integratePP(x, y, lbnd, ubnd):
-    """
-    Integrate j- function given x & y across the 
-    bounds.
-    x and y must be ordered from lowest x to highest x.
-    ubnd - lbnd must be less than 2pi
-    """
-    #determine if x sufficently covers bounds
-    
+def integrate(x, y, lbnd, ubnd):
+    """Integrate j- function given x & y across the bounds."""
+    #make sure dealing with numpy arrays
+    x, y = np.asarray(x), np.asarray(y)
 
+    #integrate portions of functions where x-blocks are completely enclosed
+    compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
+    full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
+
+    #integrate lower hanging partial block
+    lidx = compl_ind.min()
+    y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx]
+    lower_block_integral = (x[lidx] - lbnd)*(y[lidx] + y_lbnd_approx)/2
+
+    #integrate lower hanging partial block
+    uidx = compl_ind.max()+1
+    y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx]
+    upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
+
+    return full_blocks_integral + lower_block_integral + upper_block_integral
 
 
 
@@ -44,8 +67,33 @@ def integratePP(x, y, lbnd, ubnd):
 #        return drum_reactivity(pert) - drum_reactivity(nom)
 
 if __name__ == "__main__":
+    import scipy.interpolate as si
     jmA, jmB = get_jminus("wtd")
+    #print(jmA)
+    lb, ub = [0, 2*np.pi]
+    aprox = integrate(jmA["centers"], jmA["hist"], 0, np.pi)
+    print(aprox)
+    #plt.plot(jmA["centers"], jmA["hist"])
+    #plt.plot(jmB["centers"], jmB["hist"])
+    #plt.show()
 
-    plt.plot(jmA["centers"], jmA["hist"])
-    plt.plot(jmB["centers"], jmB["hist"])
-    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
