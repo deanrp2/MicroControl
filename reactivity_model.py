@@ -45,6 +45,14 @@ def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
 
     #integrate portions of functions where x-blocks are completely enclosed
     compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
+
+    if compl_ind.size == 0: #if both bounds fall within an interval
+        idx = np.searchsorted(x, lbnd)
+        y_lbnd_approx = (lbnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+        y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+        print(y_lbnd_approx, y_ubnd_approx)
+        return (ubnd - lbnd)*(y_ubnd_approx + y_lbnd_approx)/2
+
     full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
 
     #integrate lower hanging partial block
@@ -80,6 +88,15 @@ def int_bounds(theta, alpha):
 if __name__ == "__main__":
     from scipy.interpolate import interp1d
     jmA, jmB = get_jminus("wtd")
+    lb, ub = [jmA["centers"].iloc[4]+1e-3, jmA["centers"].iloc[4]+1.2e-3]
+    e1 = integrate(jmA["centers"], jmA["hist"],lb, ub)
+    
+    xs = np.linspace(lb, ub, 100)
+    f = interp1d(jmA["centers"], jmA["hist"])
+    print(f(xs[0]), f(xs[-1]))
+    e2 = np.trapz(f(xs), xs)
+    print(e1)
+    print(e2)
 
 
 
