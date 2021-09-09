@@ -38,7 +38,12 @@ def get_jminus(typ = "wtd"): #wtd, refl or abs
 
     return jm_configA, jm_configB
 
-def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
+def get_alphas(typ = "wtd"): #wtd, refl, abs
+    """read alphas from file"""
+    fpath = Path("model_data/alpha_%s_gr.csv"%typ)
+    return pd.read_csv(fpath, index_col = 0)
+
+def integrate(x, y, lbnd, ubnd):
     """Integrate j- function given x & y across the bounds."""
     #make sure dealing with numpy arrays
     x, y = np.asarray(x), np.asarray(y)
@@ -50,7 +55,6 @@ def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
         idx = np.searchsorted(x, lbnd)
         y_lbnd_approx = (lbnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
         y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
-        print(y_lbnd_approx, y_ubnd_approx)
         return (ubnd - lbnd)*(y_ubnd_approx + y_lbnd_approx)/2
 
     full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
@@ -67,45 +71,85 @@ def integrate(x, y, lbnd, ubnd): #TODO, add microlimit conditional
 
     return full_blocks_integral + lower_block_integral + upper_block_integral
 
-def int_bounds(theta, alpha):
-    """get bounds on j-^2 integrals given rotation angle, theta and coating angle alpha
+def int_bounds(theta, cangle):
+    """get bounds on j-^2 integrals given rotation angle, theta and coating angle cangle
     returns (thetaA&thetaA0'), (thetaA'&thetaA0)"""
     assert (theta < np.pi + 1e-5) and (theta > -np.pi - 1e-5)
 
-    if 0 < theta and theta < alpha:
-        return ([alpha/2, theta + alpha/2], [-alpha/2, theta - alpha/2])
-    if -alpha < theta and theta < 0:
-        return ([theta - alpha/2, -alpha/2], [theta + alpha/2, alpha/2])
+    if 0 < theta and theta < cangle:
+        return ([cangle/2, theta + alpha/2], [-alpha/2, theta - alpha/2])
+    if -cangle < theta and theta < 0:
+        return ([theta - cangle/2, -alpha/2], [theta + alpha/2, alpha/2])
     else:
-        return ([theta - alpha/2, theta + alpha/2], [-alpha/2, alpha/2])
+        return ([theta - cangle/2, theta + alpha/2], [-alpha/2, alpha/2])
 
+def calc_zetatildes(theta, cangles, alphas, jminusA, jminusB):
+    """
+    calculate zetatilde functions for all drums
+    thetas is numpy array of size 8 of rotation angles
+    cangles is numpy array of size 8 of coating angles
+    alphas is numpy array of shape (8,9) of model coefficients
+    jminusA is pandas array with "centers" and "hist" columns
+    jminusB is pandas array with "centers" and "hist" columns
+    """
+    configAids = [1, 4, 5, 8] #drum positions with configuration A
 
-#def drum_reactivity(pert, nom = None)
-# ...
-#    if nom:
-#        return drum_reactivity(pert) - drum_reactivity(nom)
+    #calculate gammastar by integrting j- over abs bounds for each drum
+    gammastar = np.ones(9)
+    for i in range(1, 9):
+        if i in configAids:
+            gammastar[i] = integrate(x = jminusA["centers"],
+                                     y = jminusA["hist"],
+                                     lbnd = theta[i-1] - cangles[i-1]/2,
+                                     ubnd = theta[i-1] + cangles[i-1]/2)
+        else:
+            gammastar[i] = integrate(x = jminusB["centers"],
+                                     y = jminusB["hist"],
+                                     lbnd = theta[i-1] - cangles[i-1]/2,
+                                     ubnd = theta[i-1] + cangles[i-1]/2)
+
+    #calculate zetatilde for each drum
+    return (gammastar@alphas.T).values
+
+class ReactivityModel:
+    """
+    Used to evaluate reactivity insertion from control drum perturbation.
+    Set up as init->method call to minimize file reading times
+    """
+    def __init__(self, typ = "abs"): #abs, wtd or refl
+        """initialize to perform all file I/O"""
+        self.jmA, self.jmB = get_jminus(typ)
+        self.alphas = get_alphas(typ)
+        self.cangles = np.array([130, 145, 145, 130,
+                                 130, 145, 145, 130])/180*np.pi
+
+    def eval(pert, nom = None, qpower = False):
+        """
+        Evaluate reactivity worth of drum perturbation.
+        Pert is drum angles in radians with coordinate systems described
+        in the README.md
+        Nom is an optional starting state given same as pert
+        """
+
+        if nom:
+            return self.eval(pert) - self.eval(nom)
 
 if __name__ == "__main__":
     from scipy.interpolate import interp1d
-    jmA, jmB = get_jminus("wtd")
-    lb, ub = [jmA["centers"].iloc[4]+1e-3, jmA["centers"].iloc[4]+1.2e-3]
-    e1 = integrate(jmA["centers"], jmA["hist"],lb, ub)
-    
-    xs = np.linspace(lb, ub, 100)
-    f = interp1d(jmA["centers"], jmA["hist"])
-    print(f(xs[0]), f(xs[-1]))
-    e2 = np.trapz(f(xs), xs)
-    print(e1)
-    print(e2)
+    typ = "abs"
+    jmA, jmB = get_jminus(typ)
+    alphas = get_alphas(typ)
+    thetas = np.zeros(8)#np.random.uniform(-np.pi, np.pi, 8)
+    cangles = np.array([130, 145, 145, 130,
+                        130, 145, 145, 130])/180*np.pi
 
+    ts = np.linspace(0, np.pi, 100)
+    zeta = np.zeros_like(ts)
 
+    for i, t in enumerate(ts):
+        thetas[0:] = t
+        zeta[i] = calc_zetatildes(thetas, cangles, alphas, jmA, jmB)[0]
 
-
-
-
-
-
-
-
-
+    plt.plot(ts*180/np.pi, zeta, "k")
+    plt.show()
 
