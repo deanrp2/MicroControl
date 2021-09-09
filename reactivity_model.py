@@ -43,6 +43,12 @@ def get_alphas(typ = "wtd"): #wtd, refl, abs
     fpath = Path("model_data/alpha_%s_gr.csv"%typ)
     return pd.read_csv(fpath, index_col = 0)
 
+def adj_coords(thetas):
+    """brings array of angles into [-np.pi, np.pi]"""
+    thetas = thetas % (2*np.pi)
+    thetas[thetas > np.pi] -= 2*np.pi
+    return thetas
+
 def integrate(x, y, lbnd, ubnd):
     """Integrate j- function given x & y across the bounds."""
     #make sure dealing with numpy arrays
@@ -79,7 +85,7 @@ def int_bounds(theta, cangle):
     if 0 < theta and theta < cangle:
         return ([cangle/2, theta + cangle/2], [-cangle/2, theta - cangle/2])
     if -cangle < theta and theta < 0:
-        return ([theta - cangle/2, -cangle/2], [theta + alpha/2, cangle/2])
+        return ([theta - cangle/2, -cangle/2], [theta + cangle/2, cangle/2])
     else:
         return ([theta - cangle/2, theta + cangle/2], [-cangle/2, cangle/2])
 
@@ -131,7 +137,10 @@ class ReactivityModel:
         Nom is an optional starting state given same as pert
         qpower is whether or not to return 4-element fractional power array
         """
+        #bring drum angles into [-np.pi, np.pi]
+        pert = adj_coords(pert)
 
+        #pull in zetatildes from external function
         zetatildes = calc_zetatildes(theta = pert,
                                      cangles = self.cangles,
                                      alphas = self.alphas,
@@ -150,6 +159,7 @@ class ReactivityModel:
                 int2 = integrate(self.jmB["centers"], self.jmB["hist"], *b2)
             reactivities[i] = zetatildes[i]*(int1 - int2)
 
+        #basically just return conditionals
         if nom: #little trick
             reactivity = self.eval(pert) - self.eval(nom) #assume
                                                           #reactivites additive
@@ -163,6 +173,11 @@ class ReactivityModel:
             return reactivity
 
 if __name__ == "__main__":
-    a = ReactivityModel()
-    print(a.eval(np.zeros(8)+np.pi/2))
+    a = ReactivityModel("wtd")
+    ts = np.linspace(-2*np.pi, 2*np.pi, 200)
+    rhos = np.zeros_like(ts)
+    for i, t in enumerate(ts):
+        rhos[i] = a.eval(np.zeros(8) + t)
 
+    plt.plot(ts, rhos)
+    plt.show()
