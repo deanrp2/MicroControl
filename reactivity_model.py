@@ -77,11 +77,11 @@ def int_bounds(theta, cangle):
     assert (theta < np.pi + 1e-5) and (theta > -np.pi - 1e-5)
 
     if 0 < theta and theta < cangle:
-        return ([cangle/2, theta + alpha/2], [-alpha/2, theta - alpha/2])
+        return ([cangle/2, theta + cangle/2], [-cangle/2, theta - cangle/2])
     if -cangle < theta and theta < 0:
-        return ([theta - cangle/2, -alpha/2], [theta + alpha/2, alpha/2])
+        return ([theta - cangle/2, -cangle/2], [theta + alpha/2, cangle/2])
     else:
-        return ([theta - cangle/2, theta + alpha/2], [-alpha/2, alpha/2])
+        return ([theta - cangle/2, theta + cangle/2], [-cangle/2, cangle/2])
 
 def calc_zetatildes(theta, cangles, alphas, jminusA, jminusB):
     """
@@ -123,33 +123,46 @@ class ReactivityModel:
         self.cangles = np.array([130, 145, 145, 130,
                                  130, 145, 145, 130])/180*np.pi
 
-    def eval(pert, nom = None, qpower = False):
+    def eval(self, pert, nom = None, qpower = False):
         """
         Evaluate reactivity worth of drum perturbation.
-        Pert is drum angles in radians with coordinate systems described
-        in the README.md
+        Pert is numpy array of 8 drum angles in radians with 
+        coordinate systems described in the README.md.
         Nom is an optional starting state given same as pert
+        qpower is whether or not to return 4-element fractional power array
         """
 
-        if nom:
-            return self.eval(pert) - self.eval(nom)
+        zetatildes = calc_zetatildes(theta = pert,
+                                     cangles = self.cangles,
+                                     alphas = self.alphas,
+                                     jminusA = self.jmA,
+                                     jminusB = self.jmB)
+
+        #loop through drums and calculate each contribution
+        reactivities = np.zeros(8)
+        for i in range(8):
+            b1, b2 = int_bounds(pert[i], self.cangles[i])
+            if i in [0, 3, 4, 7]: #if config A
+                int1 = integrate(self.jmA["centers"], self.jmA["hist"], *b1)
+                int2 = integrate(self.jmA["centers"], self.jmA["hist"], *b2)
+            else: #if config A
+                int1 = integrate(self.jmB["centers"], self.jmB["hist"], *b1)
+                int2 = integrate(self.jmB["centers"], self.jmB["hist"], *b2)
+            reactivities[i] = zetatildes[i]*(int1 - int2)
+
+        if nom: #little trick
+            reactivity = self.eval(pert) - self.eval(nom) #assume
+                                                          #reactivites additive
+        else:
+            reactivity = reactivities.sum()
+
+        if qpower:
+            qpower = (zetatildes[::2] + zetatildes[1::2])/2
+            return reactivity, qpower
+        else:
+            return reactivity
 
 if __name__ == "__main__":
-    from scipy.interpolate import interp1d
-    typ = "abs"
-    jmA, jmB = get_jminus(typ)
-    alphas = get_alphas(typ)
-    thetas = np.zeros(8)#np.random.uniform(-np.pi, np.pi, 8)
-    cangles = np.array([130, 145, 145, 130,
-                        130, 145, 145, 130])/180*np.pi
-
-    ts = np.linspace(0, np.pi, 100)
-    zeta = np.zeros_like(ts)
-
-    for i, t in enumerate(ts):
-        thetas[0:] = t
-        zeta[i] = calc_zetatildes(thetas, cangles, alphas, jmA, jmB)[0]
-
-    plt.plot(ts*180/np.pi, zeta, "k")
-    plt.show()
+    a = ReactivityModel()
+    print(a.eval(np.zeros(8)+np.pi/2))
 
