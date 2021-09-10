@@ -54,7 +54,7 @@ def integrate(x, y, lbnd, ubnd):
     #make sure dealing with numpy arrays
     x, y = np.asarray(x), np.asarray(y)
 
-    #integrate portions of functions where x-blocks are completely enclosed
+    #identify portions of functions where x-blocks are completely enclosed
     compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
 
     if compl_ind.size == 0: #if both bounds fall within an interval
@@ -63,6 +63,7 @@ def integrate(x, y, lbnd, ubnd):
         y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
         return (ubnd - lbnd)*(y_ubnd_approx + y_lbnd_approx)/2
 
+    #integrate fully-inclosed blocks
     full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
 
     #integrate lower hanging partial block
@@ -76,6 +77,56 @@ def integrate(x, y, lbnd, ubnd):
     upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
 
     return full_blocks_integral + lower_block_integral + upper_block_integral
+
+def integrate_sq(x, y, lbnd, ubnd):
+    """Integrate j-^2 function given x & y across the bounds. y will be squared within the routine"""
+    #code
+    """Integrate j- function given x & y across the bounds."""
+    #make sure dealing with numpy arrays
+    x, y = np.asarray(x), np.asarray(y)
+
+    #identify portions of functions where x-blocks are completely enclosed
+    compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
+
+    #if compl_ind.size == 0: #if both bounds fall within an interval
+    #    idx = np.searchsorted(x, lbnd)
+    #    y_lbnd_approx = (lbnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+    #    y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+    #    return (ubnd - lbnd)*(y_ubnd_approx + y_lbnd_approx)/2
+
+    #integrate fully-inclosed blocks
+    dx = np.diff(x[compl_ind]) #xi+1 - xi
+    dx2 = np.diff(x[compl_ind]**2) #xi+1**2 - xi**2
+    dx3 = np.diff(x[compl_ind]**3) #xi+1**3 - xi**3
+    ms = np.diff(y[compl_ind])/dx
+    xis = x[compl_ind[:-1]]
+    yis = y[compl_ind[:-1]]
+    full_blocks_integral = (ms**2*dx3/3+(ms*yis-ms**2*xis)*dx2+(ms*xis-yis)**2*dx).sum()
+
+    #integrate lower hanging partial block
+    lidx = compl_ind.min()
+    y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx-1]
+    lower_block_integral = (x[lidx] - lbnd)*(y[lidx] + y_lbnd_approx)/2
+
+    #integrate lower hanging partial block
+    uidx = compl_ind.max()+1
+    y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx-1]
+    upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
+
+    return full_blocks_integral + lower_block_integral + upper_block_integral
+
+if __name__ == "__main__":
+    x = np.linspace(-1, 1, 30)
+    y = np.sin(x*(2*np.pi))
+    lb, ub = -.5, 0.4
+    print(integrate_sq(x, y, lb, ub))
+
+    from scipy.interpolate import interp1d
+
+    f = interp1d(x, y)
+    xnew= np.linspace(lb, ub, 200)
+    print(np.trapz(f(xnew)**2, xnew))
+exit()
 
 def int_bounds(theta, cangle):
     """get bounds on j-^2 integrals given rotation angle, theta and coating angle cangle
@@ -171,13 +222,3 @@ class ReactivityModel:
             return reactivity, qpower
         else:
             return reactivity
-
-if __name__ == "__main__":
-    a = ReactivityModel("wtd")
-    ts = np.linspace(-np.pi, np.pi, 200)
-    rhos = np.zeros_like(ts)
-    for i, t in enumerate(ts):
-        rhos[i] = a.eval(np.zeros(8) + t)
-
-    plt.plot(ts*180/np.pi, rhos*1e5)
-    plt.show()
