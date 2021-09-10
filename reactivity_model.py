@@ -104,15 +104,15 @@ def calc_zetatildes(theta, cangles, alphas, jminusA, jminusB):
     gammastar = np.ones(9)
     for i in range(1, 9):
         if i in configAids:
-            gammastar[i] = integrate(x = jminusA["centers"],
-                                     y = jminusA["hist"],
-                                     lbnd = theta[i-1] - cangles[i-1]/2,
-                                     ubnd = theta[i-1] + cangles[i-1]/2)
+            gammastar[i] = 1 - integrate(x = jminusA["centers"],
+                                         y = jminusA["hist"],
+                                         lbnd = theta[i-1] - cangles[i-1]/2,
+                                         ubnd = theta[i-1] + cangles[i-1]/2)
         else:
-            gammastar[i] = integrate(x = jminusB["centers"],
-                                     y = jminusB["hist"],
-                                     lbnd = theta[i-1] - cangles[i-1]/2,
-                                     ubnd = theta[i-1] + cangles[i-1]/2)
+            gammastar[i] = 1 - integrate(x = jminusB["centers"],
+                                         y = jminusB["hist"],
+                                         lbnd = theta[i-1] - cangles[i-1]/2,
+                                         ubnd = theta[i-1] + cangles[i-1]/2)
 
     #calculate zetatilde for each drum
     return (gammastar@alphas.T).values
@@ -152,11 +152,11 @@ class ReactivityModel:
         for i in range(8):
             b1, b2 = int_bounds(pert[i], self.cangles[i])
             if i in [0, 3, 4, 7]: #if config A
-                int1 = integrate(self.jmA["centers"], self.jmA["hist"], *b1)
-                int2 = integrate(self.jmA["centers"], self.jmA["hist"], *b2)
+                int1 = integrate(self.jmA["centers"], self.jmA["hist"]**2, *b1)
+                int2 = integrate(self.jmA["centers"], self.jmA["hist"]**2, *b2)
             else: #if config A
-                int1 = integrate(self.jmB["centers"], self.jmB["hist"], *b1)
-                int2 = integrate(self.jmB["centers"], self.jmB["hist"], *b2)
+                int1 = integrate(self.jmB["centers"], self.jmB["hist"]**2, *b1)
+                int2 = integrate(self.jmB["centers"], self.jmB["hist"]**2, *b2)
             reactivities[i] = zetatildes[i]*(int1 - int2)
 
         #basically just return conditionals
@@ -174,10 +174,10 @@ class ReactivityModel:
 
 if __name__ == "__main__":
     a = ReactivityModel("wtd")
-    ts = np.linspace(-2*np.pi, 2*np.pi, 200)
+    ts = np.linspace(-np.pi, np.pi, 200)
     rhos = np.zeros_like(ts)
     for i, t in enumerate(ts):
         rhos[i] = a.eval(np.zeros(8) + t)
 
-    plt.plot(ts, rhos)
+    plt.plot(ts*180/np.pi, rhos*1e5)
     plt.show()
