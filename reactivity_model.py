@@ -196,11 +196,11 @@ class ReactivityModel:
         for i in range(8):
             b1, b2 = int_bounds(pert[i], self.cangles[i])
             if i in [0, 3, 4, 7]: #if config A
-                int1 = integrate(self.jmA["centers"], self.jmA["hist"]**2, *b1)
-                int2 = integrate(self.jmA["centers"], self.jmA["hist"]**2, *b2)
+                int1 = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b1)
+                int2 = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b2)
             else: #if config A
-                int1 = integrate(self.jmB["centers"], self.jmB["hist"]**2, *b1)
-                int2 = integrate(self.jmB["centers"], self.jmB["hist"]**2, *b2)
+                int1 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b1)
+                int2 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2)
             reactivities[i] = zetatildes[i]*(int1 - int2)
 
         #basically just return conditionals
