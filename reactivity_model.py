@@ -71,7 +71,7 @@ def integrate(x, y, lbnd, ubnd):
     y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx-1]
     lower_block_integral = (x[lidx] - lbnd)*(y[lidx] + y_lbnd_approx)/2
 
-    #integrate lower hanging partial block
+    #integrate upper hanging partial block
     uidx = compl_ind.max()+1
     y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx-1]
     upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
@@ -80,19 +80,19 @@ def integrate(x, y, lbnd, ubnd):
 
 def integrate_sq(x, y, lbnd, ubnd):
     """Integrate j-^2 function given x & y across the bounds. y will be squared within the routine"""
-    #code
-    """Integrate j- function given x & y across the bounds."""
     #make sure dealing with numpy arrays
     x, y = np.asarray(x), np.asarray(y)
 
     #identify portions of functions where x-blocks are completely enclosed
     compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
 
-    #if compl_ind.size == 0: #if both bounds fall within an interval
-    #    idx = np.searchsorted(x, lbnd)
-    #    y_lbnd_approx = (lbnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
-    #    y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
-    #    return (ubnd - lbnd)*(y_ubnd_approx + y_lbnd_approx)/2
+    if compl_ind.size == 0: #if both bounds fall within an interval
+        idx = np.searchsorted(x, lbnd)
+        y_lbnd_approx = (lbnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+        y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+        m = (y_ubnd_approx - y_lbnd_approx)/(ubnd - lbnd)
+        return m**2/3*(ubnd**3 - lbnd**3) + (m*y_lbnd_approx - m**2*lbnd)*(ubnd**2 - lbnd**2)\
+                + (m*lbnd - y_lbnd_approx)**2*(ubnd - lbnd)
 
     #integrate fully-inclosed blocks
     dx = np.diff(x[compl_ind]) #xi+1 - xi
@@ -106,27 +106,20 @@ def integrate_sq(x, y, lbnd, ubnd):
     #integrate lower hanging partial block
     lidx = compl_ind.min()
     y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx-1]
-    lower_block_integral = (x[lidx] - lbnd)*(y[lidx] + y_lbnd_approx)/2
+    m = (y[lidx] - y_lbnd_approx)/(x[lidx] - lbnd)
+    lower_block_integral = m**2/3*(x[lidx]**3 - lbnd**3) \
+            + (m*y_lbnd_approx-m**2*lbnd)*(x[lidx]**2 - lbnd**2) \
+            + (m*lbnd - y_lbnd_approx)**2*(x[lidx] - lbnd)
 
-    #integrate lower hanging partial block
-    uidx = compl_ind.max()+1
-    y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx-1]
-    upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
+    #integrate upper hanging partial block
+    uidx = compl_ind.max()
+    y_ubnd_approx = (ubnd - x[uidx])/(x[uidx+1] - x[uidx])*(y[uidx+1] - y[uidx]) + y[uidx]
+    m = (y_ubnd_approx - y[uidx])/(ubnd - x[uidx])
+    upper_block_integral = m**2/3*(ubnd**3 - x[uidx]**3) \
+            + (m*y[uidx]-m**2*x[uidx])*(ubnd**2 - x[uidx]**2) \
+            + (m*x[uidx] - y[uidx])**2*(ubnd - x[uidx])
 
     return full_blocks_integral + lower_block_integral + upper_block_integral
-
-if __name__ == "__main__":
-    x = np.linspace(-1, 1, 30)
-    y = np.sin(x*(2*np.pi))
-    lb, ub = -.5, 0.4
-    print(integrate_sq(x, y, lb, ub))
-
-    from scipy.interpolate import interp1d
-
-    f = interp1d(x, y)
-    xnew= np.linspace(lb, ub, 200)
-    print(np.trapz(f(xnew)**2, xnew))
-exit()
 
 def int_bounds(theta, cangle):
     """get bounds on j-^2 integrals given rotation angle, theta and coating angle cangle
