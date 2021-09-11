@@ -216,3 +216,25 @@ class ReactivityModel:
             return reactivity, qpower
         else:
             return reactivity
+
+def reactivityModel(pert, nom = None, typ = "wtd"):
+    """Wrapper for ReactivityModel that initializes and runs"""
+    a = ReactivityModel(typ)
+    return a.eval(pert, nom)
+
+if __name__ == "__main__":
+    a = ReactivityModel()
+    ts = np.linspace(0, 2*np.pi, 300)
+    pwers = np.zeros((ts.size, 4))
+    for i, t in enumerate(ts):
+        theta = np.zeros(8)
+        theta[1] = t
+        _, pwers[i] = a.eval(theta, qpower = True)
+
+    for i in range(4):
+        plt.plot(ts*180/np.pi, pwers[:, i], label = "q" + str(i+1))
+
+    plt.xlabel("Drum Rotation [deg.]")
+    plt.ylabel("Quadrant Frac. Power")
+    plt.legend()
+    plt.show()
