@@ -212,6 +212,7 @@ class ReactivityModel:
 
         if qpower:
             qpower = (zetatildes[::2] + zetatildes[1::2])/2
+            qpower /= qpower.sum()
             return reactivity, qpower
         else:
             return reactivity
