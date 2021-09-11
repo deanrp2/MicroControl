@@ -54,7 +54,7 @@ def integrate(x, y, lbnd, ubnd):
     #make sure dealing with numpy arrays
     x, y = np.asarray(x), np.asarray(y)
 
-    #integrate portions of functions where x-blocks are completely enclosed
+    #identify portions of functions where x-blocks are completely enclosed
     compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
 
     if compl_ind.size == 0: #if both bounds fall within an interval
@@ -63,6 +63,7 @@ def integrate(x, y, lbnd, ubnd):
         y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
         return (ubnd - lbnd)*(y_ubnd_approx + y_lbnd_approx)/2
 
+    #integrate fully-inclosed blocks
     full_blocks_integral = np.trapz(y[compl_ind], x[compl_ind])
 
     #integrate lower hanging partial block
@@ -70,10 +71,53 @@ def integrate(x, y, lbnd, ubnd):
     y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx-1]
     lower_block_integral = (x[lidx] - lbnd)*(y[lidx] + y_lbnd_approx)/2
 
-    #integrate lower hanging partial block
+    #integrate upper hanging partial block
     uidx = compl_ind.max()+1
     y_ubnd_approx = (ubnd - x[uidx-1])/(x[uidx] - x[uidx-1])*(y[uidx] - y[uidx-1]) + y[uidx-1]
     upper_block_integral = (ubnd - x[uidx - 1])*(y[uidx - 1] + y_ubnd_approx)/2
+
+    return full_blocks_integral + lower_block_integral + upper_block_integral
+
+def integrate_sq(x, y, lbnd, ubnd):
+    """Integrate j-^2 function given x & y across the bounds. y will be squared within the routine"""
+    #make sure dealing with numpy arrays
+    x, y = np.asarray(x), np.asarray(y)
+
+    #identify portions of functions where x-blocks are completely enclosed
+    compl_ind = np.where(np.logical_and(x > lbnd, x < ubnd))[0]
+
+    if compl_ind.size == 0: #if both bounds fall within an interval
+        idx = np.searchsorted(x, lbnd)
+        y_lbnd_approx = (lbnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+        y_ubnd_approx = (ubnd - x[idx-1])/(x[idx] - x[idx-1])*(y[idx] - y[idx-1]) + y[idx-1]
+        m = (y_ubnd_approx - y_lbnd_approx)/(ubnd - lbnd)
+        return m**2/3*(ubnd**3 - lbnd**3) + (m*y_lbnd_approx - m**2*lbnd)*(ubnd**2 - lbnd**2)\
+                + (m*lbnd - y_lbnd_approx)**2*(ubnd - lbnd)
+
+    #integrate fully-inclosed blocks
+    dx = np.diff(x[compl_ind]) #xi+1 - xi
+    dx2 = np.diff(x[compl_ind]**2) #xi+1**2 - xi**2
+    dx3 = np.diff(x[compl_ind]**3) #xi+1**3 - xi**3
+    ms = np.diff(y[compl_ind])/dx
+    xis = x[compl_ind[:-1]]
+    yis = y[compl_ind[:-1]]
+    full_blocks_integral = (ms**2*dx3/3+(ms*yis-ms**2*xis)*dx2+(ms*xis-yis)**2*dx).sum()
+
+    #integrate lower hanging partial block
+    lidx = compl_ind.min()
+    y_lbnd_approx = (lbnd - x[lidx-1])/(x[lidx] - x[lidx-1])*(y[lidx] - y[lidx-1]) + y[lidx-1]
+    m = (y[lidx] - y_lbnd_approx)/(x[lidx] - lbnd)
+    lower_block_integral = m**2/3*(x[lidx]**3 - lbnd**3) \
+            + (m*y_lbnd_approx-m**2*lbnd)*(x[lidx]**2 - lbnd**2) \
+            + (m*lbnd - y_lbnd_approx)**2*(x[lidx] - lbnd)
+
+    #integrate upper hanging partial block
+    uidx = compl_ind.max()
+    y_ubnd_approx = (ubnd - x[uidx])/(x[uidx+1] - x[uidx])*(y[uidx+1] - y[uidx]) + y[uidx]
+    m = (y_ubnd_approx - y[uidx])/(ubnd - x[uidx])
+    upper_block_integral = m**2/3*(ubnd**3 - x[uidx]**3) \
+            + (m*y[uidx]-m**2*x[uidx])*(ubnd**2 - x[uidx]**2) \
+            + (m*x[uidx] - y[uidx])**2*(ubnd - x[uidx])
 
     return full_blocks_integral + lower_block_integral + upper_block_integral
 
@@ -152,11 +196,11 @@ class ReactivityModel:
         for i in range(8):
             b1, b2 = int_bounds(pert[i], self.cangles[i])
             if i in [0, 3, 4, 7]: #if config A
-                int1 = integrate(self.jmA["centers"], self.jmA["hist"]**2, *b1)
-                int2 = integrate(self.jmA["centers"], self.jmA["hist"]**2, *b2)
+                int1 = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b1)
+                int2 = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b2)
             else: #if config A
-                int1 = integrate(self.jmB["centers"], self.jmB["hist"]**2, *b1)
-                int2 = integrate(self.jmB["centers"], self.jmB["hist"]**2, *b2)
+                int1 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b1)
+                int2 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2)
             reactivities[i] = zetatildes[i]*(int1 - int2)
 
         #basically just return conditionals
@@ -171,13 +215,3 @@ class ReactivityModel:
             return reactivity, qpower
         else:
             return reactivity
-
-if __name__ == "__main__":
-    a = ReactivityModel("wtd")
-    ts = np.linspace(-np.pi, np.pi, 200)
-    rhos = np.zeros_like(ts)
-    for i, t in enumerate(ts):
-        rhos[i] = a.eval(np.zeros(8) + t)
-
-    plt.plot(ts*180/np.pi, rhos*1e5)
-    plt.show()
