@@ -1,7 +1,6 @@
 import numpy as np
 from pathlib import Path
 import pandas as pd
-import matplotlib.pyplot as plt
 
 def get_jminus(typ = "wtd"): #wtd, refl or abs
     """Retrieve j- function from model data files."""
@@ -179,7 +178,6 @@ class ReactivityModel:
         Pert is numpy array of 8 drum angles in radians with 
         coordinate systems described in the README.md.
         Nom is an optional starting state given same as pert
-        qpower is whether or not to return 4-element fractional power array
         """
         #bring drum angles into [-np.pi, np.pi]
         pert = adj_coords(pert)
@@ -216,12 +214,14 @@ def reactivityModel(pert, nom = None, typ = "wtd"):
     return a.eval(pert, nom)
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+# example of how to use this model
     a = ReactivityModel()
     ts = np.linspace(0, 2*np.pi, 300)
     rs = np.zeros(ts.size)
     for i, t in enumerate(ts):
         theta = np.zeros(8)
-        theta[1] = t
+        theta[0] = t
         rs[i] = a.eval(theta)
 
     plt.plot(ts*180/np.pi, rs, "k")
