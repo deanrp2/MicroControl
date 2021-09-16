@@ -222,7 +222,7 @@ if __name__ == "__main__":
     for i, t in enumerate(ts):
         theta = np.zeros(8)
         theta[1] = t
-        rs[i] = a.eval(theta, qpower = True)
+        rs[i] = a.eval(theta)
 
     plt.plot(ts*180/np.pi, rs, "k")
 
