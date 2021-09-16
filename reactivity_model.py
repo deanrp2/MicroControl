@@ -173,7 +173,7 @@ class ReactivityModel:
         self.cangles = np.array([130, 145, 145, 130,
                                  130, 145, 145, 130])/180*np.pi
 
-    def eval(self, pert, nom = None, qpower = False):
+    def eval(self, pert, nom = None):
         """
         Evaluate reactivity worth of drum perturbation.
         Pert is numpy array of 8 drum angles in radians with 
@@ -205,17 +205,10 @@ class ReactivityModel:
 
         #basically just return conditionals
         if nom: #little trick
-            reactivity = self.eval(pert) - self.eval(nom) #assume
+            return self.eval(pert) - self.eval(nom) #assume
                                                           #reactivites additive
         else:
-            reactivity = reactivities.sum()
-
-        if qpower:
-            qpower = (zetatildes[::2] + zetatildes[1::2])/2
-            qpower /= qpower.sum()
-            return reactivity, qpower
-        else:
-            return reactivity
+            return reactivities.sum()
 
 def reactivityModel(pert, nom = None, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
@@ -225,16 +218,15 @@ def reactivityModel(pert, nom = None, typ = "wtd"):
 if __name__ == "__main__":
     a = ReactivityModel()
     ts = np.linspace(0, 2*np.pi, 300)
-    pwers = np.zeros((ts.size, 4))
+    rs = np.zeros(ts.size)
     for i, t in enumerate(ts):
         theta = np.zeros(8)
         theta[1] = t
-        _, pwers[i] = a.eval(theta, qpower = True)
+        rs[i] = a.eval(theta, qpower = True)
 
-    for i in range(4):
-        plt.plot(ts*180/np.pi, pwers[:, i], label = "q" + str(i+1))
+    plt.plot(ts*180/np.pi, rs, "k")
 
     plt.xlabel("Drum Rotation [deg.]")
-    plt.ylabel("Quadrant Frac. Power")
+    plt.ylabel("rho")
     plt.legend()
     plt.show()
