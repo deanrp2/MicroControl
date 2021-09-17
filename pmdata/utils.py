@@ -132,9 +132,3 @@ def careful_split(df, tstfrac = False, tstnum = False):
 
     return train, test
 
-
-
-if __name__ == "__main__":
-    data = pd.read_csv("qpower_210916.csv", index_col = 0)
-    dta = qpower_preprocess(data)
-    careful_split(dta, 0.432)
