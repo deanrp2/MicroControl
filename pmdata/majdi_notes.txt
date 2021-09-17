@@ -1,0 +1,19 @@
+I will just write some notes here in case you want to reference them again
+
+In utils.py I included 2 helpful functions to make life easier for you.
+1. qpower_preprocess : first load the dataset with pd.read_csv(f, index_col = 1) then
+        pass it directly into this function to clean it up and get it ready to go. 
+        This function applies the symmetry rules to multiply the samples, removes uneeded
+        columns, adjusts the drum angles to be in the correct cordinate system and scales
+        quadrant powers to sum to 1. Arguments are included to skip expanding symmetries or
+        to include the relative uncertainties reported by Serpent in the returned df.
+2. careful_split : this function gives you your train and test split without making samples
+        that come from the same calculation end up on other sides of the split. It is only
+        needed because we use symmetry to expand our sample space. My logic as to why this is
+        necessary is just that it is not a true split if results from the same calculation
+        end up on separate sides of the split. I guess it is up to you to use it. However, I
+        found that its use made debugging easier because with non-stochastic models
+        all models will be completely symmetric because of the preserved symmetry of the
+        training set
+
+I have also included a little intro in majdi_ex.py to help get things started.
