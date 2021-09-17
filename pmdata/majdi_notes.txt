@@ -1,5 +1,8 @@
 I will just write some notes here in case you want to reference them again
 
+I included information on drum numbering, quadrant numbering and angular coordiate system
+in ../README.md.
+
 In utils.py I included 2 helpful functions to make life easier for you.
 1. qpower_preprocess : first load the dataset with pd.read_csv(f, index_col = 1) then
         pass it directly into this function to clean it up and get it ready to go. 
