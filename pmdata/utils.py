@@ -72,8 +72,9 @@ def g2l(thetas):
 
 def qpower_preprocess(df, sym = True, uncert = False):
     """
-    Process csv files into cleaner quadrant power dataframes.
-    Sym is whether to use symmetry to mutliple samples
+    Process csv files into cleaner quadrant power dataframes for easier ML training.
+    sym is whether to use symmetry to mutliple samples
+    uncert is whether to also pull the uncertainties
     """
     if sym: #apply sample multiplicity if necessary
         df = mult_sym(df)
@@ -93,9 +94,47 @@ def qpower_preprocess(df, sym = True, uncert = False):
     #bring coordinates into local system
     df = g2l(df)
 
-    print(df)
+    return df
+
+def careful_split(df, tstfrac = False, tstnum = False):
+    """
+    Returns a train and test split which does not allow samples coming from the same calculation
+    to exist across the train/test line. In other words, samples generated from symmetry must stay
+    with the sample they were made from.
+
+    df: must be dataframe with the indices given from the mult_sym function. make sure to sort_index
+    tstfrac: generate the split based on an approximate fraction to include in the TESTING set
+    tstnum: generate the split based on an approximate total number to include in the TESTING set. The argument here
+        will be approximately the total number of rows in the testing dataframe that is returned
+    """
+    tot_samples = df.shape[0]
+
+    #determine size of final testing set divided by 4
+    if tstnum:
+        tstsize = int(tstnum//4)
+    elif tstfrac:
+        tstsize = int((tot_samples*tstfrac)//4)
+    else:
+        raise Exception("Please specify tstfrac or tstsize")
+
+    #get sample names associate with original calcs
+    samplenums = np.unique([a[:12] for a in df.index])
+
+    #pick a set from the original sample names
+    tidxr = list(np.random.choice(samplenums, tstsize, replace = False))
+
+    #expand set to include multiplied sample names as well
+    tidxf = sorted(tidxr + [a + "_h" for a in tidxr] + [a + "_r" for a in tidxr] + [a + "_v" for a in tidxr])
+
+    #index original dataframe to get the sets
+    train = df.drop(tidxf)
+    test = df.loc[tidxf]
+
+    return train, test
+
 
 
 if __name__ == "__main__":
     data = pd.read_csv("qpower_210916.csv", index_col = 0)
-    qpower_preprocess(data, uncert = True)
+    dta = qpower_preprocess(data)
+    careful_split(dta, 0.432)
