@@ -19,6 +19,14 @@ In utils.py I included 2 helpful functions to make life easier for you.
         all models will be completely symmetric because of the preserved symmetry of the
         training set
 
+Some notes on the data:
+    - responses are "fluxQ1", "fluxQ2", "fluxQ3" and "fluxQ4". Which are normalized to 1.
+    - predictors are "theta1" - "theta8" which are drum angles in coordinate system described
+          described by the README.md file. Here, they are bounded by [-pi, pi]
+    - I included the serpent relative uncertainties if you do uncert=True in qpower_preprocess
+          in case you wanted to do something with that. I think they are 2*the ccoefficient of
+          variatin.
+
 I have also included a little intro in majdi_ex.py to help get things started.
 
 Once the model is done, we should have the ML model saved into a file so we can load it in without
