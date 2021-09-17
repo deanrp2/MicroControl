@@ -18,8 +18,8 @@ In utils.py I included 2 helpful functions to make life easier for you.
 
 I have also included a little intro in majdi_ex.py to help get things started.
 
-Once all is done, we should have the ML model saved into a file so we can load it in without
-needing to train a new model. 
+Once the model is done, we should have the ML model saved into a file so we can load it in without
+needing to train a new model.
 
 After this is done, the initialization routine in qpower_model needs to be filled out where self.eval is
 assigned to the actual python function representing the ML model. It should take inputs as 8-element numpy
