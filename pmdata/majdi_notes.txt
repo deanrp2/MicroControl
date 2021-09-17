@@ -17,3 +17,13 @@ In utils.py I included 2 helpful functions to make life easier for you.
         training set
 
 I have also included a little intro in majdi_ex.py to help get things started.
+
+Once all is done, we should have the ML model saved into a file so we can load it in without
+needing to train a new model. 
+
+After this is done, the initialization routine in qpower_model needs to be filled out where self.eval is
+assigned to the actual python function representing the ML model. It should take inputs as 8-element numpy
+array representing drum rotations. Of course, if you think anything is better, no problem in doing that.
+
+I also am regretting the file names of qpower_model.py and reactivity_model.py. We can change these once
+we merge this branch into main
