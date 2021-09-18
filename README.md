@@ -5,6 +5,7 @@ HOLOSGen reactor.
 
 DEMO PROBLEMS:
 1. Rotate 8 drums in unison to achieve some desired reactivity
+2. Rotate 8 drums independently to maximumize/minimize criticality
 
 
 NOTES:
