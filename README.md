@@ -4,7 +4,7 @@ Repository to house working scripts for optimization problems involving
 HOLOSGen reactor.
 
 DEMO PROBLEMS:
-1. Rotate 8 drums in unison to achieve some desired criticality
+1. Rotate 8 drums in unison to achieve some desired reactivity
 
 
 NOTES:
