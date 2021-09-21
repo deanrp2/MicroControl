@@ -5,8 +5,8 @@ import pandas as pd
 def get_jminus(typ = "wtd"): #wtd, refl or abs
     """Retrieve j- function from model data files."""
     #pull and load data
-    configA_path = Path("model_data/configA_flux_%s_b.csv"%typ)
-    configB_path = Path("model_data/configB_flux_%s_b.csv"%typ)
+    configA_path = Path("rmdata/configA_flux_%s_b.csv"%typ)
+    configB_path = Path("rmdata/configB_flux_%s_b.csv"%typ)
     jm_configA = pd.read_csv(configA_path, index_col = 0)
     jm_configB = pd.read_csv(configB_path, index_col = 0)
 
@@ -39,7 +39,7 @@ def get_jminus(typ = "wtd"): #wtd, refl or abs
 
 def get_alphas(typ = "wtd"): #wtd, refl, abs
     """read alphas from file"""
-    fpath = Path("model_data/alpha_%s_gr.csv"%typ)
+    fpath = Path("rmdata/alpha_%s_gr.csv"%typ)
     return pd.read_csv(fpath, index_col = 0)
 
 def adj_coords(thetas):
