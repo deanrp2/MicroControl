@@ -257,7 +257,7 @@ class ReactivityModel:
                                       cangles = self.cangles,
                                       alphas = self.alphas,
                                       jmfs = self.jmfs)
-        print(dzetatildes)
+        print(dzetatildes) 
         if not zetatildes:
             zetatildes = calc_zetatildes(theta = pert,
                                          cangles = self.cangles,
