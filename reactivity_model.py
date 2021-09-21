@@ -171,14 +171,8 @@ def calc_dzetatildes(thetas, k, cangles, alphas, jmfs):
     jmfs is list of functions for inward current
     return is 8 element array
     """
-    print(alphas)
     alpha_slice = alphas["alpha" + str(k)].values
-    print(alpha_slice)
-    exit()
-
-    #dgammas = np.array([1-jmfs[i](thetas[i] + cangles[i]/2) +
-    #        jmfs[i](thetas[i] - cangles[i]/2) for i in range(0, 8)])
-    dgamma = 1-jmfs[k-1](thetas[k-1] + cangles[k-1]/2) + jmfs[k-1](thetas[k-1] - cangles[k-1]/2)
+    dgamma = -jmfs[k-1](thetas[k-1] + cangles[k-1]/2) + jmfs[k-1](thetas[k-1] - cangles[k-1]/2)
     return alpha_slice*dgamma
 
 def calc_W(theta, cangle, jmf):
@@ -192,7 +186,7 @@ def calc_W(theta, cangle, jmf):
     t2 = jmf(theta - cangle)**2
     return t1 - t2
 
-
+zetadtors = []
 class ReactivityModel:
     """
     Used to evaluate reactivity insertion from control drum perturbation.
@@ -224,6 +218,8 @@ class ReactivityModel:
                                      alphas = self.alphas,
                                      jminusA = self.jmA,
                                      jminusB = self.jmB)
+
+        zetadtors.append(np.array(zetatildes))
 
         #loop through drums and calculate each contribution
         reactivities = np.zeros(8)
@@ -261,6 +257,7 @@ class ReactivityModel:
                                       cangles = self.cangles,
                                       alphas = self.alphas,
                                       jmfs = self.jmfs)
+        print(dzetatildes)
         if not zetatildes:
             zetatildes = calc_zetatildes(theta = pert,
                                          cangles = self.cangles,
@@ -280,7 +277,7 @@ class ReactivityModel:
                 int1 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b1)
                 int2 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2)
 
-            drdtk[i] = dzetatildes[i] * (int1 - int2)
+            drdtk[i] += dzetatildes[i] * (int1 - int2)
 
         #tack on extra term from eq41
         drdtk[k-1] += zetatildes[k-1]*calc_W(pert[k-1], self.cangles[k-1], self.jmfs[k-1])
@@ -295,16 +292,17 @@ def reactivityModel(pert, nom = None, typ = "wtd"):
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     a = ReactivityModel()
-    dtheta = 1e-8
-    k = 2
-
-    thetanom = np.zeros(8)+1
+    dtheta = 1e-5
+    k = 4
+    np.random.seed(8)
+    thetanom = np.random.uniform(-np.pi, np.pi, 8)
 
     deval = a.evald(thetanom, k)
     thetapert = thetanom.copy()
     thetapert[k-1] += dtheta
     dest = (a.eval(thetapert) - a.eval(thetanom))/dtheta
-    print(deval, dest)
+    print((zetadtors[1] - zetadtors[0])/dtheta)
+    #print(deval, dest)
 
 
 
