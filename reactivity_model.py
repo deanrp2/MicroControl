@@ -208,6 +208,22 @@ class ReactivityModel:
         else:
             return reactivities.sum()
 
+    def evald(self, pert):
+        """
+        Evaluate differential reactivity worth of drum perturbation.
+        Pert is numpy array of 8 drum angles in radians with 
+        coordinate systems described in the README.md.
+        """
+        #bring drum angles into [-np.pi, np.pi]
+        pert = adj_coords(pert)
+
+
+
+
+
+
+
+
 def reactivityModel(pert, nom = None, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
     a = ReactivityModel(typ)
@@ -215,18 +231,3 @@ def reactivityModel(pert, nom = None, typ = "wtd"):
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-# example of how to use this model
-    a = ReactivityModel()
-    ts = np.linspace(0, 2*np.pi, 300)
-    rs = np.zeros(ts.size)
-    for i, t in enumerate(ts):
-        theta = np.zeros(8)
-        theta[0] = t
-        rs[i] = a.eval(theta)
-
-    plt.plot(ts*180/np.pi, rs, "k")
-
-    plt.xlabel("Drum Rotation [deg.]")
-    plt.ylabel("rho")
-    plt.legend()
-    plt.show()
