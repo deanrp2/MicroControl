@@ -161,21 +161,36 @@ def calc_zetatildes(theta, cangles, alphas, jminusA, jminusB):
     #calculate zetatilde for each drum
     return (gammastar@alphas.T).values
 
-def calc_dzetatilde(thetas, k, cangles, alphas, jmfs):
+def calc_dzetatildes(thetas, k, cangles, alphas, jmfs):
     """
     calculate derivative zetatilde functions for all drums resct to drum k
     thetas is numpy array of size 8 of rotation angles
-    k is which of drums angle is taken respect to
+    k is which of drums angle is taken respect to (1-indexed)
     cangles is numpy array of size 8 of coating angles
     alphas is numpy array of shape (8,9) of model coefficients
     jmfs is list of functions for inward current
     return is 8 element array
     """
+    print(alphas)
     alpha_slice = alphas["alpha" + str(k)].values
+    print(alpha_slice)
+    exit()
 
-    dgammas = np.array([1-jmfs[i](thetas[i] + cangles[i]/2) +
-            jmfs[i](thetas[i] - cangles[i]/2) for i in range(0, 8)])
-    return alpha_slice*dgammas
+    #dgammas = np.array([1-jmfs[i](thetas[i] + cangles[i]/2) +
+    #        jmfs[i](thetas[i] - cangles[i]/2) for i in range(0, 8)])
+    dgamma = 1-jmfs[k-1](thetas[k-1] + cangles[k-1]/2) + jmfs[k-1](thetas[k-1] - cangles[k-1]/2)
+    return alpha_slice*dgamma
+
+def calc_W(theta, cangle, jmf):
+    """
+    Calculate derivative of difference of integrals
+    theta is k-th drum angle
+    cangles is k-th drum coating angle
+    jmf is jminus of k-th rum
+    """
+    t1 = jmf(theta + cangle)**2
+    t2 = jmf(theta - cangle)**2
+    return t1 - t2
 
 
 class ReactivityModel:
@@ -229,28 +244,48 @@ class ReactivityModel:
         else:
             return reactivities.sum()
 
-    def evald(self, pert, k):
+    def evald(self, pert, k, zetatildes = None):
         """
         Evaluate differential reactivity worth of drum config from single drum.
         Pert is numpy array of 8 drum angles in radians with 
         k is which drum rotation to take derivative respect to
+        zetatildes should be ignored, used for computational efficiency
         coordinate systems described in the README.md.
         """
         #bring drum angles into [-np.pi, np.pi]
         pert = adj_coords(pert)
 
-        dzetatildes = calc_dzetatilde(thetas = pert,
+        #calculate zetatilde parameters
+        dzetatildes = calc_dzetatildes(thetas = pert,
                                       k = k,
                                       cangles = self.cangles,
                                       alphas = self.alphas,
                                       jmfs = self.jmfs)
+        if not zetatildes:
+            zetatildes = calc_zetatildes(theta = pert,
+                                         cangles = self.cangles,
+                                         alphas = self.alphas,
+                                         jminusA = self.jmA,
+                                         jminusB = self.jmB)
+        #define vector to hold summation
+        drdtk = np.zeros(8)
 
+        #iterate through all drums
+        for i in range(8):
+            b1, b2 = int_bounds(pert[i], self.cangles[i])
+            if i in [0, 3, 4, 7]: #if config A
+                int1 = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b1)
+                int2 = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b2)
+            else: #if config B
+                int1 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b1)
+                int2 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2)
 
+            drdtk[i] = dzetatildes[i] * (int1 - int2)
 
+        #tack on extra term from eq41
+        drdtk[k-1] += zetatildes[k-1]*calc_W(pert[k-1], self.cangles[k-1], self.jmfs[k-1])
 
-
-
-
+        return drdtk.sum()
 
 def reactivityModel(pert, nom = None, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
@@ -260,4 +295,21 @@ def reactivityModel(pert, nom = None, typ = "wtd"):
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     a = ReactivityModel()
-    a.evald(np.zeros(8), 1)
+    dtheta = 1e-8
+    k = 2
+
+    thetanom = np.zeros(8)+1
+
+    deval = a.evald(thetanom, k)
+    thetapert = thetanom.copy()
+    thetapert[k-1] += dtheta
+    dest = (a.eval(thetapert) - a.eval(thetanom))/dtheta
+    print(deval, dest)
+
+
+
+
+
+
+
+
