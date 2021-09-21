@@ -1,6 +1,7 @@
 import numpy as np
 from pathlib import Path
 import pandas as pd
+from scipy.interpolate import interp1d
 
 def get_jminus(typ = "wtd"): #wtd, refl or abs
     """Retrieve j- function from model data files."""
@@ -160,6 +161,23 @@ def calc_zetatildes(theta, cangles, alphas, jminusA, jminusB):
     #calculate zetatilde for each drum
     return (gammastar@alphas.T).values
 
+def calc_dzetatilde(thetas, k, cangles, alphas, jmfs):
+    """
+    calculate derivative zetatilde functions for all drums resct to drum k
+    thetas is numpy array of size 8 of rotation angles
+    k is which of drums angle is taken respect to
+    cangles is numpy array of size 8 of coating angles
+    alphas is numpy array of shape (8,9) of model coefficients
+    jmfs is list of functions for inward current
+    return is 8 element array
+    """
+    alpha_slice = alphas["alpha" + str(k)].values
+
+    dgammas = np.array([1-jmfs[i](thetas[i] + cangles[i]/2) +
+            jmfs[i](thetas[i] - cangles[i]/2) for i in range(0, 8)])
+    return alpha_slice*dgammas
+
+
 class ReactivityModel:
     """
     Used to evaluate reactivity insertion from control drum perturbation.
@@ -171,6 +189,9 @@ class ReactivityModel:
         self.alphas = get_alphas(typ)
         self.cangles = np.array([130, 145, 145, 130,
                                  130, 145, 145, 130])/180*np.pi
+        fA = interp1d(self.jmA["centers"], self.jmA["hist"])
+        fB = interp1d(self.jmB["centers"], self.jmB["hist"])
+        self.jmfs = [fA, fB, fB, fA, fA, fB, fB, fA]
 
     def eval(self, pert, nom = None):
         """
@@ -208,14 +229,21 @@ class ReactivityModel:
         else:
             return reactivities.sum()
 
-    def evald(self, pert):
+    def evald(self, pert, k):
         """
-        Evaluate differential reactivity worth of drum perturbation.
+        Evaluate differential reactivity worth of drum config from single drum.
         Pert is numpy array of 8 drum angles in radians with 
+        k is which drum rotation to take derivative respect to
         coordinate systems described in the README.md.
         """
         #bring drum angles into [-np.pi, np.pi]
         pert = adj_coords(pert)
+
+        dzetatildes = calc_dzetatilde(thetas = pert,
+                                      k = k,
+                                      cangles = self.cangles,
+                                      alphas = self.alphas,
+                                      jmfs = self.jmfs)
 
 
 
@@ -231,3 +259,5 @@ def reactivityModel(pert, nom = None, typ = "wtd"):
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    a = ReactivityModel()
+    a.evald(np.zeros(8), 1)
