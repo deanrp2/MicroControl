@@ -21,6 +21,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 seed=1
 
+from neorl.tune import GRIDTUNE
+
 def transform_features(x, f='cos'):
     
     if f=='cos':
@@ -67,48 +69,6 @@ Xtrain = transform_features(Xtrain, f='cos')
 Xtest = transform_features(Xtest, f='cos')
 #Ytrain = yscaler.fit_transform(Ytrain)
 #Ytest = yscaler.transform(Ytest)
-
-
-
-#*********************************************************
-# Sklearn models
-#*********************************************************
- 
-#Random Forests
-rf_model = RandomForestRegressor(max_features = 8, random_state = seed)
-rf_model.fit(Xtrain, Ytrain)
-#print(rf_model.score(Xtest,Ytest))
-#print(rf_model.feature_importances_)
-#plt.barh(colnames[0:7], rf_model.feature_importances_)
-
-#DT model
-dt_model = DecisionTreeRegressor(max_features = 8, random_state = seed)
-dt_model.fit(Xtrain, Ytrain)
-#print(dt_model.score(Xtest,Ytest))
-#print(dt_model.feature_importances_)
-
-#LR model
-lr_model = LinearRegression(normalize=False)
-lr_model.fit(Xtrain,Ytrain)
-#print(lr_model.score(Xtest,Ytest))
-
-Yrf=rf_model.predict(Xtest)
-rf_mae=mean_absolute_error(Ytest,Yrf)
-rf_rmse=np.sqrt(mean_squared_error(Ytest,Yrf))
-rf_r2=r2_score(Ytest,Yrf)
-print('RF Summary:', 'MAE=',rf_mae, 'RMSE=',rf_rmse, 'R2=', rf_r2)
-
-Ydt=dt_model.predict(Xtest)
-dt_mae=mean_absolute_error(Ytest,Ydt)
-dt_rmse=np.sqrt(mean_squared_error(Ytest,Ydt))
-dt_r2=r2_score(Ytest,Ydt)
-print('RF Summary:', 'MAE=',dt_mae, 'RMSE=',dt_rmse, 'R2=', dt_r2)
-
-Ylr=lr_model.predict(Xtest)
-lr_mae=mean_absolute_error(Ytest,Ylr)
-lr_rmse=np.sqrt(mean_squared_error(Ytest,Ylr))
-lr_r2=r2_score(Ytest,Ylr)
-print('LR Summary:', 'MAE=',lr_mae, 'RMSE=',lr_rmse, 'R2=', lr_r2)
 
 
 #*********************************************************

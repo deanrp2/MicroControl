@@ -11,15 +11,16 @@ from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense
 from keras.optimizers import Adam
-from keras.callbacks import ReduceLROnPlateau
+from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 
 # Processing Functions
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 seed=1
+np.random.seed(seed)   #to fix seeding in careful split random.choice!!  
 
 def transform_features(x, f='cos'):
     
@@ -61,13 +62,8 @@ Ytrain=train[resp].values
 Ytest=test[resp].values
 
 #input/output scaling 
-#xscaler = StandardScaler()     #x-scaler object
-#yscaler = StandardScaler()     #y-scaler object
 Xtrain = transform_features(Xtrain, f='cos')
 Xtest = transform_features(Xtest, f='cos')
-#Ytrain = yscaler.fit_transform(Ytrain)
-#Ytest = yscaler.transform(Ytest)
-
 
 
 #*********************************************************
@@ -102,7 +98,7 @@ Ydt=dt_model.predict(Xtest)
 dt_mae=mean_absolute_error(Ytest,Ydt)
 dt_rmse=np.sqrt(mean_squared_error(Ytest,Ydt))
 dt_r2=r2_score(Ytest,Ydt)
-print('RF Summary:', 'MAE=',dt_mae, 'RMSE=',dt_rmse, 'R2=', dt_r2)
+print('DT Summary:', 'MAE=',dt_mae, 'RMSE=',dt_rmse, 'R2=', dt_r2)
 
 Ylr=lr_model.predict(Xtest)
 lr_mae=mean_absolute_error(Ytest,Ylr)
@@ -122,10 +118,12 @@ model.add(Dense(100, activation='relu'))
 model.add(Dense(Ytrain.shape[1], activation='linear'))
 model.compile(loss='mean_absolute_error', optimizer=Adam(1e-3), metrics=['mean_absolute_error'])
 model.summary()
-#checkpoint = ReduceLROnPlateau(monitor='val_mean_absolute_error', factor=0.9, patience=5, min_lr=0, verbose=1)
-history=model.fit(Xtrain, Ytrain, epochs=700, batch_size=64, validation_split = 0.2, verbose=True)
+mc_cb = ModelCheckpoint(filepath='power_model.h5', monitor='val_mean_absolute_error', mode='min', save_best_only=True, verbose=0)
+#lr_cb = ReduceLROnPlateau(monitor='val_mean_absolute_error', factor=0.95, patience=10, min_lr=0, verbose=1)
+history=model.fit(Xtrain, Ytrain, epochs=700, batch_size=64, 
+                  validation_split = 0.2, callbacks=[mc_cb], verbose=False)
 
-print('---(c)---')
+model=load_model('power_model.h5')
 Ynn=model.predict(Xtest)
 nn_mae=mean_absolute_error(Ytest,Ynn)
 nn_rmse=np.sqrt(mean_squared_error(Ytest,Ynn))
