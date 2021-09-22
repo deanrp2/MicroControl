@@ -175,7 +175,6 @@ def calc_dzetatildes(thetas, k, cangles, alphas, jmfs):
     dgamma = -jmfs[k-1](thetas[k-1] + cangles[k-1]/2) + jmfs[k-1](thetas[k-1] - cangles[k-1]/2)
     return alpha_slice*dgamma
 
-WWs = []
 def calc_W(theta, cangle, jmf):
     """
     Calculate derivative of difference of integrals
@@ -185,11 +184,8 @@ def calc_W(theta, cangle, jmf):
     """
     t1 = jmf(theta + cangle/2)**2
     t2 = jmf(theta - cangle/2)**2
-    WWs.append(t1 - t2)
     return t1 - t2
 
-zetadtors = []
-sgs = []
 class ReactivityModel:
     """
     Used to evaluate reactivity insertion from control drum perturbation.
@@ -222,8 +218,6 @@ class ReactivityModel:
                                      jminusA = self.jmA,
                                      jminusB = self.jmB)
 
-        zetadtors.append(np.array(zetatildes))
-
         #loop through drums and calculate each contribution
         reactivities = np.zeros(8)
         for i in range(8):
@@ -235,7 +229,6 @@ class ReactivityModel:
                 int1 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b1)
                 int2 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2)
             reactivities[i] = zetatildes[i]*(int1 - int2)
-            sgs.append(int1 - int2)
 
         #basically just return conditionals
         if nom: #little trick
@@ -261,7 +254,6 @@ class ReactivityModel:
                                       cangles = self.cangles,
                                       alphas = self.alphas,
                                       jmfs = self.jmfs)
-        #print(dzetatildes)
         if not zetatildes:
             zetatildes = calc_zetatildes(theta = pert,
                                          cangles = self.cangles,
@@ -282,44 +274,6 @@ class ReactivityModel:
                 int2 = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2)
 
             drdtk[i] += dzetatildes[i] * (int1 - int2)
-            if i == (k-1):
-                ddd = 1e-5
-                nom = int1 - int2
-                b1p, b2p = int_bounds(pert[i] + ddd, self.cangles[i])
-                if i in [0, 3, 4, 7]: #if config A
-                    int1p = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b1p)
-                    int2p = integrate_sq(self.jmA["centers"], self.jmA["hist"], *b2p)
-                else: #if config B
-                    int1p = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b1p)
-                    int2p = integrate_sq(self.jmB["centers"], self.jmB["hist"], *b2p)
-                theta = pert[i]
-                cangle = self.cangles[i]
-                if 0 < theta and theta < cangle:
-                    i1d = self.jmfs[i](theta + cangle/2)**2
-                    i2d = self.jmfs[i](theta - cangle/2)**2
-                    print("i1der", i1d)
-                    print("i2der", i2d)
-                elif -cangle < theta and theta < 0:
-                    i1d = -self.jmfs[i](theta - cangle/2)**2
-                    i2d = -self.jmfs[i](theta + cangle/2)**2
-                    print("i1der", i1d)
-                    print("i2der", i2d)
-                else:
-                    i1d = self.jmfs[i](theta + cangle/2)**2-self.jmfs[i](theta - cangle/2)**2
-                    i2d = 0
-                    print("i1der", i1d)
-                    print("i2der", i2d)
-
-                print("E Integral ther", i1d - i2d)
-                print("---------")
-                pertb = int1p - int2p
-                print("thetak", pert[i]*180/np.pi)
-                print("b1 der", (b1p[0] - b1[0])/ddd,(b1p[1] - b1[1])/ddd)
-                print("b2 der", (b2p[0] - b2[0])/ddd,(b2p[1] - b2[1])/ddd)
-                print("i1 der", (int1p - int1)/ddd)
-                print("i2 der", (int2p - int2)/ddd)
-                print("Integral der", (pertb - nom)/ddd)
-        print(calc_W(pert[k-1], self.cangles[k-1], self.jmfs[k-1]))
 
         #tack on extra term from eq41
         drdtk[k-1] += zetatildes[k-1]*calc_W(pert[k-1], self.cangles[k-1], self.jmfs[k-1])
@@ -347,10 +301,6 @@ if __name__ == "__main__":
     thetapert = thetanom.copy()
     thetapert[k-1] += dtheta
     dest = (a.eval(thetapert) - a.eval(thetanom))/dtheta
-    #print((zetadtors[1] - zetadtors[0])/dtheta)
-    #print("Delta Ws")
-    #print((sgs[k-1+8] - sgs[k-1])/dtheta)
-    #print(WWs[0])
     print(deval, dest)
 
 
