@@ -73,18 +73,13 @@ Xtest = transform_features(Xtest, f='cos')
 #Random Forests
 rf_model = RandomForestRegressor(max_features = 8, random_state = seed)
 rf_model.fit(Xtrain, Ytrain)
-#print(rf_model.score(Xtest,Ytest))
-#print(rf_model.feature_importances_)
-#plt.barh(colnames[0:7], rf_model.feature_importances_)
 
 #DT model
 dt_model = DecisionTreeRegressor(max_features = 8, random_state = seed)
 dt_model.fit(Xtrain, Ytrain)
-#print(dt_model.score(Xtest,Ytest))
-#print(dt_model.feature_importances_)
 
 #LR model
-lr_model = LinearRegression(normalize=False)
+lr_model = LinearRegression(normalize=True)
 lr_model.fit(Xtrain,Ytrain)
 #print(lr_model.score(Xtest,Ytest))
 
