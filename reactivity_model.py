@@ -280,10 +280,15 @@ class ReactivityModel:
 
         return drdtk.sum()
 
-def reactivityModel(pert, nom = None, typ = "wtd"):
+def reactivityModelEval(pert, nom = None, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
     a = ReactivityModel(typ)
     return a.eval(pert, nom)
+
+def reactivityModelEvald(pert, k, typ = "wtd"):
+    """Wrapper for ReactivityModel that initializes and runs"""
+    aa = ReactivityModel(typ)
+    return aa.evald(pert, k)
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -298,6 +303,7 @@ if __name__ == "__main__":
 
     #print("Delta Zetatildes")
     deval = a.evald(thetanom, k)
+    deval2 = reactivityModelEvald(thetanom, k)
     thetapert = thetanom.copy()
     thetapert[k-1] += dtheta
     dest = (a.eval(thetapert) - a.eval(thetanom))/dtheta
