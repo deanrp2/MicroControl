@@ -280,6 +280,13 @@ class ReactivityModel:
 
         return drdtk.sum()
 
+    def evalg(self, pert):
+        """
+        Evaluate differential reactivity worth of drum config for all drums.
+        Pert is numpy array of 8 drum angles in radians with 
+        coordinate systems described in the README.md.
+        """
+
 def reactivityModelEval(pert, nom = None, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
     a = ReactivityModel(typ)
