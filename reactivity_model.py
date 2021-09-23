@@ -308,3 +308,11 @@ def reactivityModelEvald(pert, k, typ = "wtd"):
     aa = ReactivityModel(typ)
     return aa.evald(pert, k)
 
+def reactivityModelEvalg(pert, typ = "wtd"):
+    """Wrapper for ReactivityModel that initializes and runs"""
+    aa = ReactivityModel(typ)
+    return aa.evalg(pert)
+
+a = ReactivityModel()
+
+
