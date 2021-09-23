@@ -254,12 +254,13 @@ class ReactivityModel:
                                       cangles = self.cangles,
                                       alphas = self.alphas,
                                       jmfs = self.jmfs)
-        if not zetatildes:
+        if zetatildes is None:
             zetatildes = calc_zetatildes(theta = pert,
                                          cangles = self.cangles,
                                          alphas = self.alphas,
                                          jminusA = self.jmA,
                                          jminusB = self.jmB)
+
         #define vector to hold summation
         drdtk = np.zeros(8)
 
@@ -283,9 +284,19 @@ class ReactivityModel:
     def evalg(self, pert):
         """
         Evaluate differential reactivity worth of drum config for all drums.
+        Equivalent to the gradient.
         Pert is numpy array of 8 drum angles in radians with 
         coordinate systems described in the README.md.
         """
+        zetatildes = calc_zetatildes(theta = pert,
+                                     cangles = self.cangles,
+                                     alphas = self.alphas,
+                                     jminusA = self.jmA,
+                                     jminusB = self.jmB)
+        grad = np.zeros(8)
+        for i in range(8):
+            grad[i] = self.evald(pert, i+1, zetatildes)
+        return grad
 
 def reactivityModelEval(pert, nom = None, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
@@ -296,30 +307,4 @@ def reactivityModelEvald(pert, k, typ = "wtd"):
     """Wrapper for ReactivityModel that initializes and runs"""
     aa = ReactivityModel(typ)
     return aa.evald(pert, k)
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    a = ReactivityModel()
-
-    thetas = np.linspace(-np.pi, np.pi, 1200)
-
-    dtheta = 1e-5
-    k = 1
-    #np.random.seed(8)
-    thetanom = np.random.uniform(-np.pi, np.pi, 8)
-
-    #print("Delta Zetatildes")
-    deval = a.evald(thetanom, k)
-    deval2 = reactivityModelEvald(thetanom, k)
-    thetapert = thetanom.copy()
-    thetapert[k-1] += dtheta
-    dest = (a.eval(thetapert) - a.eval(thetanom))/dtheta
-    print(deval, dest)
-
-
-
-
-
-
-
 
