@@ -318,6 +318,4 @@ def reactivityModelEvalg(pert, typ = "wtd"):
     aa = ReactivityModel(typ)
     return aa.evalg(pert)
 
-a = ReactivityModel()
-
 
