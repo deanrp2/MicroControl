@@ -1,19 +1,31 @@
 import numpy as np
 from pathlib import Path
 import pandas as pd
+from tensorflow.keras.models import load_model
+
+def transform_features(x, f="cos"):
+    if f == "cos":
+        return np.cos(x)
+    elif f == "sin":
+        return np.sin(x)
+    elif f == "tanh":
+        return np.tanh(x)
 
 class QPowerModel:
     """
     Use to evaluate quadrant power splits from control drum configurations.
     Set up as init, then separately use method call to minimize reading times.
     """
-
     def __init(self):
-        # MAJDI HERE
-        model_file = Path("path/to/model file name") #nonsense
-        self.eval = load_ML_model(model_file) #nonsense
+        #Find and load file
+        model_file = Path("pmdata/power_model.h5")
+        self.raw_model = load_model(model_file)
 
-def qPowerModel(config):
+    def eval(self, pert):
+        pertn = np.array([transform_features(pert), ])
+        return self.raw_model.predict(pertn).flatten()
+
+def qPowerModel(pert):
     """Wrapper for QPowerModel that initializes and runs"""
     a = QPowerModel()
-    return a.eval(config)
+    return a.eval(pert)
