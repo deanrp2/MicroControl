@@ -16,9 +16,9 @@ class QPowerModel:
     Use to evaluate quadrant power splits from control drum configurations.
     Set up as init, then separately use method call to minimize reading times.
     """
-    def __init(self):
+    def __init__(self):
         #Find and load file
-        model_file = Path("pmdata/power_model.h5")
+        model_file = Path("pmdata/for_dean/power_model.h5")
         self.raw_model = load_model(model_file)
 
     def eval(self, pert):
