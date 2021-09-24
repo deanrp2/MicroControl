@@ -12,7 +12,8 @@ DEMO PROBLEMS:
 5. One drum broken, hit even split and criticality, minimum maximum tracel dist
 6. max drum differential worth, hit critical, even power split
     * theoretical best operating condition, startup time not limited by drum rotation speed
-7. Not sure yet
+7. max drum differential worth, hit critical, 0.5% bias in Q1 power
+    * theoretical best operating condition, startup time not limited by drum rotation speed
 
 
 NOTES:
