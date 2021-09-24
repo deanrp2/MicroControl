@@ -1,7 +1,7 @@
 #--------------------------------------------------------
-#Problem 3
-#  From full insertion, minimum total travel distance to
-#  full insertion even power split
+#Problem 4
+#  Make one quad have 0.5% bias in power, hit criticality
+#  and minumum maximum travel distance
 #--------------------------------------------------------
 
 import numpy as np
@@ -86,4 +86,4 @@ for key, value in ans.items():
     print(key, "\n-----------------------")
     print("Reactivity Err", np.abs(target_reactivity*1e-5 - rmodel.eval(v))*1e5, "pcm")
     print("Qpowers", np.array(pmodel.eval(v))*100, "\%")
-    print("Traveldist", np.sum(np.abs(v))*180/np.pi)
+    print("Traveldist", np.max(np.abs(v))*180/np.pi)
