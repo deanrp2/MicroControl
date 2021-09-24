@@ -7,6 +7,7 @@ Created on Wed Sep 22 13:59:05 2021
 
 import numpy as np
 from tensorflow.keras.models import load_model
+import matplotlib.pyplot as plt
 
 def transform_features(x, f='cos'):
     
@@ -32,3 +33,18 @@ xn=transform_features(x)
 #predict the power
 y=model.predict(np.array([xn, ])).flatten()  #this np/flatten trick to force keras making a prediction of one sample
 print('quad flux:', y)
+
+#make power curves
+thetas = np.linspace(0, 2*np.pi, 200)
+qpowers = np.zeros((thetas.size, 4))
+for i in range(thetas.size):
+    t = np.zeros(8)
+    t[0] += thetas[i]
+    t[1] += thetas[i]
+    t = transform_features(t)
+    qpowers[i] = model.predict(np.array([t, ])).flatten()
+
+for i in range(4):
+    plt.plot(thetas, qpowers[:, i], label = "Q" + str(i + 1))
+plt.legend()
+plt.show()
