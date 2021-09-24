@@ -3,6 +3,11 @@
 Repository to house working scripts for optimization problems involving 
 HOLOSGen reactor.
 
+REACTOR INFO:
+* All drums in k=0.967987
+* Startup reactivity = 3072 pcm
+* beta_eff = 0.0148166
+
 DEMO PROBLEMS:
 1. Rotate 8 drums in unison to achieve some desired reactivity
 2. Rotate 8 drums independently to maximumize/minimize criticality
