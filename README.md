@@ -6,6 +6,14 @@ HOLOSGen reactor.
 DEMO PROBLEMS:
 1. Rotate 8 drums in unison to achieve some desired reactivity
 2. Rotate 8 drums independently to maximumize/minimize criticality
+3. From fully inserted, minimum travel distance to critical, even power split
+    * can be used to tell if drums should be given different motors?
+4. Find config with 0.5% bias in Q1 power, criticality and minimum maximum travel dist
+5. One drum broken, hit even split and criticality, minimum maximum tracel dist
+6. max drum differential worth, hit critical, even power split
+    * theoretical best operating condition, startup time not limited by drum rotation speed
+7. From configuration found in 6, configuration for fastest -1$ reactivity insertion
+    * minimum maximal travel distance
 
 
 NOTES:
