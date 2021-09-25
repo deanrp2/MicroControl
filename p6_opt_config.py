@@ -59,7 +59,7 @@ def fitness(x):
     gradworth = rmodel.evalg(x)
     diff_worth_norm = np.abs(gradworth/mdiff).sum()/8
 
-    return .2*diff_worth_norm + .4*rerr + .4*qpower_err_norm
+    return -.2*diff_worth_norm + .4*rerr + .4*qpower_err_norm
 
 
 #set up bounds
