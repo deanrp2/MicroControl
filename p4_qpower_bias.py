@@ -61,12 +61,12 @@ BOUNDS = {"x%i"%i : ["float", -np.pi, np.pi] for i in range(1, 9)}
 #  Differential evolution
 de = DE(mode = "min", bounds = BOUNDS, fit = fitness, npop=50,
         CR = 0.5, F = 0.7, ncores = 1)
-de_x, de_y, de_hist = de.evolute(ngen = 100)
+de_x, de_y, de_hist = de.evolute(ngen = 200)
 
 #  Evolution strategies
 es = ES(mode = "min", bounds = BOUNDS, fit = fitness, lambda_ = 40,
         mu = 30, ncores = 1)
-es_x, es_y, es_hist = de.evolute(ngen = 100)
+es_x, es_y, es_hist = de.evolute(ngen = 200)
 
 # Particle Swarm
 #pso = PSO(mode = "min", bounds = BOUNDS, fit = fitness, ncores = 1)
@@ -77,13 +77,18 @@ es_x, es_y, es_hist = de.evolute(ngen = 100)
 #print(type(mpesa.evolute(ngen = 4)))
 #exit()
 
-ans = {"Differential Evolution" : de_x,
-        "Evolution Strategies" : es_x}
+ans = {"Differential Evolution" : [de_x, de_hist],
+        "Evolution Strategies" : [es_x, es_hist]}
 #        "Particle Swarm" : pso_x}
 
 for key, value in ans.items():
-    v = np.asarray(value)
-    print(key, "\n-----------------------")
+    plt.plot(value[1], label = key)
+    v = np.asarray(value[0])
+    print("\n-----------------------\n", key, "\n-----------------------")
     print("Reactivity Err", np.abs(target_reactivity*1e-5 - rmodel.eval(v))*1e5, "pcm")
     print("Qpowers", np.array(pmodel.eval(v))*100, "\%")
     print("Traveldist", np.max(np.abs(v))*180/np.pi)
+plt.legend()
+plt.xlabel("Generations")
+plt.ylabel("Obj.")
+plt.show()

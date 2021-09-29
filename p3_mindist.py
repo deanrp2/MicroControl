@@ -50,7 +50,7 @@ def fitness(x):
     qpower_err = np.abs(qpower - 0.25)
     qpower_err_norm = sum(qpower_err/(qpower_max_err - qpower_min_err))
 
-    return .2*norm_traveldist + .4*rerr + .4*qpower_err_norm
+    return .1*norm_traveldist + .7*rerr + .2*qpower_err_norm
 
 
 #set up bounds
@@ -60,29 +60,34 @@ BOUNDS = {"x%i"%i : ["float", -np.pi, np.pi] for i in range(1, 9)}
 #  Differential evolution
 de = DE(mode = "min", bounds = BOUNDS, fit = fitness, npop=50,
         CR = 0.5, F = 0.7, ncores = 1, verbose = True)
-#de_x, de_y, de_hist = de.evolute(ngen = 100)
+de_x, de_y, de_hist = de.evolute(ngen = 100)
 
 #  Evolution strategies
 es = ES(mode = "min", bounds = BOUNDS, fit = fitness, lambda_ = 40,
         mu = 30, ncores = 1)
-#es_x, es_y, es_hist = de.evolute(ngen = 100)
+es_x, es_y, es_hist = de.evolute(ngen = 100)
 
 # Particle Swarm
 #pso = PSO(mode = "min", bounds = BOUNDS, fit = fitness, ncores = 1)
 #print(pso.evolute(ngen = 100, verbose = False))
 
 # Modern PESA
-mpesa = PESA2(mode = "min", bounds = BOUNDS, fit = fitness)
-print(type(mpesa.evolute(ngen = 4)))
-exit()
+#mpesa = PESA2(mode = "min", bounds = BOUNDS, fit = fitness)
+#print(type(mpesa.evolute(ngen = 4)))
 
-ans = {"Differential Evolution" : de_x,
-        "Evolution Strategies" : es_x}
+ans = {"Differential Evolution" : [de_x, de_hist],
+        "Evolution Strategies" : [es_x, es_hist]}
 #        "Particle Swarm" : pso_x}
 
 for key, value in ans.items():
-    v = np.asarray(value)
-    print(key, "\n-----------------------")
+    plt.plot(value[1], label = key)
+    v = np.asarray(value[0])
+    print("\n-----------------------\n",key, "\n-----------------------")
     print("Reactivity Err", np.abs(target_reactivity*1e-5 - rmodel.eval(v))*1e5, "pcm")
     print("Qpowers", np.array(pmodel.eval(v))*100, "\%")
-    print("Traveldist", np.sum(np.abs(v))*180/np.pi)
+    print("Traveldist", np.sum(np.abs(v))*180/np.pi, "Degrees")
+
+plt.xlabel("Generations")
+plt.ylabel("Obj.")
+plt.legend()
+plt.show()
