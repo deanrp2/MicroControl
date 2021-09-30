@@ -6,7 +6,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from neorl import DE, ES, PSO, PESA2
+from neorl import DE, ES, PSO, PESA2, GWO
 
 from reactivity_model import ReactivityModel
 from qpower_model import QPowerModel
@@ -60,12 +60,12 @@ BOUNDS = {"x%i"%i : ["float", -np.pi, np.pi] for i in range(1, 9)}
 #  Differential evolution
 de = DE(mode = "min", bounds = BOUNDS, fit = fitness, npop=50,
         CR = 0.5, F = 0.7, ncores = 1, verbose = True)
-de_x, de_y, de_hist = de.evolute(ngen = 100)
+#de_x, de_y, de_hist = de.evolute(ngen = 100)
 
 #  Evolution strategies
 es = ES(mode = "min", bounds = BOUNDS, fit = fitness, lambda_ = 40,
         mu = 30, ncores = 1)
-es_x, es_y, es_hist = de.evolute(ngen = 100)
+#es_x, es_y, es_hist = de.evolute(ngen = 100)
 
 # Particle Swarm
 #pso = PSO(mode = "min", bounds = BOUNDS, fit = fitness, ncores = 1)
@@ -73,8 +73,14 @@ es_x, es_y, es_hist = de.evolute(ngen = 100)
 
 # Modern PESA
 #mpesa = PESA2(mode = "min", bounds = BOUNDS, fit = fitness)
-#print(type(mpesa.evolute(ngen = 4)))
+#a, b, c = mpesa.evolute(ngen = 4)
+#print(c)
 
+gwo=GWO(mode='min', fit=fitness, bounds=BOUNDS, nwolves=5, ncores=1, seed=1)
+x_best, y_best, gwo_hist=gwo.evolute(ngen=5, verbose=1)
+print(gwo_hist)
+
+exit()
 ans = {"Differential Evolution" : [de_x, de_hist],
         "Evolution Strategies" : [es_x, es_hist]}
 #        "Particle Swarm" : pso_x}
