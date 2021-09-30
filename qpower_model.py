@@ -23,7 +23,8 @@ class QPowerModel:
 
     def eval(self, pert):
         pertn = np.array([transform_features(pert), ])
-        return self.raw_model.predict(pertn).flatten()
+        unorm = self.raw_model.predict(pertn).flatten()
+        return unorm/unorm.sum()
 
 def qPowerModel(pert):
     """Wrapper for QPowerModel that initializes and runs"""

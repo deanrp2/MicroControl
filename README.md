@@ -3,9 +3,22 @@
 Repository to house working scripts for optimization problems involving 
 HOLOSGen reactor.
 
+REACTOR INFO:
+* All drums in k=0.967987
+* Startup reactivity = 3072 pcm
+* beta_eff = 0.0148166
+
 DEMO PROBLEMS:
 1. Rotate 8 drums in unison to achieve some desired reactivity
 2. Rotate 8 drums independently to maximumize/minimize criticality
+3. From fully inserted, minimum travel distance to critical, even power split
+    * can be used to tell if drums should be given different motors?
+4. Find config with 0.5% bias in Q1 power, criticality and minimum maximum travel dist
+5. One drum broken, hit even split and criticality, minimum maximum tracel dist
+6. max drum differential worth, hit critical, even power split
+    * theoretical best operating condition, startup time not limited by drum rotation speed
+7. max drum differential worth, hit critical, 0.5% bias in Q1 power
+    * theoretical best operating condition, startup time not limited by drum rotation speed
 
 
 NOTES:
