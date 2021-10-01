@@ -7,6 +7,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from neorl import DE, ES, PSO, PESA2, GWO
+import sys
+sys.path.append("..")
 
 from reactivity_model import ReactivityModel
 from qpower_model import QPowerModel
