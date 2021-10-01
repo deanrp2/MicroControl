@@ -19,6 +19,7 @@ DEMO PROBLEMS:
     * theoretical best operating condition, startup time not limited by drum rotation speed
 7. max drum differential worth, hit critical, 0.5% bias in Q1 power
     * theoretical best operating condition, startup time not limited by drum rotation speed
+8. no constraints, maximum differential worth
 
 
 NOTES:
