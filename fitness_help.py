@@ -12,7 +12,7 @@ def setup_logger(logger_name, log_file, level=logging.INFO):
     Helper class to initialize logger
     """
     l = logging.getLogger(logger_name)
-    formatter = logging.Formatter('%(asctime)s, %(message)s')
+    formatter = logging.Formatter("%(asctime)s.%(msecs)03d,%(message)s", datefmt = "%Y-%m-%d %H:%M:%S")
     fileHandler = logging.FileHandler(log_file, mode='w')
     fileHandler.setFormatter(formatter)
     streamHandler = logging.StreamHandler()
@@ -51,11 +51,12 @@ class FitnessHelper:
     also handles all objective logging
     always run minimization on these fitnesses
     """
-    def __init__(self, objs, wts, fname):
+    def __init__(self, objs, wts, fname, notes = ""):
         """
         objs : list of Objective objects must have same number of indims
         wts : weights corresponding to each objective (all pos)
         fname : Path for filename to write logging to
+        notes : string of extra information to be included in log file
         """
         assert len(objs) == len(wts)
 
@@ -69,6 +70,7 @@ class FitnessHelper:
                 self.wts[i] *= -1
 
         self.fname = fname
+        self.notes = notes
         self.log_init()
 
     def log_init(self):
@@ -77,8 +79,17 @@ class FitnessHelper:
         setup_logger(logid, self.fname) #initialize logger
         self.log = logging.getLogger(logid)
 
+        headr = ""
+        #print run information
+        headr += "\nObjectives:\n"
+        for o in self.objs:
+            headr += "    " + o.name + "\n"
+        headr +="Weights:\n"
+        for w in self.wts:
+            headr += "    " + "%.4f"%w + "\n"
+        headr += "Notes:\n" + self.notes + "\n"
+
         #print csv column headers
-        headr = "\n"
         headr += "sys_time, "
         for i in range(1, self.objs[0].indim + 1):
             headr += "x%i, "%i
@@ -166,7 +177,7 @@ if __name__ == "__main__":
     wts = [.33, .33, .34]
     td = FitnessHelper(objs, wts, "text.log")
 
-    for i in range(400):
+    for i in range(100):
         angle = np.random.uniform(-np.pi, np.pi, 8)
         td.fitness(angle)
 
