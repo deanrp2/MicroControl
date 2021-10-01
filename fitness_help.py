@@ -4,7 +4,6 @@ import typing
 import string
 import random
 import logging
-import matplotlib.pyplot as plt
 from pathlib import Path
 
 def setup_logger(logger_name, log_file, level=logging.INFO):
@@ -133,53 +132,53 @@ class FitnessHelper:
 
 
 
-if __name__ == "__main__":
-    from reactivity_model import ReactivityModel
-    from qpower_model import QPowerModel
-
-    a = ReactivityModel()
-    #reactivity objective
-    t_react = .04000
-    def rtgt(x):
-        react = a.eval(x)
-        return np.abs(react - t_react)
-    minn = 0
-    maxx = max([rtgt(np.zeros(8)), rtgt(np.zeros(8)+np.pi)])
-    tgt_react = Objective("react_err", "min", 8, rtgt, minn,  maxx)
-
-    #differential worth objective
-    def diffworth(x):
-        return np.abs(a.evalg(x)).sum()
-    diff_worth = Objective("diff_worth", "max", 8, diffworth, 0, 3800)
-
-    #power split objective
-    t_splits = np.zeros(4) + 0.25
-
-    b = QPowerModel()
-
-    xmax = np.zeros(8)
-    xmax[[0, 1]] += np.pi
-    off_splits = b.eval(xmax)
-
-    max_off = np.abs(off_splits - t_splits).sum()
-    def qpower(x):
-        predicted = b.eval(x)
-        return np.abs(predicted - t_splits).sum()
-
-    tgt_splits = Objective("psplit_err", "min", 8, qpower, 0, max_off)
-
-    #min max travel distance objective
-    def tdist(x):
-        return np.max(np.abs(x))
-    minmax_dist = Objective("tdist", "min", 8, tdist, 0, np.pi)
-
-    objs = [tgt_react, diff_worth, tgt_splits]
-    wts = [.33, .33, .34]
-    td = FitnessHelper(objs, wts, "text.log")
-
-    for i in range(100):
-        angle = np.random.uniform(-np.pi, np.pi, 8)
-        td.fitness(angle)
+#if __name__ == "__main__":
+#    from reactivity_model import ReactivityModel
+#    from qpower_model import QPowerModel
+#
+#    a = ReactivityModel()
+#    #reactivity objective
+#    t_react = .04000
+#    def rtgt(x):
+#        react = a.eval(x)
+#        return np.abs(react - t_react)
+#    minn = 0
+#    maxx = max([rtgt(np.zeros(8)), rtgt(np.zeros(8)+np.pi)])
+#    tgt_react = Objective("react_err", "min", 8, rtgt, minn,  maxx)
+#
+#    #differential worth objective
+#    def diffworth(x):
+#        return np.abs(a.evalg(x)).sum()
+#    diff_worth = Objective("diff_worth", "max", 8, diffworth, 0, 3800)
+#
+#    #power split objective
+#    t_splits = np.zeros(4) + 0.25
+#
+#    b = QPowerModel()
+#
+#    xmax = np.zeros(8)
+#    xmax[[0, 1]] += np.pi
+#    off_splits = b.eval(xmax)
+#
+#    max_off = np.abs(off_splits - t_splits).sum()
+#    def qpower(x):
+#        predicted = b.eval(x)
+#        return np.abs(predicted - t_splits).sum()
+#
+#    tgt_splits = Objective("psplit_err", "min", 8, qpower, 0, max_off)
+#
+#    #min max travel distance objective
+#    def tdist(x):
+#        return np.max(np.abs(x))
+#    minmax_dist = Objective("tdist", "min", 8, tdist, 0, np.pi)
+#
+#    objs = [tgt_react, diff_worth, tgt_splits]
+#    wts = [.33, .33, .34]
+#    td = FitnessHelper(objs, wts, "text.log")
+#
+#    for i in range(100):
+#        angle = np.random.uniform(-np.pi, np.pi, 8)
+#        td.fitness(angle)
 
 
 
