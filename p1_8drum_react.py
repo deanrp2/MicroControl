@@ -7,6 +7,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from neorl import DE, ES
+import sys
+
+sys.path.append("..")
 
 from reactivity_model import ReactivityModel
 
