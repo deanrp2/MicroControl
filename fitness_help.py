@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     objs = [tgt_react, diff_worth, tgt_splits]
     wts = [.33, .33, .34]
-    td = FitnessHelper(objs, wts, "text.txt")
+    td = FitnessHelper(objs, wts, "text.log")
 
     for i in range(400):
         angle = np.random.uniform(-np.pi, np.pi, 8)
