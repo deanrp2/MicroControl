@@ -99,13 +99,13 @@ class FitnessHelper:
         headr += "Notes:\n" + self.notes + "\n"
 
         #print csv column headers
-        headr += "sys_time, "
+        headr += "sys_time,"
         for i in range(1, self.objs[0].indim + 1):
-            headr += "x%i, "%i
+            headr += "x%i,"%i
         for o in self.objs:
-            headr += o.name + "_obj, "
-            headr += o.name + "_scaled_obj, "
-            headr += o.name + "_wtd_scaled_obj, "
+            headr += o.name + "_obj,"
+            headr += o.name + "_scaled_obj,"
+            headr += o.name + "_wtd_scaled_obj,"
         headr += "fitness"
 
         #figure out what line the data starts
