@@ -89,4 +89,3 @@ def plot_progress(fit_vals, n_steps, theme = "g"):
     plt.legend()
     plt.xlabel('Generation')
     plt.ylabel('Fitness')
-    plt.show()
