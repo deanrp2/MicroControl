@@ -89,5 +89,4 @@ def plot_progress(fit_vals, n_steps, pngname):
     plt.legend()
     plt.xlabel('Generation')
     plt.ylabel('Fitness')
-    plt.savefig(pngname+'.png',format='png' ,dpi=300, bbox_inches="tight")
-    plt.close()
+    plt.show()
