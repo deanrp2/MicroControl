@@ -2,6 +2,10 @@ import numpy as np
 from pathlib import Path
 import pandas as pd
 from tensorflow.keras.models import load_model
+import sys
+import inspect
+
+cpath = Path(inspect.getfile(sys.modules[__name__])).resolve().parent
 
 def transform_features(x, f="cos"):
     if f == "cos":
@@ -18,7 +22,7 @@ class QPowerModel:
     """
     def __init__(self):
         #Find and load file
-        model_file = Path("pmdata/for_dean/power_model.h5")
+        model_file = cpath / Path("pmdata/for_dean/power_model.h5")
         self.raw_model = load_model(model_file)
 
     def eval(self, pert):
