@@ -70,7 +70,7 @@ def calc_cumavg(data, N):
 
     return cum_aves, cum_std, cum_max, cum_min
 
-def plot_progress(fit_vals, n_steps, pngname): 
+def plot_progress(fit_vals, n_steps):
     """
     fit_vals: NEORL predicted fitness values in numpy vector
     n_steps: population size, e.g. npop, nwolves, nwhales, etc.
