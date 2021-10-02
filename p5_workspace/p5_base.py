@@ -70,7 +70,7 @@ def calc_cumavg(data, N):
 
     return cum_aves, cum_std, cum_max, cum_min
 
-def plot_progress(fit_vals, n_steps):
+def plot_progress(fit_vals, n_steps, theme = "g"):
     """
     fit_vals: NEORL predicted fitness values in numpy vector
     n_steps: population size, e.g. npop, nwolves, nwhales, etc.
@@ -79,10 +79,10 @@ def plot_progress(fit_vals, n_steps):
     plt.figure()
     ravg, rstd, rmax, rmin=calc_cumavg(fit_vals, n_steps)
     epochs=np.array(range(1,len(ravg)+1),dtype=int)
-    plt.plot(epochs, ravg,'-o', c='g', label='Average per generation')
+    plt.plot(epochs, ravg,'-o', c=theme, label='Average per generation')
 
     plt.fill_between(epochs,[a_i - b_i for a_i, b_i in zip(ravg, rstd)], [a_i + b_i for a_i, b_i in zip(ravg, rstd)],
-    alpha=0.2, edgecolor='g', facecolor='g', label=r'$1-\sigma$ per generation')
+    alpha=0.2, edgecolor=theme, facecolor=theme, label=r'$1-\sigma$ per generation')
 
     plt.plot(epochs, rmax,'s', c='k', label='Max per generation', markersize=4)
     plt.plot(epochs,rmin,'d', c='k', label='Min per generation', markersize=4)
