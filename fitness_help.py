@@ -1,6 +1,7 @@
 import numpy as np
 from dataclasses import dataclass
 import typing
+import pandas as pd
 import string
 import random
 import logging
@@ -19,6 +20,15 @@ def setup_logger(logger_name, log_file, level=logging.INFO):
 
     l.setLevel(level)
     l.addHandler(fileHandler)
+
+def get_log(fname):
+    """
+    get logger as pandas dataframe
+    """
+    with open(fname, "r") as f:
+        s = int(f.readlines()[0].split()[-1])
+    df = pd.read_csv(fname, sep = ",", header = s)
+    return df
 
 @dataclass
 class Objective:
@@ -97,6 +107,12 @@ class FitnessHelper:
             headr += o.name + "_scaled_obj, "
             headr += o.name + "_wtd_scaled_obj, "
         headr += "fitness"
+
+        #figure out what line the data starts
+        start = headr.count("\n") - 1
+        headr = " colnames start on line %i"%start + headr
+
+        #print headr to log
         self.log.info(headr)
 
     def fitness(self, x):
@@ -129,6 +145,9 @@ class FitnessHelper:
         self.log.info(logline)
 
         return fitness
+
+    def get_log(self):
+        return get_log(self.fname)
 
 
 
