@@ -56,3 +56,38 @@ def make_objs():
         return np.max(np.abs(x))
     minmax_dist = Objective("tdist", "min", 7, tdist, 0, np.pi)
     return [tgt_react, tgt_splits, minmax_dist]
+
+def calc_cumavg(data, N):
+    """
+    data: vector of FOM to plot (e.g. fitness)
+    N: number of data points to group before calculating the statistics (e.g. population size)
+    """
+
+    cum_aves=[np.mean(data[i:i+N]) for i in range(0,len(data),N)]
+    cum_std=[np.std(data[i:i+N]) for i in range(0,len(data),N)]
+    cum_max=[np.max(data[i:i+N]) for i in range(0,len(data),N)]
+    cum_min=[np.min(data[i:i+N]) for i in range(0,len(data),N)]
+
+    return cum_aves, cum_std, cum_max, cum_min
+
+def plot_progress(fit_vals, n_steps, pngname): 
+    """
+    fit_vals: NEORL predicted fitness values in numpy vector
+    n_steps: population size, e.g. npop, nwolves, nwhales, etc.
+    pngname: figure name
+    """
+    plt.figure()
+    ravg, rstd, rmax, rmin=calc_cumavg(fit_vals, n_steps)
+    epochs=np.array(range(1,len(ravg)+1),dtype=int)
+    plt.plot(epochs, ravg,'-o', c='g', label='Average per generation')
+
+    plt.fill_between(epochs,[a_i - b_i for a_i, b_i in zip(ravg, rstd)], [a_i + b_i for a_i, b_i in zip(ravg, rstd)],
+    alpha=0.2, edgecolor='g', facecolor='g', label=r'$1-\sigma$ per generation')
+
+    plt.plot(epochs, rmax,'s', c='k', label='Max per generation', markersize=4)
+    plt.plot(epochs,rmin,'d', c='k', label='Min per generation', markersize=4)
+    plt.legend()
+    plt.xlabel('Generation')
+    plt.ylabel('Fitness')
+    plt.savefig(pngname+'.png',format='png' ,dpi=300, bbox_inches="tight")
+    plt.close()
