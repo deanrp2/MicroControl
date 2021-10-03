@@ -16,27 +16,24 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
 fname = Path("log/es_%s.log"%rid())
 objs = make_objs() #in order react, psplits, dist
 
-a1 = 0.9
+a1 = 0.92
 wts = [a1, 1-a1 - 0.01, .01]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-config = {"pop_size" : 75,
-          "num_hidden" : 2,
-          "activation_mutate_rate" : 0.1,
-          "survival_threshold" : 0.3}
-
-pop = 50
-CR = 0.5
-F = 0.7
-notes_str = str(config) + "\npop=%i, CR=%f, F=%f\n"%(pop, CR, F)
+lambda_ = 60
+mu = 30
+cxpb = 0.6
+mutpb = 0.3
+notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
+        cxpb, mutpb)
 es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
-es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness, npop =pop, CR=CR, F=F,
-        ncores=1)
-es_x, es_y, es_hist = es.evolute(100)
+es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
+        ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
+es_x, es_y, es_hist = es.evolute(150)
 
 res = get_log(fname)
 
-plot_progress(res["fitness"], pop)
+plot_progress(res["fitness"], lambda_)
 plot_objs(res)
 plt.show()
