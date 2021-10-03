@@ -33,7 +33,7 @@ notes_str = str(config) + "\npop=%i, CR=%f, F=%f\n"%(pop, CR, F)
 es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness, npop =pop, CR=CR, F=F,
         ncores=1)
-es_x, es_y, es_hist = es.evolute(40)
+es_x, es_y, es_hist = es.evolute(100)
 
 res = get_log(fname)
 
