@@ -89,3 +89,42 @@ def plot_progress(fit_vals, n_steps, theme = "g"):
     plt.legend()
     plt.xlabel('Generation')
     plt.ylabel('Fitness')
+
+def plot_objs(res, ax =  None, c = "k"):
+    def cumargmin(a):
+        a = -a
+        m = np.maximum.accumulate(a)
+        x = np.arange(a.shape[0])
+        x[1:] *= m[:-1] < m[1:]
+        np.maximum.accumulate(x, axis=0, out=x)
+        return x
+    if ax is None:
+        fig, ax = plt.subplots(2, 2, figsize = (8, 6))
+        ax = ax.flatten()
+    titles = ["react_err_obj", "psplit_err_obj", "tdist_obj",
+            "fitness"]
+    m = cumargmin(res["fitness"].values)
+    for i in range(4):
+        ax[i].set_title(titles[i])
+        if titles[i] == "react_err_obj":
+            v = res[titles[i]]*1e5
+        else:
+            v = res[titles[i]]
+        ax[i].plot(res.index, v, c, linewidth = 1, alpha = .4)
+        ax[i].plot(res.index, v.iloc[m], c,
+            linewidth = 3)
+    plt.tight_layout()
+    return ax
+
+
+
+
+
+
+
+
+
+
+
+
+
