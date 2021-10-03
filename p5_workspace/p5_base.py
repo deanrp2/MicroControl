@@ -108,6 +108,8 @@ def plot_objs(res, ax =  None, c = "k"):
         ax[i].set_title(titles[i])
         if titles[i] == "react_err_obj":
             v = res[titles[i]]*1e5
+        elif titles[i] == "tdist_obj":
+            v = res[titles[i]]*180/np.pi
         else:
             v = res[titles[i]]
         ax[i].plot(res.index, v, c, linewidth = 1, alpha = .4)
