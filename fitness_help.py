@@ -146,6 +146,15 @@ class FitnessHelper:
 
         return fitness
 
+    def close(self):
+        """
+        Call to close log
+        """
+        handlers = self.log.handlers[:]
+        for handler in handlers:
+            handler.close()
+            self.log.removeHandler(handler)
+
     def get_log(self):
         return get_log(self.fname)
 
