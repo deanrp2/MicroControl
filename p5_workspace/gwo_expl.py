@@ -16,16 +16,16 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
 fname = Path("log/de_%s.log"%rid())
 objs = make_objs() #in order react, psplits, dist
 
-a1 = 0.92
+a1 = 0.98
 wts = [a1, 1-a1 - 0.01, .01]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-nwolves = 5
+nwolves = 10
 notes_str = "nwolves=%i\n"%(nwolves)
 gwo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
-gwo = GWO(mode="min", bounds = BOUNDS, fit = de_helper.fitness, nwolves = nwolves)
-gwo_x, gwo_y, gwo_hist = de.evolute(100)
+gwo = GWO(mode="min", bounds = BOUNDS, fit = gwo_helper.fitness, nwolves = nwolves)
+gwo_x, gwo_y, gwo_hist = gwo.evolute(1000)
 
 res = get_log(fname)
 
