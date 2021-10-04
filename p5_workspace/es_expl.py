@@ -16,7 +16,7 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
 fname = Path("log/es_%s.log"%rid())
 objs = make_objs() #in order react, psplits, dist
 
-a1 = 0.5
+a1 = 0.6
 wts = [a1, 1-a1 - 0.01, .01]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
@@ -31,6 +31,7 @@ es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
         ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
 es_x, es_y, es_hist = es.evolute(150)
+es_helper.close()
 
 res = get_log(fname)
 
