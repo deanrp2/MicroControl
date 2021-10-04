@@ -131,7 +131,7 @@ class FitnessHelper:
             objectives.append(o)
             objectives_scaled.append(o_scaled)
             objectives_wtd_scaled.append(o_wtd_scaled)
-        fitness = sum(objectives_scaled)
+        fitness = sum(objectives_wtd_scaled)
 
         #logging
         logline = ""
