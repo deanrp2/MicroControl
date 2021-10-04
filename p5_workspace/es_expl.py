@@ -16,7 +16,7 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
 fname = Path("log/es_%s.log"%rid())
 objs = make_objs() #in order react, psplits, dist
 
-a1 = 0.92
+a1 = 0.5
 wts = [a1, 1-a1 - 0.01, .01]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
