@@ -13,11 +13,10 @@ from fitness_help import FitnessHelper, Objective, get_log
 from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
-fname = Path("log/de_%s.log"%rid())
+fname = Path("log/gwo_%s.log"%rid())
 objs = make_objs() #in order react, psplits, dist
 
-a1 = 0.98
-wts = [a1, 1-a1 - 0.01, .01]
+wts = [0.6, 0.2, 0.1]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
