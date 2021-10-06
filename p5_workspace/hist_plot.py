@@ -9,14 +9,14 @@ def group(ara2):
     return km.labels_
 
 grouping = True
-sets = [1] #which of the figures to plot
+sets = [0] #which of the figures to plot
 
-fs = ["log/hist_150_even.dat", "log/hist_0p5.dat","log/hist_0p6.dat",
-        "log/hist_0p7.dat","log/hist_0p8.dat",]
+fs = ["log/hist_150_even.dat"]#, "log/hist_0p5.dat","log/hist_0p6.dat",
+        #"log/hist_0p7.dat","log/hist_0p8.dat",]
 
 
 
-titles = ["even", "react .5", "react .6", "react .7", "react .8" ]
+titles = ["even"]#, "react .5", "react .6", "react .7", "react .8" ]
 
 colmns = ["rerr", "psplit", "tdist", "obj"] + ["x%i"%i for i in range(1, 8)]
 for i, f in enumerate(fs):
