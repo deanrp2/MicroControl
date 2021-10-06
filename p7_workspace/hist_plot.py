@@ -8,13 +8,16 @@ def group(ara2):
     km = KMeans(n_clusters = 2).fit(temp)
     return km.labels_
 
-grouping = True
-sets = [0, 1, 2, 3] #which of the figures to plot
+grouping =False 
+sets = [0, 1, 2, 3, 4, 5] #which of the figures to plot
 
-fs = ["log/hist_even.dat"]
+#fs = ["log/hist_p4_p2_p4.dat","log/hist_p4_p3_p3.dat",
+#        "log/hist_p5_p2_p3.dat","log/hist_p5_p3_p2.dat"]
+fs = ["log/hist_p5_p3_p2.dat"]
 
 
-titles = ["even", "react .5", "react .6", "react .7", "react .8" ]
+#titles = ["4-2-4", "4-3-3", "5-2-3", "5-3-2" ]
+titles = ["5-3-2"]
 
 colmns = ["rerr", "psplit", "diffworth", "obj"] + ["x%i"%i for i in range(1, 8)]
 for i, f in enumerate(fs):
@@ -32,18 +35,28 @@ for i, f in enumerate(fs):
                 density = True)
         ax.set_xlabel("Reactivity Error")
         ax.set_ylabel("Freq")
-        ax.set_xlim([0, 800])
+        ax.set_xlim([0, 100])
         ax.set_title(titles[i])
 
     if 1 in sets:
         fig, ax = plt.subplots(1, 1)
         ax.hist(ara["psplit"], bins = "auto", color = "purple", rwidth=0.85,
                 density = True)
+        ax.set_xlim([0, 0.00175])
         ax.set_xlabel("Power Split Error")
         ax.set_ylabel("Freq")
         ax.set_title(titles[i])
 
     if 2 in sets:
+        fig, ax = plt.subplots(1, 1)
+        ax.hist(ara["diffworth"], bins = "auto", color = "crimson", rwidth=0.85,
+                density = True)
+        #ax.set_xlim([0, 0.00175])
+        ax.set_xlabel("Diff Worth")
+        ax.set_ylabel("Freq")
+        ax.set_title(titles[i])
+
+    if 3 in sets:
         fig, ax = plt.subplots(1, 1)
         ax.plot(ara["rerr"].iloc[(gp == 0)], ara["psplit"].iloc[(gp == 0)], "k.")
         ax.plot(ara["rerr"].iloc[(gp == 1)], ara["psplit"].iloc[(gp == 1)], "kx")
@@ -51,7 +64,7 @@ for i, f in enumerate(fs):
         ax.set_ylabel("power split error")
         ax.set_title(titles[i])
 
-    if 3 in sets:
+    if 4 in sets:
         fig, ax = plt.subplots(1,1)
         ax.plot(ara["rerr"].iloc[(gp == 0)], ara["obj"].iloc[(gp == 0)], "k.")
         ax.plot(ara["rerr"].iloc[(gp == 1)], ara["obj"].iloc[(gp == 1)], "kx")
@@ -59,7 +72,7 @@ for i, f in enumerate(fs):
         ax.set_ylabel("fitness")
         ax.set_title(titles[i])
 
-    if 4 in sets:
+    if 5 in sets:
         fig, ax = plt.subplots(2, 4, figsize = (12, 7), sharex = True, sharey = True)
         fig.suptitle(titles[i])
         ax = ax.flatten()
@@ -67,7 +80,7 @@ for i, f in enumerate(fs):
         labels = [".","x"]
         for k in [0, 1]:
             for j in range(7):
-                ax[j].hist(ara["x%i"%(j + 1)].iloc[(gp==k)], bins = 50, color = colors[k], rwidth=0.85,
+                ax[j].hist(ara["x%i"%(j + 1)].iloc[(gp==k)], bins = 20, color = colors[k], rwidth=0.85,
                         density = True, alpha = 0.4, label = labels[k])
                 ax[j].set_xlim([-180, 180])
                 ax[j].legend()
