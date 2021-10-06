@@ -29,7 +29,7 @@ notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu,
 es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
         ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
-es_x, es_y, es_hist = es.evolute(30)
+es_x, es_y, es_hist = es.evolute(60)
 es_helper.close()
 
 res = get_log(fname)
