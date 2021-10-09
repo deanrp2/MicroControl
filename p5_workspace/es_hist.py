@@ -23,8 +23,7 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
 
 objs = make_objs() #in order react, psplits, dist
 
-a1 = 0.8
-wts = [a1, 1-a1 - 0.1, .1]
+wts = [.6, .2, .1]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
