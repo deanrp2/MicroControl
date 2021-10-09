@@ -24,7 +24,7 @@ nwolves = 10
 notes_str = "nwolves=%i\n"%(nwolves)
 gwo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 gwo = GWO(mode="min", bounds = BOUNDS, fit = gwo_helper.fitness, nwolves = nwolves)
-gwo_x, gwo_y, gwo_hist = gwo.evolute(100)
+gwo_x, gwo_y, gwo_hist = gwo.evolute(50)
 
 res = get_log(fname)
 
