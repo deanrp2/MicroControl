@@ -15,7 +15,7 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
 #perform tune or just print current results?
-tune = True
+tune = False
 #tuning logfile
 tlog = Path("log/es_tune.log")
 
@@ -32,7 +32,7 @@ def tune_fit(mu, cxpb, mutpb):
     es = ES(mode="min", bounds = BOUNDS, fit = de_helper.fitness, lambda_ = 50,
             mu = mu, cxpb = cxpb, mutpb = mutpb)
     es_x, es_y, es_hist = es.evolute(10000//50 - 1)
-    return de_y
+    return es_y
 
 #provide parameter grids
 param_grid = {
