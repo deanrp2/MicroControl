@@ -21,13 +21,13 @@ wts = [0.6, 0.2, 0.1]
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
 npop = 50
-F = 0.5
+F = 0.6
 CR = 0.3
 notes_str = "npop=%i,F=%f,CR=%f\n"%(npop, F, CR)
 de_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 de = DE(mode="min", bounds = BOUNDS, fit = de_helper.fitness, npop=npop,
         F=F, CR=CR)
-de_x, de_y, de_hist = de.evolute(100)
+de_x, de_y, de_hist = de.evolute(10)
 
 res = get_log(fname)
 
