@@ -20,16 +20,16 @@ wts = [0.6, 0.2, 0.1]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-lambda_ = 60
-mu = 30
-cxpb = 0.6
+lambda_ = 50
+mu = 20
+cxpb = 0.5
 mutpb = 0.3
 notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
         cxpb, mutpb)
 es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
         ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
-es_x, es_y, es_hist = es.evolute(150)
+es_x, es_y, es_hist = es.evolute(9)
 es_helper.close()
 
 res = get_log(fname)
