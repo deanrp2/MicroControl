@@ -15,7 +15,7 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
 #perform tune or just print current results?
-tune = True
+tune = False
 #tuning logfile
 tlog = Path("log/de_tune.log")
 
@@ -46,7 +46,8 @@ if tune:
 
 try:
     res = pd.read_csv(tlog, index_col = 0)
-    print(res)
+    sort = res.sort_values("score")
+    print(sort)
 except:
     raise Exception("No tuning logfile found with name %s"%(str(tlog)))
 
