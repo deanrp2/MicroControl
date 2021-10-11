@@ -27,7 +27,7 @@ notes_str = "npop=%i,F=%f,CR=%f\n"%(npop, F, CR)
 de_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 de = DE(mode="min", bounds = BOUNDS, fit = de_helper.fitness, npop=npop,
         F=F, CR=CR)
-de_x, de_y, de_hist = de.evolute(10)
+de_x, de_y, de_hist = de.evolute(100)
 
 res = get_log(fname)
 
