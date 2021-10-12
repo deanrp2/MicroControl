@@ -38,14 +38,17 @@ As such, they are explored further.
 ### Demo Problem 5
    Reactivity Error  - 0.6\
    Power Split Error - 0.2\
-   Travel Distance   - 0.1\
+   Travel Distance   - 0.1
 ### Demo Problem 7
    Reactivity Error  - 0.5\
    Power Split Error - 0.3\
-   Diff. Worth Max.  - 0.2\
+   Diff. Worth Max.  - 0.2
 
 ## ALGORITHM OPTIMAL PARAMETERS
 ### Demo Problem 5
+* DE
+    * test
+
 
 ### Demo Problem 7
 
