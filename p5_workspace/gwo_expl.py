@@ -20,11 +20,11 @@ wts = [0.6, 0.2, 0.1]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-nwolves = 10
+nwolves = 25
 notes_str = "nwolves=%i\n"%(nwolves)
 gwo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 gwo = GWO(mode="min", bounds = BOUNDS, fit = gwo_helper.fitness, nwolves = nwolves)
-gwo_x, gwo_y, gwo_hist = gwo.evolute(10)
+gwo_x, gwo_y, gwo_hist = gwo.evolute(10000//nwolves)
 
 res = get_log(fname)
 

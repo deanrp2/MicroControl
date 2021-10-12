@@ -20,12 +20,12 @@ wts = [0.6, 0.2, 0.1]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-nmoths= 50
+nmoths= 35
 b = 1
 notes_str = "nmoths=%i,b=%i\n"%(nmoths, b)
 mfo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 mfo = MFO(mode="min", bounds = BOUNDS, fit = mfo_helper.fitness, nmoths = nmoths, b = b)
-mfo_x, mfo_y, mfo_hist = mfo.evolute(10)
+mfo_x, mfo_y, mfo_hist = mfo.evolute(10000//nmoths)
 
 res = get_log(fname)
 

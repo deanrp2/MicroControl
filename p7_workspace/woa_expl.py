@@ -20,11 +20,11 @@ wts = [0.5, 0.3, 0.2]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 9)}
 
-nwhales = 10
+nwhales = 30
 notes_str = "nwhales=%i\n"%(nwhales)
 woa_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 woa = WOA(mode="min", bounds = BOUNDS, fit = woa_helper.fitness, nwhales = nwhales)
-woa_x, woa_y, woa_hist = woa.evolute(100)
+woa_x, woa_y, woa_hist = woa.evolute(10000//nwhales)
 
 res = get_log(fname)
 
