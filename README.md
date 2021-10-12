@@ -36,12 +36,12 @@ As such, they are explored further.
 
 OBJECTIVE WEIGHTS:\
 5. \
-   Reactivity Error  - 0.6
-   Power Split Error - 0.2
-   Travel Distance   - 0.1
+   Reactivity Error  - 0.6\
+   Power Split Error - 0.2\
+   Travel Distance   - 0.1\
 7. \
-   Reactivity Error  - 0.5
-   Power Split Error - 0.3
-   Diff. Worth Max.  - 0.2
+   Reactivity Error  - 0.5\
+   Power Split Error - 0.3\
+   Diff. Worth Max.  - 0.2\
 
 
