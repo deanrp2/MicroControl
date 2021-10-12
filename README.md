@@ -29,16 +29,18 @@ DEMO PROBLEMS:
     * theoretical best operating condition, startup time not limited by drum rotation speed
 8. no constraints, maximum differential worth
 
-CORE DEMO PROBLEMS
+CORE DEMO PROBLEMS:\
 Problem 5 and 7 were selected to be the main problems used to demonstrate the capabilities of any
 optimization algoritms.
 As such, they are explored further.
 
-OBJECTIVE WEIGHTS:
-5. Reactivity Error  - 0.6
+OBJECTIVE WEIGHTS:\
+5. \
+   Reactivity Error  - 0.6
    Power Split Error - 0.2
    Travel Distance   - 0.1
-7. Reactivity Error  - 0.5
+7. \
+   Reactivity Error  - 0.5
    Power Split Error - 0.3
    Diff. Worth Max.  - 0.2
 
