@@ -47,9 +47,36 @@ As such, they are explored further.
 ## ALGORITHM OPTIMAL PARAMETERS
 ### Demo Problem 5
 * DE
-    * test
-
+    * npop - 10
+    * F - 0.7
+    * CR - 0.2
+* ES
+    * mu - 30
+    * cxpb - 0.7
+    * mutpb - 0.3
+* GWO
+    * nwolves - 25
+* MFO
+    * nmoths - 35
+* WOA
+    * nwhales - 15
 
 ### Demo Problem 7
+* DE
+    * npop - 10
+    * F - 0.8
+    * CR - 0.2
+* ES
+    * mu - 30
+    * cxpb - 0.6
+    * mutpb - 0.3
+* GWO
+    * nwolves - 25
+* MFO
+    * nmoths - 10
+* WOA
+    * nwhales - 30
+
+
 
 
