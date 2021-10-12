@@ -35,7 +35,7 @@ def tune_fit(nmoths):
 
 #provide parameter grids
 param_grid = {
-        "nmoths"      : [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+        "nmoths"      : [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75]}
 
 gtune = GRIDTUNE(param_grid = param_grid, fit = tune_fit)
 if tune:
