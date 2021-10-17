@@ -31,8 +31,8 @@ es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
         ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
 es_x, es_y, es_hist = es.evolute(10000//lambda_ - 1)
 es_helper.close()
-print("x best", np.array(de_x)*180/np.pi)
-print("y best", de_y)
+print("x best", np.array(es_x)*180/np.pi)
+print("y best", es_y)
 
 
 res = get_log(fname)

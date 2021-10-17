@@ -25,8 +25,8 @@ notes_str = "nwhales=%i\n"%(nwhales)
 woa_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 woa = WOA(mode="min", bounds = BOUNDS, fit = woa_helper.fitness, nwhales = nwhales)
 woa_x, woa_y, woa_hist = woa.evolute(10000//nwhales)
-print("x best", np.array(de_x)*180/np.pi)
-print("y best", de_y)
+print("x best", np.array(woa_x)*180/np.pi)
+print("y best", woa_y)
 
 
 res = get_log(fname)

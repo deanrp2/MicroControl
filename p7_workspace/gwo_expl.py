@@ -25,8 +25,8 @@ notes_str = "nwolves=%i\n"%(nwolves)
 gwo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 gwo = GWO(mode="min", bounds = BOUNDS, fit = gwo_helper.fitness, nwolves = nwolves)
 gwo_x, gwo_y, gwo_hist = gwo.evolute(10000//nwolves)
-print("x best", np.array(de_x)*180/np.pi)
-print("y best", de_y)
+print("x best", np.array(gwo_x)*180/np.pi)
+print("y best", gwo_y)
 
 
 res = get_log(fname)
