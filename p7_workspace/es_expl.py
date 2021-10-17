@@ -30,6 +30,9 @@ es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
         ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
 es_x, es_y, es_hist = es.evolute(10000//lambda_ - 1)
+print("x best", np.array(de_x)*180/np.pi)
+print("y best", de_y)
+
 es_helper.close()
 
 res = get_log(fname)
