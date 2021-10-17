@@ -28,6 +28,8 @@ de_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 de = DE(mode="min", bounds = BOUNDS, fit = de_helper.fitness, npop=npop,
         F=F, CR=CR)
 de_x, de_y, de_hist = de.evolute(10000//(2*npop))
+print("x best", np.array(de_x)*180/np.pi)
+print("y best", de_y)
 
 res = get_log(fname)
 

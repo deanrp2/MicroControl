@@ -26,6 +26,9 @@ notes_str = "nmoths=%i,b=%i\n"%(nmoths, b)
 mfo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 mfo = MFO(mode="min", bounds = BOUNDS, fit = mfo_helper.fitness, nmoths = nmoths, b = b)
 mfo_x, mfo_y, mfo_hist = mfo.evolute(10000//nmoths)
+print("x best", np.array(de_x)*180/np.pi)
+print("y best", de_y)
+
 
 res = get_log(fname)
 
