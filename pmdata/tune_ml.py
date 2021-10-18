@@ -25,7 +25,7 @@ seed=1
 
 from neorl.tune import GRIDTUNE, RANDTUNE
 
-tune_method='random'
+tune_method='grid'
 
 def transform_features(x, f='cos'):
     
@@ -43,7 +43,7 @@ def transform_features(x, f='cos'):
 #*********************************************************
 
 #load data
-data = pd.read_csv("qpower_210916.csv", index_col = 0)
+data = pd.read_csv("qpower_full.csv", index_col = 0)
 
 #clean data
 data = utils.qpower_preprocess(data)
@@ -67,8 +67,12 @@ Ytrain=train[resp].values
 Ytest=test[resp].values
 
 #input/output scaling 
-Xtrain = transform_features(Xtrain, f='cos')
-Xtest = transform_features(Xtest, f='cos')
+#Xtrain = transform_features(Xtrain, f='tanh')
+#Xtest = transform_features(Xtest, f='tanh')
+
+#scaler=StandardScaler()
+#Xtrain=scaler.fit_transform(Xtrain)
+#Xtest=scaler.transform(Xtest)
 
 #*********************************************************
 # NN model
@@ -107,7 +111,7 @@ def train_model(num_layers, layer1, layer2, layer3, layer4, layer5, lr, batch_si
     #model.summary()
     #lr_cb = ReduceLROnPlateau(monitor='val_mean_absolute_error', factor=0.9, patience=5, min_lr=0, verbose=1)
     mc_cb = ModelCheckpoint(filepath=model_path, monitor='val_mean_absolute_error', mode='min', save_best_only=True, verbose=0)
-    history=model.fit(Xtrain, Ytrain, epochs=700, batch_size=batch_size, 
+    history=model.fit(Xtrain, Ytrain, epochs=200, batch_size=batch_size, 
                       callbacks=[mc_cb],
                       validation_split = 0.2, verbose=False)
     
@@ -149,23 +153,7 @@ if __name__ == '__main__':
         randres=rtune.tune(ncores=32, csvname='rand_tune.csv')
         randres = randres.sort_values(['score'], axis='index', ascending=False)
         print(randres)
-    
-        #-------------------------
-        #random search summary:
-        #-------------------------
-        #stuck with three layers
-        #First layer 300-400 nodes
-        #second layer 200-300 nodes
-        #third layer 100-200 nodes
-
-        #id   num_layers  layer1  layer2  layer3  layer4  layer5        lr  batch_size     score
-        #154           4     475     235     122      80      50  0.000979          64  0.945764
-        #13            3     343     264     129      50      49  0.000920          64  0.945339
-        #107           5     381     249     174      68      31  0.000940          64  0.945272
-        #106           4     427     275     114      63      27  0.000905          64  0.945265
-        #141           5     438     266     152      88      45  0.000958          64  0.944439
-        
-        
+         
     #*************************************************************
     # Step 2 Refine with grid search
     #*************************************************************
@@ -173,12 +161,12 @@ if __name__ == '__main__':
     if tune_method=='grid': 
         param_grid={
         #order: (num_layers, layer1, layer2, layer3, layer4, layer5, lr, batch_size):
-        'num_layers': [3],
-        'layer1': [343],  
-        'layer2': [264],  
-        'layer3': [129],
-        'layer4': [0],
-        'layer5': [0],
+        'num_layers': [5],
+        'layer1': [437],  
+        'layer2': [258],  
+        'layer3': [101],
+        'layer4': [75],
+        'layer5': [35],
         'lr': [1e-3, 9e-4, 8e-4, 7e-4],
         'batch_size': [8, 16, 32, 64]}  
         
@@ -190,14 +178,4 @@ if __name__ == '__main__':
         gridres=gtune.tune(ncores=32, csvname='grid_tune.csv')
         gridres = gridres.sort_values(['score'], axis='index', ascending=False)
         print(gridres)
-        
-        #-------------------------
-        #grid search summary
-        #-------------------------
-        #id  num_layers  layer1  layer2  layer3  layer4  layer5      lr  batch_size     score
-        #4            3     343     264     129       0       0  0.0010          64  0.948539
-        #15           3     343     264     129       0       0  0.0007          32  0.948029
-        #3            3     343     264     129       0       0  0.0010          32  0.947858
-        #2            3     343     264     129       0       0  0.0010          16  0.947371
-        #14           3     343     264     129       0       0  0.0007          16  0.947330
 
