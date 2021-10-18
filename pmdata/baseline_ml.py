@@ -26,8 +26,6 @@ def transform_features(x, f='cos'):
     
     if f=='cos':
         y=np.cos(x)
-    elif f=='sin':
-        y=np.sin(x)
     elif f=='tanh':
         y=np.tanh(x)
     
@@ -38,7 +36,7 @@ def transform_features(x, f='cos'):
 #*********************************************************
 
 #load data
-data = pd.read_csv("qpower_210916.csv", index_col = 0)
+data = pd.read_csv("qpower_full.csv", index_col = 0)
 
 #clean data
 data = utils.qpower_preprocess(data)
@@ -62,8 +60,15 @@ Ytrain=train[resp].values
 Ytest=test[resp].values
 
 #input/output scaling 
-Xtrain = transform_features(Xtrain, f='cos')
-Xtest = transform_features(Xtest, f='cos')
+
+#use tanh transform
+#Xtrain = transform_features(Xtrain, f='tanh')
+#Xtest = transform_features(Xtest, f='tanh')
+
+#standard scaler
+#scaler=StandardScaler()
+#Xtrain=scaler.fit_transform(Xtrain)
+#Xtest=scaler.transform(Xtest)
 
 
 #*********************************************************
@@ -105,18 +110,20 @@ print('LR Summary:', 'MAE=',lr_mae, 'RMSE=',lr_rmse, 'R2=', lr_r2)
 #*********************************************************
 # NN model
 #*********************************************************
-
+#best network model
 model = Sequential()
-model.add(Dense(400,input_dim = Xtrain.shape[1], activation='relu'))
-model.add(Dense(200, activation='relu'))
-model.add(Dense(100, activation='relu'))
+model.add(Dense(437,input_dim = Xtrain.shape[1], activation='relu'))
+model.add(Dense(258, activation='relu'))
+model.add(Dense(101, activation='relu'))
+model.add(Dense(75, activation='relu'))
+model.add(Dense(35, activation='relu'))
 model.add(Dense(Ytrain.shape[1], activation='linear'))
-model.compile(loss='mean_absolute_error', optimizer=Adam(1e-3), metrics=['mean_absolute_error'])
+model.compile(loss='mean_absolute_error', optimizer=Adam(9e-4), metrics=['mean_absolute_error'])
 model.summary()
 mc_cb = ModelCheckpoint(filepath='power_model.h5', monitor='val_mean_absolute_error', mode='min', save_best_only=True, verbose=0)
 #lr_cb = ReduceLROnPlateau(monitor='val_mean_absolute_error', factor=0.95, patience=10, min_lr=0, verbose=1)
-history=model.fit(Xtrain, Ytrain, epochs=700, batch_size=64, 
-                  validation_split = 0.2, callbacks=[mc_cb], verbose=False)
+history=model.fit(Xtrain, Ytrain, epochs=200, batch_size=8, 
+                  validation_split = 0.2, callbacks=[mc_cb], verbose=True)
 
 model=load_model('power_model.h5')
 Ynn=model.predict(Xtest)
