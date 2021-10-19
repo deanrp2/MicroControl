@@ -26,7 +26,7 @@ class QPowerModel:
         self.raw_model = load_model(model_file)
 
     def eval(self, pert):
-        pertn = np.array([transform_features(pert), ])
+        pertn = np.array([pert, ])
         unorm = self.raw_model.predict(pertn).flatten()
         return unorm/unorm.sum()
 
