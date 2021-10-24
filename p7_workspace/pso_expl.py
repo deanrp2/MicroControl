@@ -21,14 +21,14 @@ wts = [0.5, 0.3, 0.2]
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 9)}
 
 npar = 50
-c1 = 2.05
+c1 = 2.15
 c2 = 2.05
-speed_mech = "timew"
+speed_mech = "constric"
 notes_str = "npar=%i, c1=%f, c2=%f, speed_mech=%s\n"%(npar, c1, c2, speed_mech)
 pso_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 pso = PSO(mode="min", bounds = BOUNDS, fit = pso_helper.fitness,
         ncores=1, npar = npar, c1 = c1, c2 = c2, speed_mech=speed_mech)
-pso_x, pso_y, pso_hist = pso.evolute(1000//npar - 1)
+pso_x, pso_y, pso_hist = pso.evolute(10000//npar - 1)
 print("x best", np.array(pso_x)*180/np.pi)
 print("y best", pso_y)
 
