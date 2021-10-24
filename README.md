@@ -60,6 +60,13 @@ As such, they are explored further.
     * nmoths - 35
 * WOA
     * nwhales - 15
+* HHO
+    * nhawks - 30
+* PSO
+    * npar - 50
+    * c1 - 2.05
+    * c2 - 2.15
+    * speed_mech - constric
 
 ### Demo Problem 7
 * DE
@@ -76,6 +83,13 @@ As such, they are explored further.
     * nmoths - 10
 * WOA
     * nwhales - 30
+* HHO
+    * nhawks - 60
+* PSO
+    * npar - 50
+    * c1 - 2.15
+    * c2 - 2.05
+    * speed_mech - constric
 
 
 
