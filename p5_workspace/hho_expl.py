@@ -20,7 +20,7 @@ wts = [0.6, 0.2, 0.1]
 
 BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-nhawks = 10
+nhawks = 30
 notes_str = "nhawks=%i\n"%(nhawks)
 hho_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 hho = HHO(mode="min", bounds = BOUNDS, fit = hho_helper.fitness,
