@@ -25,7 +25,7 @@ notes_str = "nhawks=%i\n"%(nhawks)
 hho_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 hho = HHO(mode="min", bounds = BOUNDS, fit = hho_helper.fitness,
         ncores=1, nhawks = nhawks)
-hho_x, hho_y, hho_hist = hho.evolute(int(1000//(1.7*nhawks)))
+hho_x, hho_y, hho_hist = hho.evolute(int(10000//(1.7*nhawks)))
 print("x best", np.array(hho_x)*180/np.pi)
 print("y best", hho_y)
 

@@ -28,7 +28,7 @@ notes_str = "npar=%i, c1=%f, c2=%f, speed_mech=%s\n"%(npar, c1, c2, speed_mech)
 pso_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 pso = PSO(mode="min", bounds = BOUNDS, fit = pso_helper.fitness,
         ncores=1, npar = npar, c1 = c1, c2 = c2, speed_mech=speed_mech)
-pso_x, pso_y, pso_hist = pso.evolute(1000//(1+npar))
+pso_x, pso_y, pso_hist = pso.evolute(10000//(1+npar))
 pso_helper.close()
 print("x best", np.array(pso_x)*180/np.pi)
 print("y best", pso_y)
