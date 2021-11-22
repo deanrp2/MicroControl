@@ -26,18 +26,21 @@ BOUNDS = {"x%i"%i : ["float", -np.pi, np.pi] for i in range(1, 9)}
 
 #optimize
 #  Differential evolution
+print("Starting DE...")
 de = DE(mode = "max", bounds = BOUNDS, fit = fitness, npop=50,
         CR = 0.5, F = 0.7, ncores = 1)
-de_x, de_y, de_hist = de.evolute(ngen = 100)
+de_x, de_y, de_hist = de.evolute(ngen = 60)
 
 #  Evolution strategies
+print("Starting ES...")
 es = ES(mode = "max", bounds = BOUNDS, fit = fitness, lambda_ = 40,
         mu = 30, ncores = 1)
-es_x, es_y, es_hist = de.evolute(ngen = 100)
+es_x, es_y, es_hist = de.evolute(ngen = 60)
 
 # Modern pesa
+print("Starting PESA...")
 psa = PESA2(mode = "max", bounds = BOUNDS, fit = fitness)
-psa_x, psa_y, psa_hist = psa.evolute(ngen = 100)
+psa_x, psa_y, psa_hist = psa.evolute(ngen = 60)
 
 
 ans = {"Differential Evolution" : [de_x, de_hist],
