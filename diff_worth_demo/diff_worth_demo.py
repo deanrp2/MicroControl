@@ -1,83 +1,95 @@
-#demonstration of reactivity worth as fxn of time after accident
-# for all even drums and maximum differential worth for drums
-
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as so
+import sys
+import scipy.interpolate as si
+import scipy.ndimage as nd
 
+sys.path.append("..")
 
 from reactivity_model import ReactivityModel
 
 rmodel = ReactivityModel()
 
-#use maximum diffferential worth config from demo problem 8
-mdiff_config = np.array([-142.9, -97.5, 46.6, -28.9, 51.6, 46.9, -94.6, 136.6])/180*np.pi
-#mdiff_config = np.array([120, 100, 120, 120, 100, 100, 120, 100])/180*np.pi
+plot = True
 
+#use maximum diffferential worth config from demo problem 8
+#set of configs to run scram with, name and config as dict
+configs = {"maximum_diff" : np.array([-142.9, -97.5, 46.6, -28.9, 51.6, 46.9, -94.6, 136.6])/180*np.pi}
 
 #run optimization to find even config that matches the integral worth
-target_reactivity = rmodel.eval(mdiff_config)
+target_reactivity = rmodel.eval(configs["maximum_diff"])
 
 def fit(x):
     thetas = np.zeros(8) + x
     return np.abs(target_reactivity - rmodel.eval(thetas))
 
 res = so.minimize(fit, x0 = np.array([0]), bounds = [(-np.pi, np.pi)])
-even_config = np.ones(8)*res.x
+configs["even"] = np.ones(8)*res.x
 
 
-#print difference in diffy worth
-print("Even diff worth", np.abs(rmodel.evalg(even_config)).sum())
-print("Max diff worth", np.abs(rmodel.evalg(mdiff_config)).sum())
+#print difference in configs[n]
+for n in configs:
+    print(n, "diff worth", np.abs(rmodel.evalg(configs[n])).sum())
 
 # generate curves of reactivity vs time for a shutdown
 max_drum_speed = 2 #deg/s
 max_drum_speed = max_drum_speed/180*np.pi #rad/s
 
-dt = 0.1
+#run simulation
+dt = 1
 
-mdiff_r = []
-even_r = []
-ts = []
+reactivity_log = {} #reactivity log
+config_log = {} #drum config logs
+for n, c in configs.items():
+    reactivity_log[n] = []
+    config_log[n] = []
 
-#time loop 
+ts = [] #time axis
+
 t = 0.
+tf = 80.
 
-md = []
-ev = []
-while rmodel.eval(mdiff_config) > 3e-5:
-    md.append(mdiff_config.copy())
-    ev.append(even_config.copy())
-    #print(rmodel.eval(mdiff_config))
-    #calculate integral worth
-    mdiff_r.append(rmodel.eval(mdiff_config))
-    even_r.append(rmodel.eval(even_config))
+#time loop
+while t < tf:
+    print(t)
+    for n, c in configs.items():
+        config_log[n].append(configs[n].copy())
+        reactivity_log[n].append(rmodel.eval(c))
     ts.append(t)
 
     #move drums
-    mdiff_grad = rmodel.evalg(mdiff_config)
-    even_grad = rmodel.evalg(even_config)
-    for i in range(8):
-        if mdiff_grad[i] < 0:
-            mdiff_config[i] += max_drum_speed*dt
-        else:
-            mdiff_config[i] -= max_drum_speed*dt
-        if even_grad[i] < 0:
-            even_config[i] += max_drum_speed*dt
-        else:
-            even_config[i] -= max_drum_speed*dt
+    for n in configs:
+        grad = rmodel.evalg(configs[n])
+        for i in range(8):
+            if grad[i] < 0:
+                configs[n][i] += max_drum_speed*dt
+            else:
+                configs[n][i] -= max_drum_speed*dt
+
     #update time
     t += dt
-md = np.array(md)
-ev = np.array(ev)
-fig, ax = plt.subplots(1,2, sharey = True)
-for i in range(8):
-    ax[0].plot(ts, md[:,i])
-    ax[1].plot(ts, ev[:,i])
-ax[0].set_title("max worth")
-ax[1].set_title("even")
-plt.figure()
-plt.plot(ts, mdiff_r, "k.-", label = "max diff worth")
-plt.plot(ts, even_r, "b.-", label = "even drums")
-plt.legend()
-plt.show()
+
+for n in configs:
+    reactivity_log[n] = np.array(reactivity_log[n])
+    config_log[n] = np.array(config_log[n])
+
+
+if plot:
+    fig, ax = plt.subplots(1,len(list(configs.keys())), sharey = True)
+    for i, n in enumerate(list(configs.keys())):
+        ax[i].set_title(n)
+        for j in range(8):
+            ax[i].plot(ts, config_log[n][:,j]*180/np.pi, "k", alpha = .1*j+.3)
+    fig.tight_layout()
+    ax[0].set_ylabel("drum angles")
+    fig, ax = plt.subplots(1, 1)
+    for n in configs:
+        ax.plot(ts, reactivity_log[n], ".-", label = n)
+    plt.legend()
+    plt.show()
+
+
+
+
+
