@@ -45,7 +45,7 @@ def make_objs():
         return np.abs(predicted - t_splits).sum()
     tgt_splits = Objective("psplit_err", "min", 7, qpower, 0, max_off)
 
-    #min max travel distance objective
+    #differential worth objective
     def diffworth(x):
         thetas = np.asarray(x)
         return np.abs(a.evalg(thetas)).sum()
