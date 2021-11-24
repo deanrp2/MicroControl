@@ -37,7 +37,7 @@ max_drum_speed = 2 #deg/s
 max_drum_speed = max_drum_speed/180*np.pi #rad/s
 
 #run simulation
-dt = 1
+dt = 0.5
 
 reactivity_log = {} #reactivity log
 config_log = {} #drum config logs
@@ -62,7 +62,8 @@ while t < tf:
     for n in configs:
         grad = rmodel.evalg(configs[n])
         for i in range(8):
-            if grad[i] < 0:
+            #if grad[i] < 0:
+            if configs[n][i] < 0:
                 configs[n][i] += max_drum_speed*dt
             else:
                 configs[n][i] -= max_drum_speed*dt
@@ -85,7 +86,9 @@ if plot:
     ax[0].set_ylabel("drum angles")
     fig, ax = plt.subplots(1, 1)
     for n in configs:
-        ax.plot(ts, reactivity_log[n], ".-", label = n)
+        ax.plot(ts, reactivity_log[n]*1e5, ".-", label = n)
+    ax.set_xlabel("time [s]")
+    ax.set_ylabel("reactivity")
     plt.legend()
     plt.show()
 
