@@ -76,7 +76,7 @@ def plot_progress(fit_vals, n_steps, theme = "g", ax = None,
     if ax is None:
         fig, ax = plt.subplots(1, 1, figsize = (6, 6))
 
-        ravg, rstd, rmax, rmin=calc_cumavg(fit_vals, n_steps)
+    ravg, rstd, rmax, rmin=calc_cumavg(fit_vals, n_steps)
     epochs=np.array(range(1,len(ravg)+1),dtype=int)
     l1 = ax.plot(epochs, ravg,'-o', c=theme, label='Average per generation', markersize = m,
             linewidth = .8)
