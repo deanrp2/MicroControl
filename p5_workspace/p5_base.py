@@ -106,22 +106,27 @@ def plot_objs(res, ax =  None, c = "k"):
         np.maximum.accumulate(x, axis=0, out=x)
         return x
     if ax is None:
-        fig, ax = plt.subplots(2, 2, figsize = (8, 6))
+        fig, ax = plt.subplots(2, 2, figsize = (8, 6), sharex = True)
         ax = ax.flatten()
     titles = ["react_err_obj", "psplit_err_obj", "tdist_obj",
             "fitness"]
+    titless = ["Reactivity", "Power Split", "Travel Dist.", r"Tot. Fitness"]
+    ylabs = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_d$ [$^\circ$]",r"$F$"]
     m = cumargmin(res["fitness"].values)
     for i in range(4):
-        ax[i].set_title(titles[i])
-        if titles[i] == "react_err_obj":
+        ax[i].set_title(titless[i])
+        if titless[i] == "Reactivity":
             v = res[titles[i]]*1e5
-        elif titles[i] == "tdist_obj":
+        elif titless[i] == "Travel Dist.":
             v = res[titles[i]]*180/np.pi
         else:
             v = res[titles[i]]
-        ax[i].plot(res.index, v, c, linewidth = 1, alpha = .4)
+        ax[i].semilogy(res.index, v, c, linewidth = 1, alpha = .4)
         ax[i].plot(res.index, v.iloc[m], c,
             linewidth = 3)
+        ax[i].set_ylabel(ylabs[i])
+        if i > 1:
+            ax[i].set_xlabel(r"$F(\vec{x})$ Evals.")
     plt.tight_layout()
     return ax
 
