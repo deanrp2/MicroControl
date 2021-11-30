@@ -70,25 +70,31 @@ def calc_cumavg(data, N):
 
     return cum_aves, cum_std, cum_max, cum_min
 
-def plot_progress(fit_vals, n_steps, theme = "g"):
+def plot_progress(fit_vals, n_steps, theme = "g", ax = None,
+        legend = True):
     """
     fit_vals: NEORL predicted fitness values in numpy vector
     n_steps: population size, e.g. npop, nwolves, nwhales, etc.
     pngname: figure name
     """
-    plt.figure()
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, figsize = (6, 6))
+
     ravg, rstd, rmax, rmin=calc_cumavg(fit_vals, n_steps)
     epochs=np.array(range(1,len(ravg)+1),dtype=int)
-    plt.plot(epochs, ravg,'-o', c=theme, label='Average per generation')
+    l1 = ax.plot(epochs, ravg,'-o', c=theme, label='Average per generation')
 
-    plt.fill_between(epochs,[a_i - b_i for a_i, b_i in zip(ravg, rstd)], [a_i + b_i for a_i, b_i in zip(ravg, rstd)],
+    l2 = ax.fill_between(epochs,[a_i - b_i for a_i, b_i in zip(ravg, rstd)], [a_i + b_i for a_i, b_i in zip(ravg, rstd)],
     alpha=0.2, edgecolor=theme, facecolor=theme, label=r'$1-\sigma$ per generation')
 
-    plt.plot(epochs, rmax,'s', c='k', label='Max per generation', markersize=4)
-    plt.plot(epochs,rmin,'d', c='k', label='Min per generation', markersize=4)
-    plt.legend()
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness')
+    l3 = ax.plot(epochs, rmax,'s', c='k', label='Max per generation', markersize=4)
+    l4 = ax.plot(epochs,rmin,'d', c='k', label='Min per generation', markersize=4)
+    if legend is True:
+        ax.legend()
+
+    ax.set_xlabel('Generation')
+    ax.set_ylabel('Fitness')
+    return l1[0], l2, l3[0], l4[0]
 
 def plot_objs(res, ax =  None, c = "k"):
     def cumargmin(a):
