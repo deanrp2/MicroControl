@@ -11,7 +11,7 @@ from woa_expl import woa_expl
 
 from p5_base import plot_progress, plot_objs
 
-fevals = 1000
+fevals = 10000
 
 #de_x, de_y, de_hist, de_res, de_npop = de_expl(fevals)
 #es_x, es_y, es_hist, es_res, es_lambda_ = es_expl(fevals)
@@ -35,7 +35,8 @@ fig, ax = plt.subplots(3, 2, sharey = True, figsize = (6, 7))
 ax = ax.flatten()
 
 for i in range(6):
-    handles = plot_progress(es[i][3]["fitness"], es[i][4], ax = ax[i], legend = False)
+    handles = plot_progress(es[i][3]["fitness"], es[i][4], ax = ax[i], legend = False,
+            m = 1.3)
     if i < 4:
         ax[i].set_xlabel("")
     if i % 2 == 1:
@@ -44,7 +45,7 @@ for i in range(6):
 
 lbls = ["gen. ave.", r"gen. 1-$\sigma$", "gen. max", "gen. min"]
 fig.legend(handles, lbls, loc="upper center", ncol = 4)#, bbox_to_anchor=(2,0), loc = "lower right")
-plt.subplots_adjust(top = 0.9, bottom = .09, left=0.1, right=.97, wspace=0.04, hspace=0.35)
+plt.subplots_adjust(top = 0.9, bottom = .09, left=0.1, right=.97, wspace=0.07, hspace=0.35)
 #plt.tight_layout()
 
 
