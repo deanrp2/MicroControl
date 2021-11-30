@@ -29,13 +29,12 @@ def woa_expl(fevals):
     res = get_log(fname)
     return woa_x, woa_y, woa_hist, res, nwhales
 
-woa_x, woa_y, woa_hist, res, nwhales = woa_expl(10000)
+if __name__ == "__main__":
+    woa_x, woa_y, woa_hist, res, nwhales = woa_expl(10000)
 
-print("x best", np.array(woa_x)*180/np.pi)
-print("y best", woa_y)
+    print("x best", np.array(woa_x)*180/np.pi)
+    print("y best", woa_y)
 
-
-
-plot_progress(res["fitness"], nwhales)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], nwhales)
+    plot_objs(res)
+    plt.show()

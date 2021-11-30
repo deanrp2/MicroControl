@@ -30,13 +30,12 @@ def mfo_expl(fevals):
     res = get_log(fname)
     return mfo_x, mfo_y, mfo_hist, res, nmoths
 
-mfo_x, mfo_y, mfo_hist, res, nmoths = mfo_expl(10000)
+if __name__ == "__main__":
+    mfo_x, mfo_y, mfo_hist, res, nmoths = mfo_expl(10000)
 
-print("x best", np.array(mfo_x)*180/np.pi)
-print("y best", mfo_y)
+    print("x best", np.array(mfo_x)*180/np.pi)
+    print("y best", mfo_y)
 
-
-
-plot_progress(res["fitness"], nmoths)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], nmoths)
+    plot_objs(res)
+    plt.show()

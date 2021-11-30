@@ -31,13 +31,12 @@ def hho_expl(fevals):
     res = get_log(fname)
     return hho_x, hho_y, hho_hist, res, nhawks
 
-hho_x, hho_y, hho_hist, res, nhawks = hho_expl(10000)
+if __name__ == "__main__":
+    hho_x, hho_y, hho_hist, res, nhawks = hho_expl(10000)
 
-print("x best", np.array(hho_x)*180/np.pi)
-print("y best", hho_y)
+    print("x best", np.array(hho_x)*180/np.pi)
+    print("y best", hho_y)
 
-
-
-plot_progress(res["fitness"], nhawks)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], nhawks)
+    plot_objs(res)
+    plt.show()

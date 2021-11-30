@@ -30,12 +30,13 @@ def gwo_expl(fevals):
     gwo_helper.close()
     return gwo_x, gwo_y, gwo_hist, res, nwolves
 
-gwo_x, gwo_y, gwo_hist, res, nwolves = gwo_expl(10000)
+if __name__ == "__main__":
+    gwo_x, gwo_y, gwo_hist, res, nwolves = gwo_expl(10000)
 
-print("x best", np.array(gwo_x)*180/np.pi)
-print("y best", gwo_y)
+    print("x best", np.array(gwo_x)*180/np.pi)
+    print("y best", gwo_y)
 
 
-plot_progress(res["fitness"], nwolves)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], nwolves)
+    plot_objs(res)
+    plt.show()

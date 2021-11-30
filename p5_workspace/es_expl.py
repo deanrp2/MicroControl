@@ -35,12 +35,11 @@ def es_expl(fevals):
     res = get_log(fname)
     return es_x, es_y, es_hist, res, lambda_
 
-es_x, es_y, es_hist, res, lambda_ = es_expl(10000)
-print("x best", np.array(es_x)*180/np.pi)
-print("y best", es_y)
+if __name__ == "__main__":
+    es_x, es_y, es_hist, res, lambda_ = es_expl(10000)
+    print("x best", np.array(es_x)*180/np.pi)
+    print("y best", es_y)
 
-
-
-plot_progress(res["fitness"], lambda_)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], lambda_)
+    plot_objs(res)
+    plt.show()

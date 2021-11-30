@@ -34,12 +34,11 @@ def pso_expl(fevals):
     res = get_log(fname)
     return pso_x, pso_y, pso_hist, res, npar
 
-pso_x, pso_y, pso_hist, res, npar = pso_expl(10000)
-print("x best", np.array(pso_x)*180/np.pi)
-print("y best", pso_y)
+if __name__ == "__main__":
+    pso_x, pso_y, pso_hist, res, npar = pso_expl(10000)
+    print("x best", np.array(pso_x)*180/np.pi)
+    print("y best", pso_y)
 
-
-
-plot_progress(res["fitness"], npar)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], npar)
+    plot_objs(res)
+    plt.show()

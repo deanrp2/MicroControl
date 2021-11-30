@@ -33,13 +33,12 @@ def de_expl(fevals):
     de_helper.close()
     return de_x, de_y, de_hist, res, npop
 
-de_x, de_y, de_hist, res, npop = de_expl(10000)
+if __name__ == "__main__":
+    de_x, de_y, de_hist, res, npop = de_expl(10000)
 
-print("x best", np.array(de_x)*180/np.pi)
-print("y best", de_y)
+    print("x best", np.array(de_x)*180/np.pi)
+    print("y best", de_y)
 
-
-
-plot_progress(res["fitness"], npop)
-plot_objs(res)
-plt.show()
+    plot_progress(res["fitness"], npop)
+    plot_objs(res)
+    plt.show()
