@@ -3,79 +3,33 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-def group(ara2):
-    temp = (ara - ara.mean(0))/ara.std(0)
-    km = KMeans(n_clusters = 2).fit(temp)
-    return km.labels_
+fnames = ["hist_p33p33p33.dat", "hist_p5p4p1.dat", "hist_p6p2p1.dat"]
+wts = [[.33,.33,.33],[.5,.4,.1],[.6,.2,.1]]
+ylims = [[0,75],[0,0.01],[110, 210]]
+nbins = 25
 
-grouping = True
-sets = [0] #which of the figures to plot
-
-fs = ["log/hist_150_even.dat"]#, "log/hist_0p5.dat","log/hist_0p6.dat",
-        #"log/hist_0p7.dat","log/hist_0p8.dat",]
-
-
-
-titles = ["even"]#, "react .5", "react .6", "react .7", "react .8" ]
+fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row")
 
 colmns = ["rerr", "psplit", "tdist", "obj"] + ["x%i"%i for i in range(1, 8)]
-for i, f in enumerate(fs):
-    a = np.genfromtxt(f, delimiter = ",")
-    ara = pd.DataFrame(a, columns = colmns)
-    if grouping:
-        #gp = group(ara[["x%i"%ii for ii in range(1, 8)]]) #for only drum positions used in grouping
-        gp = group(ara) #for all used in grouping
-    else:
-        gp = np.zeros(ara.shape[0])
+nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_d$ [$^\circ$]"]
+colors = ["k", "r", "b"]
+for i, wt in enumerate(wts):
+    data = np.genfromtxt("log/" + fnames[i], delimiter = ",")
+    ara = pd.DataFrame(data, columns = colmns)
+    for j, n in enumerate(colmns[:3]):
+        bbs = np.linspace(*ylims[j], nbins)
+        ax[j,i].hist(ara[n], bins = bbs, color = colors[j], rwidth = 1, edgecolor = "k",
+                density = True, orientation="horizontal", linewidth = 1, alpha = .5)
+        plt.setp(ax[j,i].get_xticklabels(), fontsize="small")
+        plt.setp(ax[j,i].get_yticklabels(), fontsize="small")
+    ax[i, 0].set_ylabel(nicenames[i], rotation = 0, labelpad = 12, ha = "right")
+    ax[0, i].set_title(r"w$_c$=%.2f, w$_ p$=%.2f, w$_ d$=%.2f"%(wt[0], wt[1], wt[2]), fontsize = 10)
+    ax[2, i].set_xlabel("density")
 
-    if 0 in sets:
-        fig, ax = plt.subplots(1, 1)
-        ax.hist(ara["rerr"], bins = "auto", color = "#0504aa", rwidth=0.85,
-                density = True)
-        ax.set_xlabel("Reactivity Error")
-        ax.set_ylabel("Freq")
-        ax.set_xlim([0, 800])
-        ax.set_title(titles[i])
+    ax[i,0].set_ylim(ylims[i])
 
-    if 1 in sets:
-        fig, ax = plt.subplots(1, 1)
-        ax.hist(ara["psplit"], bins = "auto", color = "purple", rwidth=0.85,
-                density = True)
-        ax.set_xlabel("Power Split Error")
-        ax.set_ylabel("Freq")
-        ax.set_title(titles[i])
+plt.tight_layout()
 
-    if 2 in sets:
-        fig, ax = plt.subplots(1, 1)
-        ax.plot(ara["rerr"].iloc[(gp == 0)], ara["psplit"].iloc[(gp == 0)], "k.")
-        ax.plot(ara["rerr"].iloc[(gp == 1)], ara["psplit"].iloc[(gp == 1)], "kx")
-        ax.set_xlabel("reactivity error")
-        ax.set_ylabel("power split error")
-        ax.set_title(titles[i])
-
-    if 3 in sets:
-        fig, ax = plt.subplots(1,1)
-        ax.plot(ara["rerr"].iloc[(gp == 0)], ara["obj"].iloc[(gp == 0)], "k.")
-        ax.plot(ara["rerr"].iloc[(gp == 1)], ara["obj"].iloc[(gp == 1)], "kx")
-        ax.set_xlabel("reactivity error")
-        ax.set_ylabel("fitness")
-        ax.set_title(titles[i])
-
-    if 4 in sets:
-        fig, ax = plt.subplots(2, 4, figsize = (12, 7), sharex = True, sharey = True)
-        fig.suptitle(titles[i])
-        ax = ax.flatten()
-        colors = ["#0504aa", "red"]
-        labels = [".","x"]
-        for k in [0, 1]:
-            for j in range(7):
-                ax[j].hist(ara["x%i"%(j + 1)].iloc[(gp==k)], bins = 50, color = colors[k], rwidth=0.85,
-                        density = True, alpha = 0.4, label = labels[k])
-                ax[j].set_xlim([-180, 180])
-                ax[j].legend()
-            print(np.sum(gp == k), "in group", k)
-        plt.subplots_adjust(wspace=0, hspace=0)
-
-
-
+fig.subplots_adjust(wspace = .15)
 plt.show()
+
