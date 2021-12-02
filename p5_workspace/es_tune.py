@@ -15,9 +15,9 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
 #perform tune or just print current results?
-tune = False
+tune = True
 #tuning logfile
-tlog = Path("log/es_tune.log")
+tlog = Path("log/tune_es.dat")
 
 #get and configure objective function
 fname = Path("log/es_%s.log"%rid()) #logger name for objecrive function
