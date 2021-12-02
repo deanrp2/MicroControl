@@ -36,8 +36,8 @@ As such, they are explored further.
 
 ## OBJECTIVE WEIGHTS:
 ### Demo Problem 5
-   Reactivity Error  - 0.6\
-   Power Split Error - 0.2\
+   Reactivity Error  - 0.5\
+   Power Split Error - 0.4\
    Travel Distance   - 0.1
 ### Demo Problem 7
    Reactivity Error  - 0.5\
@@ -47,26 +47,26 @@ As such, they are explored further.
 ## ALGORITHM OPTIMAL PARAMETERS
 ### Demo Problem 5
 * DE
-    * npop - 10
-    * F - 0.7
-    * CR - 0.2
+    * npop - 
+    * F - 
+    * CR - 
 * ES
-    * mu - 30
-    * cxpb - 0.7
-    * mutpb - 0.3
+    * mu - 
+    * cxpb - 
+    * mutpb - 
 * GWO
-    * nwolves - 25
+    * nwolves - 
 * MFO
-    * nmoths - 35
+    * nmoths - 
 * WOA
-    * nwhales - 15
+    * nwhales - 
 * HHO
-    * nhawks - 30
+    * nhawks - 
 * PSO
-    * npar - 50
-    * c1 - 2.05
-    * c2 - 2.15
-    * speed_mech - constric
+    * npar - 
+    * c1 - 
+    * c2 - 
+    * speed_mech - 
 
 ### Demo Problem 7
 * DE
