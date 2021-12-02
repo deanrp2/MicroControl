@@ -60,4 +60,5 @@ for i in range(I):
         for ii in range(7):
             f.write(",%.3f"%drumangles[-1][ii])
         f.write("\n")
+    es_helper.close()
 
