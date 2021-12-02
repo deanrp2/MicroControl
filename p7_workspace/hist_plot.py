@@ -5,14 +5,14 @@ from sklearn.cluster import KMeans
 
 fnames = ["hist_p33p33p33.dat", "hist_p5p3p2.dat", "hist_p6p2p2.dat"]
 wts = [[.33,.33,.33],[.5,.4,.1],[.6,.2,.1]]
-ylims = [[0,75],[0,0.01],[110, 210]]
+ylims = [[0,25],[0,0.001],[0, 50]]
 nbins = 25
 
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row")
 
-colmns = ["rerr", "psplit", "tdist", "obj"] + ["x%i"%i for i in range(1, 8)]
-nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_d$ [$^\circ$]"]
-colors = ["k", "r", "b"]
+colmns = ["rerr", "psplit", "diffworth", "obj"] + ["x%i"%i for i in range(1, 8)]
+nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_w$ [pcm/rad]"]
+colors = ["k", "r", "g"]
 for i, wt in enumerate(wts):
     data = np.genfromtxt("log/" + fnames[i], delimiter = ",")
     ara = pd.DataFrame(data, columns = colmns)
@@ -32,4 +32,3 @@ plt.tight_layout()
 
 fig.subplots_adjust(wspace = .15)
 plt.show()
-
