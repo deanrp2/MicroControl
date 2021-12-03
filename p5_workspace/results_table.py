@@ -12,7 +12,6 @@ from woa_expl import woa_expl
 
 from p5_base import plot_progress, plot_objs
 
-#fevals = 10000
 fevals = 10000
 runs = 10
 
@@ -33,8 +32,11 @@ es = [[fs[i](fevals) for i in places] for _ in range(runs)]
 print("Calcs done!")
 #names = [all_names[i] for i in places]
 
+table = open("results_table.txt", "w")
+table.write("fevals: %i\n"%fevals)
+table.write("runs: %i\n"%runs)
+
 for i in range(len(places)):
-    print(all_names[i])
     outss = [k[i] for k in es]
     xs = np.zeros((runs, 7))
     ys = np.zeros(runs)
@@ -52,14 +54,15 @@ for i in range(len(places)):
     fc *= 1e5
     fd = fd*180/np.pi
 
-    print("xs mean", xs.mean(0))
-    print("xs std", xs.std(0))
-    print("y mean", ys.mean())
-    print("y std", ys.std())
-    print("fc mean", fc.mean())
-    print("fc std", fc.std())
-    print("fp mean", fp.mean())
-    print("fp std", fp.std())
-    print("fd mean", fd.mean())
-    print("fd std", fd.std())
-
+    table.write(all_names[i])
+    table.write("xs mean", xs.mean(0))
+    table.write("xs std", xs.std(0))
+    table.write("y mean", ys.mean())
+    table.write("y std", ys.std())
+    table.write("fc mean", fc.mean())
+    table.write("fc std", fc.std())
+    table.write("fp mean", fp.mean())
+    table.write("fp std", fp.std())
+    table.write("fd mean", fd.mean())
+    table.write("fd std", fd.std())
+table.close()
