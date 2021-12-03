@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+print("no bimodal behavior observed")
 
 fnames = ["hist_p25p45p3_g100.dat", "hist_p2p5p3_g100.dat", "hist_p3p4p3_g100.dat"]
 wts = [[.25,.45,.3],[.2,.5,.3],[.3,.4,.3]]
