@@ -7,7 +7,7 @@ print("no bimodal behavior observed")
 fnames = ["hist_p25p45p3_g100.dat", "hist_p2p5p3_g100.dat", "hist_p3p4p3_g100.dat"]
 wts = [[.25,.45,.3],[.2,.5,.3],[.3,.4,.3]]
 ylims = [[0,1750],[0,0.0075],[50, 200]]
-nbins = 25
+nbins = 40
 
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row")
 
