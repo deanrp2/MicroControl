@@ -21,7 +21,7 @@ def woa_expl(fevals):
 
     BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
 
-    nwhales = 15
+    nwhales = 35
     notes_str = "nwhales=%i\n"%(nwhales)
     woa_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
     woa = WOA(mode="min", bounds = BOUNDS, fit = woa_helper.fitness, nwhales = nwhales)
