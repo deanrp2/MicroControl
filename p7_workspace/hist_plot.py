@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
 fnames = ["hist_p33p33p33.dat", "hist_p5p3p2.dat", "hist_p6p2p2.dat"]
-wts = [[.33,.33,.33],[.5,.4,.1],[.6,.2,.1]]
+wts = [[.33,.33,.33],[.5,.3,.2],[.6,.2,.2]]
 ylims = [[0,25],[0,0.001],[0, 50]]
 nbins = 25
 
