@@ -6,9 +6,9 @@ from sklearn.cluster import KMeans
 fnames = ["hist_p33p33p33.dat", "hist_p5p4p1.dat", "hist_p6p2p1.dat"]
 wts = [[.33,.33,.33],[.5,.4,.1],[.6,.2,.1]]
 ylims = [[0,75],[0,0.01],[110, 210]]
-nbins = 25
+nbins = 23
 
-fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row")
+fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
 
 colmns = ["rerr", "psplit", "tdist", "obj"] + ["x%i"%i for i in range(1, 8)]
 nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_d$ [$^\circ$]"]

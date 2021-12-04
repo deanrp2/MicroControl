@@ -8,7 +8,7 @@ wts = [[.33,.33,.33],[.5,.3,.2],[.6,.2,.2]]
 ylims = [[0,25],[0,0.001],[0, 50]]
 nbins = 25
 
-fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row")
+fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
 
 colmns = ["rerr", "psplit", "diffworth", "obj"] + ["x%i"%i for i in range(1, 8)]
 nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_w$ [pcm/rad]"]
