@@ -13,7 +13,7 @@ from woa_expl import woa_expl
 from p5_base import plot_progress, plot_objs
 
 fevals = 10000
-runs = 10
+runs = 15
 
 #de_x, de_y, de_hist, de_res, de_npop = de_expl(fevals)
 #es_x, es_y, es_hist, es_res, es_lambda_ = es_expl(fevals)
@@ -54,15 +54,17 @@ for i in range(len(places)):
     fc *= 1e5
     fd = fd*180/np.pi
 
-    table.write(all_names[i])
-    table.write("xs mean", xs.mean(0))
-    table.write("xs std", xs.std(0))
-    table.write("y mean", ys.mean())
-    table.write("y std", ys.std())
-    table.write("fc mean", fc.mean())
-    table.write("fc std", fc.std())
-    table.write("fp mean", fp.mean())
-    table.write("fp std", fp.std())
-    table.write("fd mean", fd.mean())
-    table.write("fd std", fd.std())
+    table.write(all_names[i] + "\n")
+    table.write("xs mean")
+    [table.write(" %E"%a) for a in xs.mean(0)]
+    table.write("\nxs std")
+    [table.write(" %E"%a) for a in xs.std(0)]
+    table.write("\ny mean %E\n"%ys.mean())
+    table.write("y std %E\n"%ys.std())
+    table.write("fc mean %E\n"%fc.mean())
+    table.write("fc std %E\n"%fc.std())
+    table.write("fp mean %E\n"%fp.mean())
+    table.write("fp std %E\n"%fp.std())
+    table.write("fd mean %E\n"%fd.mean())
+    table.write("fd std %E\n"%fd.std())
 table.close()
