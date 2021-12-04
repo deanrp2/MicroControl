@@ -11,7 +11,7 @@ nbins = 25
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
 
 colmns = ["rerr", "psplit", "diffworth", "obj"] + ["x%i"%i for i in range(1, 8)]
-nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_w$ [pcm/rad]"]
+nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_w$ [pcm/$^\circ$]"]
 colors = ["k", "r", "g"]
 for i, wt in enumerate(wts):
     data = np.genfromtxt("log/" + fnames[i], delimiter = ",")
