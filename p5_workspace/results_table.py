@@ -13,7 +13,7 @@ from woa_expl import woa_expl
 from p5_base import plot_progress, plot_objs
 
 fevals = 10000
-runs = 15
+runs = 250
 
 #de_x, de_y, de_hist, de_res, de_npop = de_expl(fevals)
 #es_x, es_y, es_hist, es_res, es_lambda_ = es_expl(fevals)
