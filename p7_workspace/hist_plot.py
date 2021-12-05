@@ -23,7 +23,7 @@ for i, wt in enumerate(wts):
         plt.setp(ax[j,i].get_xticklabels(), fontsize="small")
         plt.setp(ax[j,i].get_yticklabels(), fontsize="small")
     ax[i, 0].set_ylabel(nicenames[i], rotation = 0, labelpad = 12, ha = "right")
-    ax[0, i].set_title(r"w$_c$=%.2f, w$_ p$=%.2f, w$_ d$=%.2f"%(wt[0], wt[1], wt[2]), fontsize = 10)
+    ax[0, i].set_title(r"w$_c$=%.2f, w$_ p$=%.2f, w$_ w$=%.2f"%(wt[0], wt[1], wt[2]), fontsize = 10)
     ax[2, i].set_xlabel("density")
 
     ax[i,0].set_ylim(ylims[i])
