@@ -13,7 +13,7 @@ from woa_expl import woa_expl
 from p5_base import plot_progress, plot_objs
 
 fevals = 10000
-runs = 250
+runs = 50
 
 #de_x, de_y, de_hist, de_res, de_npop = de_expl(fevals)
 #es_x, es_y, es_hist, es_res, es_lambda_ = es_expl(fevals)
@@ -32,7 +32,7 @@ es = [[fs[i](fevals) for i in places] for _ in range(runs)]
 print("Calcs done!")
 #names = [all_names[i] for i in places]
 
-table = open("results_table.txt", "w")
+table = open("results_table_t.txt", "w")
 table.write("fevals: %i\n"%fevals)
 table.write("runs: %i\n"%runs)
 
