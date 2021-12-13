@@ -23,7 +23,7 @@ tlog = Path("log/tune_gwo.dat")
 fname = Path("log/gwo_%s.log"%rid()) #logger name for objecrive function
 objs = make_objs() #in order react, psplits, dist
 wts = [0.5, 0.4, 0.1]
-BOUNDS = {"x%i"%i : ["float", -1.1.*np.pi, 1.1.*np.pi] for i in range(1, 8)}
+BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 8)}
 notes_str = "parameter optimization"
 GWO_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
 
