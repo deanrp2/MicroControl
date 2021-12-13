@@ -19,7 +19,7 @@ def pso_expl(fevals):
 
     wts = [0.5, 0.3, 0.2]
 
-    BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 9)}
+    BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
     npar = 50
     c1 = 2.15

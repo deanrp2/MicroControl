@@ -19,7 +19,7 @@ def woa_expl(fevals):
 
     wts = [0.5, 0.3, 0.2]
 
-    BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 9)}
+    BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
     nwhales = 30
     notes_str = "nwhales=%i\n"%(nwhales)
