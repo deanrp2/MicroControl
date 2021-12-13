@@ -25,7 +25,7 @@ objs = make_objs() #in order react, psplits, dist
 
 wts = [.25, .45, .3]
 
-BOUNDS = {"x%i"%i : ["float", -1.1*np.pi, 1.1*np.pi] for i in range(1, 8)}
+BOUNDS = {"x%i"%i : ["float", -1.1.*np.pi, 1.1.*np.pi] for i in range(1, 8)}
 
 lambda_ = 60
 mu = 30

@@ -35,7 +35,7 @@ def pso_expl(fevals):
     return pso_x, pso_y, pso_hist, res, npar
 
 if __name__ == "__main__":
-    pso_x, pso_y, pso_hist, res, npar = pso_expl(10000)
+    pso_x, pso_y, pso_hist, res, npar = pso_expl(1000)
     print("x best", np.array(pso_x)*180/np.pi)
     print("y best", pso_y)
 
