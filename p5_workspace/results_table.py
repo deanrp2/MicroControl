@@ -32,7 +32,7 @@ es = [[fs[i](fevals) for i in places] for _ in range(runs)]
 print("Calcs done!")
 #names = [all_names[i] for i in places]
 
-table = open("results_table_t.txt", "w")
+table = open("results_table.txt", "w")
 table.write("fevals: %i\n"%fevals)
 table.write("runs: %i\n"%runs)
 
