@@ -13,7 +13,7 @@ from fitness_help import FitnessHelper, Objective, get_log
 from p7_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
-def pso_expl(fevals):
+def pso_expl(fevals, seed = None):
     fname = Path("log/pso_%s.log"%rid())
     objs = make_objs() #in order react, psplits, dist
 
@@ -27,7 +27,7 @@ def pso_expl(fevals):
     speed_mech = "constric"
     notes_str = "npar=%i, c1=%f, c2=%f, speed_mech=%s\n"%(npar, c1, c2, speed_mech)
     pso_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
-    pso = PSO(mode="min", bounds = BOUNDS, fit = pso_helper.fitness,
+    pso = PSO(mode="min", bounds = BOUNDS, seed = seed, fit = pso_helper.fitness,
             ncores=1, npar = npar, c1 = c1, c2 = c2, speed_mech=speed_mech)
     pso_x, pso_y, pso_hist = pso.evolute(fevals//npar - 1)
     res = get_log(fname)
