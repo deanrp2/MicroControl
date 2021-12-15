@@ -112,7 +112,7 @@ def plot_objs(res, ax =  None, c = "k"):
     ylabs = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_w$ [pcm/$^\circ$]",r"$F$"]
     m = cumargmin(res["fitness"].values)
     for i in range(4):
-        #ax[i].set_title(titless[i])
+#        ax[i].set_title(titless[i])
         if titles[i] == "react_err_obj":
             v = res[titles[i]]*1e5
         elif titles[i] == "diff_worth_obj":
@@ -122,6 +122,9 @@ def plot_objs(res, ax =  None, c = "k"):
         ax[i].semilogy(res.index, v, c, linewidth = 1, alpha = .4)
         ax[i].plot(res.index, v.iloc[m], c,
             linewidth = 3)
+        ax[i].set_ylabel(ylabs[i])
+        if i > 1:
+            ax[i].set_xlabel(r"$F(\vec{x})$ Evals.")
     plt.tight_layout()
     return ax
 
