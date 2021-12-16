@@ -61,7 +61,10 @@ def g2l(thetas):
     thetas.loc[:, thkeys] = \
             (thetas.loc[:, thkeys] \
             - loc_offsets + 2 * np.pi) #apply corect 0 point
-    thetas.loc[:, ["theta"+str(i) for i in [3,4,5,6]]] *= -1 #reverse ncessary angles
+    thetas.loc[:, ["theta"+str(i) for i in [3,4,5,6]]] *= -1 #reverse ncessary angles; THIS ENDED UP BEING A MISTAKE
+    # THE DRUMS TO BE REVERSED SHOULD HAVE BEEN 3, 4, 7, 8. IN ORDER TO MAKE THE (INCORRECT) COORDINATE SYSTEM USED IN
+    # THIS QUADRANT POWER MODEL CONSISTENT WITH THE COORDINATE SYSTEM USED IN THE REACTIVITY WORTH MODEL, AN ADJUSTMENT
+    # IS MADE IN THE 'qpower_model.py' FILE.
     thetas.loc[:, thkeys] = \
             thetas.loc[:, thkeys] % (2*np.pi) #scale all to [0, 2*np.pi]
     for col in thkeys:
