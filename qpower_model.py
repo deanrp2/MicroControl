@@ -26,8 +26,9 @@ class QPowerModel:
         self.raw_model = load_model(model_file)
 
     def eval(self, pert):
-        pertn = np.array([pert, ])
-        pert[[4,5,6,7]] += -1 #FIX MISTAKE IN pmdata/utils.py -> g2l
+        pert2 = pert.copy()
+        pert2[[4,5,6,7]] += -1 #FIX MISTAKE IN pmdata/utils.py -> g2l
+        pertn = np.array([pert2, ])
         unorm = self.raw_model.predict(pertn).flatten()
         return unorm/unorm.sum()
 
