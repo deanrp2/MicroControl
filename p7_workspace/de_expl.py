@@ -22,8 +22,8 @@ def de_expl(fevals):
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
     npop = 10
-    F = 0.8
-    CR = 0.2
+    F = 0.5
+    CR = 0.1
     notes_str = "npop=%i,F=%f,CR=%f\n"%(npop, F, CR)
     de_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
     de = DE(mode="min", bounds = BOUNDS, fit = de_helper.fitness, npop=npop,

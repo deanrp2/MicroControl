@@ -21,8 +21,8 @@ def pso_expl(fevals, seed = None):
 
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
-    npar = 50
-    c1 = 2.15
+    npar = 30
+    c1 = 2.05
     c2 = 2.05
     speed_mech = "constric"
     notes_str = "npar=%i, c1=%f, c2=%f, speed_mech=%s\n"%(npar, c1, c2, speed_mech)
