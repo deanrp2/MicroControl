@@ -39,4 +39,5 @@ def qPowerModel(pert):
 
 if __name__ == "__main__":
     thetas = np.zeros(8)
+    thetas[[6,7]] -= np.pi
     print(qPowerModel(thetas))
