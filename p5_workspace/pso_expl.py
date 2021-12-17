@@ -21,10 +21,10 @@ def pso_expl(fevals):
 
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 8)}
 
-    npar = 30
-    c1 = 2.10
-    c2 = 2.15
-    speed_mech = "timew"
+    npar = 40
+    c1 = 2.15
+    c2 = 2.10
+    speed_mech = "constric"
     notes_str = "npar=%i, c1=%f, c2=%f, speed_mech=%s\n"%(npar, c1, c2, speed_mech)
     pso_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
     pso = PSO(mode="min", bounds = BOUNDS, fit = pso_helper.fitness,

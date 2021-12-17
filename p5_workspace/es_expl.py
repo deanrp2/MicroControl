@@ -23,7 +23,7 @@ def es_expl(fevals):
 
     lambda_ = 50
     mu = 20
-    cxpb = 0.8
+    cxpb = 0.6
     mutpb = 0.2
     notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
             cxpb, mutpb)
