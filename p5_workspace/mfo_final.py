@@ -9,13 +9,19 @@ import sys
 
 sys.path.append("..")
 
-x, y, hist, res, _ = mfo_expl(10000, seed = 5)
+x, y, hist, res, _ = mfo_expl(300, seed = 5)
 
 opt = res["fitness"].argmin()
 b = res.iloc[opt]
+for ol in range(4, 8):
+    b["x" + str(ol)] *= -1
 
+print("Radians")
 for i in range(1, 8):
     print(b["x" + str(i)])
+print("Degrees")
+for i in range(1, 8):
+    print(b["x" + str(i)]*180/np.pi)
 
 print("Reactivity Error:", b["react_err_obj"])
 print("Psplit Error:", b["psplit_err_obj"])
