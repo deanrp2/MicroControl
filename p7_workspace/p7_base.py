@@ -20,7 +20,7 @@ def rid():
 def make_objs():
     a = ReactivityModel()
     #reactivity objective
-    t_react = .03072
+    t_react = .03308
     def rtgt(x):
         thetas = np.asarray(x)
         react = a.eval(thetas)
