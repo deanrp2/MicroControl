@@ -1,9 +1,9 @@
-import numpy as np
-from pathlib import Path
 import pandas as pd
 from scipy.interpolate import interp1d
 import sys
 import inspect
+from pathlib import Path
+import numpy as np
 
 cpath = Path(inspect.getfile(sys.modules[__name__])).resolve().parent
 
@@ -196,7 +196,7 @@ class ReactivityModel:
     Used to evaluate reactivity insertion from control drum perturbation.
     Set up as init->method call to minimize file reading times
     """
-    def __init__(self, typ = "abs"): #abs, wtd or refl
+    def __init__(self, typ = "wtd"): #abs, wtd or refl
         """initialize to perform all file I/O"""
         self.jmA, self.jmB = get_jminus(typ)
         self.alphas = get_alphas(typ)
@@ -318,3 +318,7 @@ def reactivityModelEvalg(pert, typ = "wtd"):
     aa = ReactivityModel(typ)
     return aa.evalg(pert)
 
+if __name__ == "__main__":
+    a = ReactivityModel()
+    p5 = np.array([0, 0, 2.201331,-2.137274,-2.512146,2.02961,0.19566370000000002,3.140272])
+    print(a.eval(p5))
