@@ -17,7 +17,7 @@ from p7_base import rid, make_objs, calc_cumavg, plot_progress, \
 #perform tune or just print current results?
 tune = False
 #tuning logfile
-tlog = Path("log/de_tune.log")
+tlog = Path("log/de_tune.dat")
 
 #get and configure objective function
 fname = Path("log/de_%s.log"%rid()) #logger name for objecrive function
