@@ -21,7 +21,7 @@ def hho_expl(fevals):
 
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 8)}
 
-    nhawks = 35
+    nhawks = 55
     notes_str = "nhawks=%i\n"%(nhawks)
     hho_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
     hho = HHO(mode="min", bounds = BOUNDS, fit = hho_helper.fitness,
