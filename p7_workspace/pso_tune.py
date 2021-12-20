@@ -36,7 +36,7 @@ def tune_fit(npar, c1, c2, speed_mech):
 
 #provide parameter grids
 param_grid = {
-        "par"         : [20, 30, 40, 50],
+        "par"         : [30, 40, 50],
         "c1"          : [2.05, 2.10, 2.15],
         "c2"          : [2.05, 2.10, 2.15],
         "speed_mech" : ["constric", "timew", "globw"]}
