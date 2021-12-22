@@ -1,7 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-np.random.seed(4)
+sd = 0
+
+np.random.seed(sd)
 
 from mfo_expl import mfo_expl
 
@@ -9,7 +11,7 @@ import sys
 
 sys.path.append("..")
 
-x, y, hist, res, _ = mfo_expl(10000, seed = 5)
+x, y, hist, res, _ = mfo_expl(10000, seed = sd)
 
 opt = res["fitness"].argmin()
 b = res.iloc[opt]
