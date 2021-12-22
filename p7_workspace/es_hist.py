@@ -30,7 +30,7 @@ mutpb = 0.3
 notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
         cxpb, mutpb)
 
-histname = "log/hist_p6p2p2_3"
+histname = "log/hist_p6p2p2_4"
 
 rlist = []
 qsplit = []
