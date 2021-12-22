@@ -7,7 +7,7 @@ import sys
 
 sys.path.append("..")
 
-x, y, hist, res, _ = pso_expl(10000, seed = 5)
+x, y, hist, res, _ = pso_expl(10000, seed = 0)
 
 opt = res["fitness"].argmin()
 b = res.iloc[opt]
