@@ -21,7 +21,7 @@ def mfo_expl(fevals):
 
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
-    nmoths = 30
+    nmoths = 20
     b = 1
     notes_str = "nmoths=%i\n"%(nmoths)
     mfo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
