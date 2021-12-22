@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 
 fnames = ["hist_p33p33p33.dat", "hist_p5p4p1.dat", "hist_p6p2p1.dat"]
 wts = [[.33,.33,.33],[.5,.4,.1],[.6,.2,.1]]
-ylims = [[0,75],[0,0.01],[110, 210]]
+ylims = [[0,75],[0,0.01],[110, 180]]
 nbins = 23
 
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
