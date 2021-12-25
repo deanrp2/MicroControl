@@ -29,7 +29,7 @@ BOUNDS = {"x%i"%i : ["float", -np.pi, np.pi] for i in range(1, 9)}
 print("Starting DE...")
 de = DE(mode = "max", bounds = BOUNDS, fit = fitness, npop=50,
         CR = 0.5, F = 0.7, ncores = 1)
-de_x, de_y, de_hist = de.evolute(ngen = 60)
+de_x, de_y, de_hist = de.evolute(ngen = 40)
 
 
 
