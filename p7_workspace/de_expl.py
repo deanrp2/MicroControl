@@ -34,7 +34,7 @@ def de_expl(fevals):
     return de_x, de_y, de_hist, res, npop
 
 if __name__ == "__main__":
-    de_x, de_y, de_hist, res, npop = de_expl(10000)
+    de_x, de_y, de_hist, res, npop = de_expl(2000)
 
     print("x best", np.array(de_x)*180/np.pi)
     print("y best", de_y)
