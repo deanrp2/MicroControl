@@ -19,10 +19,9 @@ fevals = 10000
 #hho_x, hho_y, hho_hist, hho_res, hho_nhawks = hho_expl(fevals)
 #mfo_x, mfo_y, mfo_hist, mfo_res, mfo_nmoths = mfo_expl(fevals)
 #pso_x, pso_y, pso_hist, pso_res, pso_npar = pso_expl(fevals)
-#woa_x, woa_y, woa_hist, woa_res, woa_nhawks = woa_expl(fevals)
 
-fs = [de_expl, es_expl, gwo_expl, hho_expl, mfo_expl, pso_expl, woa_expl]
-all_names = ["DE", "ES", "GWO", "HHO", "MFO", "PSO", "WOA"]
+fs = [de_expl, es_expl, gwo_expl, hho_expl, mfo_expl, pso_expl]
+all_names = ["DE", "ES", "GWO", "HHO", "MFO", "PSO"]
 
 places = [0,1,2,3,4,5] #which methods to include
 
