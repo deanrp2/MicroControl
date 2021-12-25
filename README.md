@@ -38,4 +38,26 @@ in the repository in the log directory.
 ## ALGORITHM PARAMETER OPTIMIZATION
 In order to see the results from the parameter optimization routine used in the manuscript, 
 scripts are included for each of the  algorithms in p5_workspace and p7_worspace with the 
-*_tune.py name. 
+*_tune.py name. In order to rerun these optimizations, the `tune` variable can be set to `True`.
+This will overwrite the existing data files giving the results from the grid search.
+
+## ALGORITHM POPULATION STATISTICS
+In order to generate figures like the ones seen in Figure 7 and Figure 9 in the journal paper, 
+a script is given in p5_workspace and p7_workspace named green_plots.py.
+
+## ALGORITHM OBJECTIVE EVOLUTION
+In order to generate figures like the ones seen in Figure 8 and Figure 10 in the journal paper,
+scripts are given for each of the six algorithms in p5_workspace and p7_workspace named 
+*_expl.py. The number of function evaluations used in the optimization routine is specified in 
+the function call under the `if __name__ == "__main__":` line in the argument of *_expl(\#\#).
+
+
+
+
+
+
+
+
+
+
+
