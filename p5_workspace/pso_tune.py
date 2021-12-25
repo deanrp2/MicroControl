@@ -15,7 +15,7 @@ from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
 #perform tune or just print current results?
-tune =False
+tune = False
 #tuning logfile
 tlog = Path("log/tune_pso.dat")
 
@@ -36,7 +36,7 @@ def tune_fit(npar, c1, c2, speed_mech):
 
 #provide parameter grids
 param_grid = {
-        "npar"    : [20, 30, 40, 50],
+        "npar"    : [30, 40, 50],
         "c1"    : [2.05, 2.10, 2.15],
         "c2"    : [2.05, 2.10, 2.15],
         "speed_mech" : ["constric", "timew", "globw"]}

@@ -26,7 +26,8 @@ class QPowerModel:
         self.raw_model = load_model(model_file)
 
     def eval(self, pert):
-        pertn = np.array([pert, ])
+        pert2 = pert.copy()
+        pertn = np.array([pert2, ])
         unorm = self.raw_model.predict(pertn).flatten()
         return unorm/unorm.sum()
 
@@ -34,3 +35,8 @@ def qPowerModel(pert):
     """Wrapper for QPowerModel that initializes and runs"""
     a = QPowerModel()
     return a.eval(pert)
+
+if __name__ == "__main__":
+    thetas = np.zeros(8)
+    thetas[[6,7]] -= np.pi
+    print(qPowerModel(thetas))

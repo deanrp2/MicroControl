@@ -1,12 +1,12 @@
 # MircoControl
 
 Repository to house working scripts for optimization problems involving 
-HOLOSGen reactor.
+HOLOSGen reactor. Repository released publicly so users can reproduce results
+published in "Multiobjective Optimization of Nuclear Microreactor Control
+System Operation with Surrogate-based Evolutionary Algorithms".
 
 ## REACTOR INFO:
-* All drums in k=0.967987
-* Startup reactivity = 3072 pcm
-* beta_eff = 0.0148166
+* Startup reactivity = 3308 pcm
 
 ## COORDINATE NOTES:
 * quadrant numbering starts with the top-right quadrant and proceeds
@@ -30,9 +30,8 @@ proceeds counterclockwise around each of the drums
 8. no constraints, maximum differential worth
 
 ## CORE DEMO PROBLEMS:
-Problem 5 and 7 were selected to be the main problems used to demonstrate the capabilities of any
-optimization algoritms.
-As such, they are explored further.
+* Problem 5 (CSA): One drum broken, hit even split and criticality, minimum maximum travel dist
+* Problem 7 (CSB): Max drum differential worth, hit critical, 0.5% bias in Q1 power
 
 ## OBJECTIVE WEIGHTS:
 ### Demo Problem 5
@@ -44,53 +43,5 @@ As such, they are explored further.
    Power Split Error - 0.3\
    Diff. Worth Max.  - 0.2
 
-## ALGORITHM OPTIMAL PARAMETERS
-### Demo Problem 5
-* DE
-    * npop - 10
-    * F - 0.5
-    * CR - 0.1
-* ES
-    * mu - 20
-    * cxpb - 0.8
-    * mutpb - 0.2
-* GWO
-    * nwolves - 45
-* MFO
-    * nmoths - 60
-* WOA
-    * nwhales - 35
-* HHO
-    * nhawks - 65
-* PSO
-    * npar - 30
-    * c1 - 2.10
-    * c2 - 2.15
-    * speed_mech - timew
-
-### Demo Problem 7
-* DE
-    * npop - 10
-    * F - 0.8
-    * CR - 0.2
-* ES
-    * mu - 30
-    * cxpb - 0.6
-    * mutpb - 0.3
-* GWO
-    * nwolves - 25
-* MFO
-    * nmoths - 10
-* WOA
-    * nwhales - 30
-* HHO
-    * nhawks - 60
-* PSO
-    * npar - 50
-    * c1 - 2.15
-    * c2 - 2.05
-    * speed_mech - constric
-
-
-
-
+## WEIGHT OPTIMA HISTOGRAM GENERATION
+In each of the two directories named 

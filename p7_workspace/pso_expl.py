@@ -23,7 +23,7 @@ def pso_expl(fevals, seed = None):
 
     npar = 50
     c1 = 2.15
-    c2 = 2.05
+    c2 = 2.10
     speed_mech = "constric"
     notes_str = "npar=%i, c1=%f, c2=%f, speed_mech=%s\n"%(npar, c1, c2, speed_mech)
     pso_helper = FitnessHelper(objs, wts, fname, notes = notes_str)

@@ -17,7 +17,7 @@ from p7_base import rid, make_objs, calc_cumavg, plot_progress, \
 #perform tune or just print current results?
 tune = False
 #tuning logfile
-tlog = Path("log/pso_tune.log")
+tlog = Path("log/pso_tune.dat")
 
 #get and configure objective function
 fname = Path("log/pso_%s.log"%rid()) #logger name for objecrive function
@@ -36,7 +36,7 @@ def tune_fit(npar, c1, c2, speed_mech):
 
 #provide parameter grids
 param_grid = {
-        "par"         : [20, 30, 40, 50],
+        "par"         : [30, 40, 50],
         "c1"          : [2.05, 2.10, 2.15],
         "c2"          : [2.05, 2.10, 2.15],
         "speed_mech" : ["constric", "timew", "globw"]}

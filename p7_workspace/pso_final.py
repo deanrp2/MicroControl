@@ -7,7 +7,7 @@ import sys
 
 sys.path.append("..")
 
-x, y, hist, res, _ = pso_expl(10000, seed = 5)
+x, y, hist, res, _ = pso_expl(10000, seed = 0)
 
 opt = res["fitness"].argmin()
 b = res.iloc[opt]
@@ -27,8 +27,8 @@ thetas = np.array([b["x"+str(d)] for d in range(1, 9)])
 a = ReactivityModel()
 b = QPowerModel()
 print("Injected Reactivity:", a.eval(thetas))
-print("Target Reactivity:", 0.03072)
-print("Reactivity Error", a.eval(thetas) - 0.03072)
+print("Target Reactivity:", 0.03308)
+print("Reactivity Error", a.eval(thetas) - 0.03308)
 print("Qpower:", b.eval(thetas))
 print("Diff worth:", np.abs(a.evalg(thetas)).sum())
 print("Grad Worth:")

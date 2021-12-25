@@ -22,8 +22,8 @@ def es_expl(fevals):
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
     lambda_ = 50
-    mu = 30
-    cxpb = 0.6
+    mu = 25
+    cxpb = 0.7
     mutpb = 0.3
     notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
         cxpb, mutpb)

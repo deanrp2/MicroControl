@@ -21,7 +21,7 @@ def gwo_expl(fevals):
 
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 
-    nwolves = 25
+    nwolves = 15
     notes_str = "nwolves=%i\n"%(nwolves)
     gwo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
     gwo = GWO(mode="min", bounds = BOUNDS, fit = gwo_helper.fitness, nwolves = nwolves)

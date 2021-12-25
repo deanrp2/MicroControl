@@ -17,7 +17,7 @@ from p7_base import rid, make_objs, calc_cumavg, plot_progress, \
 #perform tune or just print current results?
 tune = False
 #tuning logfile
-tlog = Path("log/de_tune.log")
+tlog = Path("log/de_tune.dat")
 
 #get and configure objective function
 fname = Path("log/de_%s.log"%rid()) #logger name for objecrive function
@@ -36,7 +36,7 @@ def tune_fit(npop, F, CR):
 
 #provide parameter grids
 param_grid = {
-        "npop" : [10, 20, 30, 35, 40, 45, 50],
+        "npop" : [10, 20, 30, 40, 50],
         "F"    : [.4, .5, .6, .7, .8, .9],
         "CR"   : [.1, .2, .3]}
 

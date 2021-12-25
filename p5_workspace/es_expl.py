@@ -22,9 +22,9 @@ def es_expl(fevals):
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 8)}
 
     lambda_ = 50
-    mu = 20
-    cxpb = 0.8
-    mutpb = 0.2
+    mu = 25
+    cxpb = 0.6
+    mutpb = 0.3
     notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
             cxpb, mutpb)
     es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)

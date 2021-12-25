@@ -29,36 +29,20 @@ BOUNDS = {"x%i"%i : ["float", -np.pi, np.pi] for i in range(1, 9)}
 print("Starting DE...")
 de = DE(mode = "max", bounds = BOUNDS, fit = fitness, npop=50,
         CR = 0.5, F = 0.7, ncores = 1)
-de_x, de_y, de_hist = de.evolute(ngen = 60)
-
-#  Evolution strategies
-print("Starting ES...")
-es = ES(mode = "max", bounds = BOUNDS, fit = fitness, lambda_ = 40,
-        mu = 30, ncores = 1)
-es_x, es_y, es_hist = de.evolute(ngen = 60)
-
-# Modern pesa
-print("Starting PESA...")
-psa = PESA2(mode = "max", bounds = BOUNDS, fit = fitness)
-psa_x, psa_y, psa_hist = psa.evolute(ngen = 60)
+de_x, de_y, de_hist = de.evolute(ngen = 120)
 
 
-ans = {"Differential Evolution" : [de_x, de_hist],
-        "Evolution Strategies" : [es_x, es_hist],
-        "PESA2"                : [psa_x, psa_hist]}
+
+ans = {"Differential Evolution" : [de_x, de_hist]}
 
 for key, value in ans.items():
-    plt.plot(value[1], label = key)
     v = np.asarray(value[0])
     print("\n-----------------------\n", key, "\n-----------------------")
     s =["%.1f"%(a*180/np.pi) for a in v]
     print("Angles", " ".join(s))
+    print("Diff worth", np.abs(rmodel.evalg(v)).sum(), "1/rad")
     print("Diff worth", np.abs(rmodel.evalg(v)).sum()*1e5/(180/np.pi), "pcm/deg")
     print("Diff worth", np.abs(rmodel.evalg(v)).sum()*1e5, "pcm/rad")
 
-plt.legend()
-plt.xlabel("Generations")
-plt.ylabel("Obj")
-plt.show()
 
 #3800 pcm/rad maximum worth
