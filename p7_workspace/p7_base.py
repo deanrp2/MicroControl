@@ -49,7 +49,7 @@ def make_objs():
     def diffworth(x):
         thetas = np.asarray(x)
         return np.abs(a.evalg(thetas)).sum()
-    diff_worth = Objective("diff_worth", "max", 8, diffworth, 0, 3800)
+    diff_worth = Objective("diff_worth", "max", 8, diffworth, 0, 0.0272637202577)
 
     return [tgt_react, tgt_splits, diff_worth]
 
