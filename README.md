@@ -51,6 +51,9 @@ scripts are given for each of the six algorithms in p5_workspace and p7_workspac
 *_expl.py. The number of function evaluations used in the optimization routine is specified in 
 the function call under the `if __name__ == "__main__":` line in the argument of *_expl(\#\#).
 
+## ALGORITHM PERFORMANCE SUMMARY STATISTICS
+directions for Table 5 and 6
+
 
 
 
