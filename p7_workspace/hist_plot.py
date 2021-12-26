@@ -13,7 +13,7 @@ gh = [0,3,4]
 fnames = [fnames[l] for l in gh]
 wts = [wts[l] for l in gh]
 ylims = [[0,25],[0,0.001],[0, 50]]
-nbins = 22
+nbins = 25
 
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
 
