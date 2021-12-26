@@ -3,10 +3,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-fnames = ["hist_p33p33p33.dat", "hist_p5p3p2.dat", "hist_p6p2p2.dat"]
-wts = [[.33,.33,.33],[.5,.3,.2],[.6,.2,.2]]
+fnames = ["hist_p33p33p33.dat",
+          "hist_p5p3p2.dat",
+          "hist_p5p4p1.dat",
+          "hist_p6p3p1.dat",
+          "hist_p55p4p05.dat"]
+wts = [[.33,.33,.33],[.5,.3,.2],[.5,.4,.1], [.6,.3,.1],[.55,.4,.05]]
+gh = [0,3,4]
+fnames = [fnames[l] for l in gh]
+wts = [wts[l] for l in gh]
 ylims = [[0,25],[0,0.001],[0, 50]]
-nbins = 25
+nbins = 22
 
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
 
@@ -26,7 +33,7 @@ for i, wt in enumerate(wts):
     ax[0, i].set_title(r"w$_c$=%.2f, w$_ p$=%.2f, w$_ w$=%.2f"%(wt[0], wt[1], wt[2]), fontsize = 10)
     ax[2, i].set_xlabel("density")
 
-    ax[i,0].set_ylim(ylims[i])
+    #ax[i,0].set_ylim(ylims[i])
 
 plt.tight_layout()
 
