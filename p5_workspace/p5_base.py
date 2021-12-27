@@ -121,7 +121,10 @@ def plot_objs(res, ax =  None, c = "k"):
             v = res[titles[i]]*180/np.pi
         else:
             v = res[titles[i]]
-        ax[i].semilogy(res.index, v, c, linewidth = 1, alpha = .4)
+        if titless[i] == "Reactivity":
+            ax[i].semilogy(res.index, v, c, linewidth = 1, alpha = .4)
+        else:
+            ax[i].plot(res.index, v, c, linewidth = 1, alpha = .4)
         ax[i].plot(res.index, v.iloc[m], c,
             linewidth = 3)
         ax[i].set_ylabel(ylabs[i])
