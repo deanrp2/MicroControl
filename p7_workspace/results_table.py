@@ -28,7 +28,11 @@ all_names = ["DE", "ES", "GWO", "HHO", "MFO", "PSO", "WOA"]
 
 places = [0,1,2,3,4,5] #which methods to include
 
-es = [[fs[i](fevals) for i in places] for _ in range(runs)]
+es = []
+for ri in range(runs):
+    print("Currently on run", ri, "/", runs)
+    es.append([fs[i](fevals) for i in places])
+
 print("Calcs done!")
 #names = [all_names[i] for i in places]
 
