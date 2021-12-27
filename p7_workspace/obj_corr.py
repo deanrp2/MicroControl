@@ -2,13 +2,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-fnames = ["hist_p5p4p1.dat", "hist_p6p2p1.dat"]
-wts = [[.5,.4,.1],[.6,.2,.1]]
+fnames = ["hist_p6p3p1.dat","hist_p55p4p05.dat"]
+wts = [[.6,.3,.1],[.55,.4,.05]]
 ylims = [[140,180],[0,0.008]]
-labels = [r"w$_c$=%.2f, w$_ p$=%.2f, w$_ d$=%.2f"%(wt[0], wt[1], wt[2]) for wt in wts]
+labels = [r"w$_c$=%.2f, w$_ p$=%.2f, w$_ w$=%.2f"%(wt[0], wt[1], wt[2]) for wt in wts]
 
-columns = ["rerr", "psplit", "tdist", "obj"] + ["x%i"%i for i in range(1, 8)]
-nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_d$ [$^\circ$]"]
+columns = ["rerr", "psplit", "diffworth", "obj"] + ["x%i"%i for i in range(1, 8)]
+nicenames = [r"$\hat{f}_c$ [pcm]", r"$\hat{f}_p$",r"$\hat{f}_w$ [$^\circ$]"]
 grid = plt.GridSpec(1, 3)
 fig = plt.gcf()
 fig.set_size_inches(9.5, 3.3)
@@ -19,15 +19,12 @@ data2 = np.genfromtxt("log/" + fnames[1], delimiter = ",")
 ara2 = pd.DataFrame(data2, columns  = columns)
 
 plt.subplot(grid[0])
-plt.ylim(ylims[1])
-plt.xlim(ylims[0])
-#plt.plot(ara1["rerr"], ara1["psplit"], "k.", markersize = 1.2, alpha = .8, label = labels[0])
-#plt.plot(ara2["rerr"], ara2["psplit"], "r.", markersize = 1.2, alpha = .8, label = labels[1])
-plt.plot(ara1["tdist"], ara1["psplit"], "k.", markersize = 1.8, alpha = .9, label = labels[0])
-plt.plot(ara2["tdist"], ara2["psplit"], "r.", markersize = 1.8, alpha = .9, label = labels[1])
+#plt.ylim(ylims[1])
+#plt.xlim(ylims[0])
+plt.plot(ara1["diffworth"], ara1["psplit"], "k.", markersize = 1.8, alpha = .9, label = labels[0])
+plt.plot(ara2["diffworth"], ara2["psplit"], "r.", markersize = 1.8, alpha = .9, label = labels[1])
 plt.xlabel(nicenames[2])
 plt.ylabel(nicenames[1])
-
 
 
 plt.subplot(grid[1:])
@@ -58,32 +55,4 @@ for i in range(1, 8):
 plt.show()
 
 exit()
-data1 = np.genfromtxt("log/" + fnames[0], delimiter = ",")
-ara1 = pd.DataFrame(data1, columns  = columns)
-data2 = np.genfromtxt("log/" + fnames[1], delimiter = ",")
-ara2 = pd.DataFrame(data1, columns  = columns)
-exit()
-
-fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
-
-colors = ["k", "r", "b"]
-for i, wt in enumerate(wts):
-    data = np.genfromtxt("log/" + fnames[i], delimiter = ",")
-    ara = pd.DataFrame(data, columns = colmns)
-    for j, n in enumerate(colmns[:3]):
-        bbs = np.linspace(*ylims[j], nbins)
-        ax[j,i].hist(ara[n], bins = bbs, color = colors[j], rwidth = 1, edgecolor = "k",
-                density = True, orientation="horizontal", linewidth = 1, alpha = .5)
-        plt.setp(ax[j,i].get_xticklabels(), fontsize="small")
-        plt.setp(ax[j,i].get_yticklabels(), fontsize="small")
-    ax[i, 0].set_ylabel(nicenames[i], rotation = 0, labelpad = 12, ha = "right")
-    ax[0, i].set_title(r"w$_c$=%.2f, w$_ p$=%.2f, w$_ d$=%.2f"%(wt[0], wt[1], wt[2]), fontsize = 10)
-    ax[2, i].set_xlabel("density")
-
-    ax[i,0].set_ylim(ylims[i])
-
-plt.tight_layout()
-
-fig.subplots_adjust(wspace = .15)
-plt.show()
 
