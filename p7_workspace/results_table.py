@@ -8,7 +8,6 @@ from gwo_expl import gwo_expl
 from hho_expl import hho_expl
 from mfo_expl import mfo_expl
 from pso_expl import pso_expl
-from woa_expl import woa_expl
 
 from p7_base import plot_progress, plot_objs
 
