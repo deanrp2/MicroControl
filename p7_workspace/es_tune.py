@@ -15,7 +15,7 @@ from p7_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
 #perform tune or just print current results?
-tune = False
+tune = True
 #tuning logfile
 tlog = Path("log/es_tune.dat")
 
