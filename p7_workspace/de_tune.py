@@ -36,7 +36,7 @@ def tune_fit(npop, F, CR):
 
 #provide parameter grids
 param_grid = {
-        "npop" : [10, 20, 30, 40, 50],
+        "npop" : [20, 30, 40, 50],
         "F"    : [.4, .5, .6, .7, .8, .9],
         "CR"   : [.1, .2, .3]}
 
