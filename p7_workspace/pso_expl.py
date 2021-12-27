@@ -17,7 +17,7 @@ def pso_expl(fevals, seed = None):
     fname = Path("log/pso_%s.log"%rid())
     objs = make_objs() #in order react, psplits, dist
 
-    wts = [0.5, 0.3, 0.2]
+    wts = [0.55, 0.4, 0.05]
 
     BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 

@@ -22,7 +22,7 @@ tlog = Path("log/mfo_tune.dat")
 #get and configure objective function
 fname = Path("log/mfo_%s.log"%rid()) #logger name for objecrive function
 objs = make_objs() #in order react, psplits, dist
-wts = [0.5, 0.3, 0.2]
+wts = [0.55, 0.4, 0.05]
 BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 9)}
 notes_str = "parameter optimization"
 MFO_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
