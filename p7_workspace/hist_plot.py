@@ -7,7 +7,7 @@ fnames = ["hist_p33p33p33.dat",
           "hist_p55p4p05.dat",
           "hist_p6p3p1.dat"]
 wts = [[.33,.33,.33],[.55,.4,.05],[.6,.3,.1]]
-ylims = [[0,25],[0,0.001],[0, 50]]
+ylims = [[0,25],[0,0.001],[10, 45]]
 nbins = 25
 
 fig, ax = plt.subplots(3,3, figsize = (8,7), sharey = "row", sharex = "row")
