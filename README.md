@@ -52,7 +52,10 @@ scripts are given for each of the six algorithms in p5_workspace and p7_workspac
 the function call under the `if __name__ == "__main__":` line in the argument of *_expl(\#\#).
 
 ## ALGORITHM PERFORMANCE SUMMARY STATISTICS
-directions for Table 5 and 6
+To generate statistics which characterize the optima achieved by the various optimization 
+algorithms, a script named results_table.py is provided in p5_workspace and p7_workspace. 
+The results will be written to a file called results_table.txt. The existing results_table.txt
+file contains the statistics that are published in Table 5 and 6 of the journal paper.
 
 
 
