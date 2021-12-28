@@ -8,7 +8,6 @@ from gwo_expl import gwo_expl
 from hho_expl import hho_expl
 from mfo_expl import mfo_expl
 from pso_expl import pso_expl
-from woa_expl import woa_expl
 
 from p5_base import plot_progress, plot_objs
 
@@ -21,10 +20,9 @@ runs = 50
 #hho_x, hho_y, hho_hist, hho_res, hho_nhawks = hho_expl(fevals)
 #mfo_x, mfo_y, mfo_hist, mfo_res, mfo_nmoths = mfo_expl(fevals)
 #pso_x, pso_y, pso_hist, pso_res, pso_npar = pso_expl(fevals)
-#woa_x, woa_y, woa_hist, woa_res, woa_nhawks = woa_expl(fevals)
 
-fs = [de_expl, es_expl, gwo_expl, hho_expl, mfo_expl, pso_expl, woa_expl]
-all_names = ["DE", "ES", "GWO", "HHO", "MFO", "PSO", "WOA"]
+fs = [de_expl, es_expl, gwo_expl, hho_expl, mfo_expl, pso_expl]
+all_names = ["DE", "ES", "GWO", "HHO", "MFO", "PSO"]
 
 places = [0,1,2,3,4,5] #which methods to include
 
