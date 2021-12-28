@@ -33,7 +33,8 @@ routines, p5_workspace/es_hist.py or p7_workspace/es_hist.py can be run with wei
 in the `wts` variable. Results will be logged in the file given in the `histname` variable. To
 visualize the results, the hist_plot.py file is given. The outputs should be specified in the
 `fnames` variable. The datasets used to generate the histograms shown in the paper are included
-in the repository in the log directory.
+in the repository in the log directory. Generating these histograms is computationally expensive,
+the script can be terminated when enough samples are written to the output file.
 
 ## ALGORITHM PARAMETER OPTIMIZATION
 In order to see the results from the parameter optimization routine used in the manuscript, 
@@ -55,7 +56,13 @@ the function call under the `if __name__ == "__main__":` line in the argument of
 To generate statistics which characterize the optima achieved by the various optimization 
 algorithms, a script named results_table.py is provided in p5_workspace and p7_workspace. 
 The results will be written to a file called results_table.txt. The existing results_table.txt
-file contains the statistics that are published in Table 5 and 6 of the journal paper.
+file contains the statistics that are published in Table 5 and 6 of the journal paper. It can
+be very computationally expensive to generate these results so the user can adjust 3 different
+variables to make the results faster. First, `fevals` can be changed to reduce the number of 
+function evaluations done in each optimization routine. Second, `runs` can be reuced to reduce 
+the number of runs used to generate the summary statistics. Third, the `places` variable can 
+be used to only select certain algorithms to run. Currently, those parameters are set to the 
+values used in the paper.
 
 
 
