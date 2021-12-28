@@ -9,6 +9,9 @@ Repository released publicly so users can reproduce results published in
 with Surrogate-based Evolutionary Algorithms" in Annals of Nuclear Energy. 
 References to this journal paper are used in this documentation.
 
+User must have NEORL installed:
+https://neorl.readthedocs.io/en/latest/
+
 ## REACTOR INFO:
 * Startup reactivity = 3308 pcm
 
