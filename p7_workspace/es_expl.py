@@ -13,7 +13,7 @@ from fitness_help import FitnessHelper, Objective, get_log
 from p7_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
-def es_expl(fevals):
+def es_expl(fevals, seed = None):
     fname = Path("log/es_%s.log"%rid())
     objs = make_objs() #in order react, psplits, dist
 
@@ -28,7 +28,7 @@ def es_expl(fevals):
     notes_str = "lambda=%i, mu=%i, cxpb=%f, mutpb=%f\n"%(lambda_, mu, 
         cxpb, mutpb)
     es_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
-    es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness,
+    es = ES(mode="min", bounds = BOUNDS, fit = es_helper.fitness, seed = seed,
         ncores=1, lambda_ = lambda_, mu = mu, cxpb = cxpb, mutpb = mutpb)
     es_x, es_y, es_hist = es.evolute(fevals//lambda_ - 1)
     es_helper.close()
