@@ -13,7 +13,7 @@ from fitness_help import FitnessHelper, Objective, get_log
 from p5_base import rid, make_objs, calc_cumavg, plot_progress, \
         plot_objs
 
-def mfo_expl(fevals, seed = None):
+def mfo_expl(fevals, seed = None, v = False):
     fname = Path("log/mfo_%s.log"%rid())
     objs = make_objs() #in order react, psplits, dist
 
@@ -26,12 +26,12 @@ def mfo_expl(fevals, seed = None):
     notes_str = "nmoths=%i,b=%i\n"%(nmoths, b)
     mfo_helper = FitnessHelper(objs, wts, fname, notes = notes_str)
     mfo = MFO(mode="min", bounds = BOUNDS, fit = mfo_helper.fitness, nmoths = nmoths, b = b, seed = seed)
-    mfo_x, mfo_y, mfo_hist = mfo.evolute(fevals//nmoths)
+    mfo_x, mfo_y, mfo_hist = mfo.evolute(fevals//nmoths, verbose = v)
     res = get_log(fname)
     return mfo_x, mfo_y, mfo_hist, res, nmoths
 
 if __name__ == "__main__":
-    mfo_x, mfo_y, mfo_hist, res, nmoths = mfo_expl(10000)
+    mfo_x, mfo_y, mfo_hist, res, nmoths = mfo_expl(10000, v = True)
 
     print("x best", np.array(mfo_x)*180/np.pi)
     print("y best", mfo_y)
