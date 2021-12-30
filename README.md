@@ -1,4 +1,4 @@
-# MircoControl
+# Mircoreactor Control Optimization
 
 Repository to house working scripts for optimization problems involving 
 HOLOSGen reactor.
@@ -6,7 +6,7 @@ HOLOSGen reactor.
 ## USER INFORMATION
 Repository released publicly so users can reproduce results published in 
 "Multiobjective Optimization of Nuclear Microreactor Control System Operation 
-with Surrogate-based Evolutionary Algorithms" in Annals of Nuclear Energy. 
+with Surrogate-based Evolutionary Algorithms" in Nuclear Engineering and Design. 
 References to this journal paper are used in this documentation.
 
 User must have NEORL installed:
@@ -27,6 +27,20 @@ around each of the drums
 * Problem 5 (CSA): One drum broken, hit even split and criticality, minimum maximum travel 
 distance
 * Problem 7 (CSB): Max drum differential worth, hit critical, 0.5% bias in Q1 power
+
+# QUICK TESTING
+Within the p5_workspace and p7_workspace directories, there are 6 files which contain the *_expl.py 
+suffix. Each of these can be run for a single optimization routine performed on either problem 5
+or problem 7. To get the final optimization runs used in verification with Serpent, run either
+p5_workspace/mfo_final.py or p7_workspace/pso_final.py.
+
+For example, to run the differential evolution algorithm for problem 5, navigate to p5_workspace and 
+run:
+
+`python3 de_expl.py`
+
+# DETAILED TESTING
+With these directions, you are able to reporoduce the results shown in the journal paper.
 
 ## WEIGHT OPTIMA HISTOGRAM GENERATION
 In order to investigate the quality of weight sets for scalarization, multiple independent
