@@ -61,7 +61,7 @@ BOUNDS = {"x%i"%i : ["float", -1.*np.pi, 1.*np.pi] for i in range(1, 8)}
 npop = 20
 F_de = 0.4
 CR = 0.3
-de = DE(mode = "min", bounds = BOUNDS, fit = F, npop = npop, F = F_de, CR = CR)
+de = DE(mode = "min", bounds = BOUNDS, fit = F, npop = npop, F = F_de, CR = CR, seed = 1)
 de_x, de_y, de_hist = de.evolute(100, verbose = True)
 
 #run es optimization
@@ -69,21 +69,26 @@ mu = 25
 cxpb = 0.6
 mutpb = 0.3
 es = ES(mode = "min", bounds = BOUNDS, fit = F, lambda_ = 50, mu = mu, cxpb = 0.6,
-        mutpb = 0.3)
+        mutpb = 0.3, seed = 1)
 es_x, es_y, es_hist = es.evolute(100, verbose = True)
 
 #run mfo optimization
 nmoths = 55
-mfo = MFO(mode = "min", bounds = BOUNDS, fit = F, nmoths = nmoths, b = 1)
+mfo = MFO(mode = "min", bounds = BOUNDS, fit = F, nmoths = nmoths, b = 1, seed = 1)
 mfo_x, mfo_y, mfo_hist = mfo.evolute(100, verbose = True)
 
 plt.plot(de_hist, label = "DE")
 plt.plot(es_hist, label = "ES")
 plt.plot(mfo_hist["global_fitness"], label = "MFO")
 
-
-
 plt.xlabel("Generation")
 plt.ylabel("Fitness")
 plt.legend()
 plt.show()
+
+print("MFO fc hat")
+print(hatfc(mfo_x))
+print("MFO fp hat")
+print(hatfp(mfo_x))
+print("MFO fd hat")
+print(hatfd(mfo_x))
