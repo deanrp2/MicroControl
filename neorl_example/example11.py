@@ -77,8 +77,8 @@ nmoths = 55
 mfo = MFO(mode = "min", bounds = BOUNDS, fit = F, nmoths = nmoths, b = 1, seed = 1)
 mfo_x, mfo_y, mfo_hist = mfo.evolute(100, verbose = True)
 
-plt.plot(de_hist, label = "DE")
-plt.plot(es_hist, label = "ES")
+plt.plot(de_hist["global_fitness"], label = "DE")
+plt.plot(es_hist["global_fitness"], label = "ES")
 plt.plot(mfo_hist["global_fitness"], label = "MFO")
 
 plt.xlabel("Generation")
